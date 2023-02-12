@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: de6cec5aee82
+Revision ID: acd01d475f8c
 Revises: 
-Create Date: 2023-02-12 19:52:20.367431
+Create Date: 2023-02-12 20:11:28.794473
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'de6cec5aee82'
+revision = 'acd01d475f8c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,12 +21,14 @@ def upgrade() -> None:
     op.create_table('coaches_categories',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('category', sa.String(length=50), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('category')
     )
     op.create_table('positions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('position', sa.String(length=50), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('position')
     )
     op.create_table('coaches',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -37,10 +39,11 @@ def upgrade() -> None:
     sa.Column('category_id', sa.Integer(), nullable=False),
     sa.Column('position_id', sa.Integer(), nullable=False),
     sa.Column('sex', sa.Boolean(), nullable=False),
-    sa.Column('avatar', sa.String(), nullable=False),
+    sa.Column('avatar', sa.String(length=255), nullable=False),
     sa.ForeignKeyConstraint(['category_id'], ['coaches_categories.id'], ),
     sa.ForeignKeyConstraint(['position_id'], ['positions.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('phone')
     )
     # ### end Alembic commands ###
 
