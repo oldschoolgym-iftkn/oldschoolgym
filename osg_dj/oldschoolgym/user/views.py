@@ -1,14 +1,16 @@
-from django.shortcuts import render
 from .models import MyUser
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import MyUserSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
-def get_users(request):
-    return get_object_or_404(MyUser, pk=1).__dict__
+class TestMe(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        return Response({'status': '200'}, status=status.HTTP_200_OK)
 
 
 class UserAPI(APIView):
