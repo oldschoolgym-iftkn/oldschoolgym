@@ -12,6 +12,7 @@ __pycache__/
 *.jpg
 *.bmp
 *.ttf
+*.svg
 
 # Distribution / packaging
 .Python
