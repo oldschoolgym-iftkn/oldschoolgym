@@ -6,4 +6,4 @@ class UserConfig(AppConfig):
     name = 'user'
 
     def ready(self):
-        from .signals import welcome_email
+        from .signals import on_user_creating

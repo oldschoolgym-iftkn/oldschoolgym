@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'user',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -84,9 +85,9 @@ WSGI_APPLICATION = 'oldschoolgym.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('NAME'),
-        'USER': os.environ.get('DUSER'),
-        'PASSWORD': os.environ.get('PASSWORD'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -144,6 +145,22 @@ MEDIA_URL = '/media/'
 
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# SMTP
+EMAIL_USE_SSL = True
+EMAIL_HOST = os.environ.get('SMTP_HOST')
+EMAIL_HOST_USER = os.environ.get('MAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_TOKEN')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_PORT = 465
+
+# CELERY
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),

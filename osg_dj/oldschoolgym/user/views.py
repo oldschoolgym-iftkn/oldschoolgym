@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import MyUserSerializer
 from rest_framework.permissions import IsAuthenticated
+from drf_yasg.utils import swagger_auto_schema
 
 
 class TestMe(APIView):
@@ -14,11 +15,15 @@ class TestMe(APIView):
 
 
 class UserAPI(APIView):
+    """API with user"""
+
+    @swagger_auto_schema(operation_description="Get all users", responses={200: MyUserSerializer(many=True)})
     def get(self, request, format=None):
         users = MyUser.objects.all()
         serialized_users = MyUserSerializer(users, many=True)
         return Response(serialized_users.data, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(operation_description="Create user", request_body=MyUserSerializer, responses={200: MyUserSerializer})
     def post(self, request, format=None):
         user = MyUserSerializer(data=request.data)
         if user.is_valid():
