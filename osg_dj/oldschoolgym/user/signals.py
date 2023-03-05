@@ -9,4 +9,4 @@ from .tasks import user_registration
 @receiver(post_save, sender=MyUser)
 def on_user_creating(sender, instance, **kwargs):
     user_registration.delay(
-        instance.email, instance.first_name, instance.last_name)
+        instance.email, instance.first_name, instance.last_name, instance.verifying.code)

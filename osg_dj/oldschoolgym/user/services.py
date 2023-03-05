@@ -1,7 +1,7 @@
 from django.core.mail import send_mail
 
 
-def send_welcome_mail(email, name, surname):
+def send_welcome_mail(email, name, surname, code):
     send_mail(
         subject='Реєстрація в Old School Gym',
         recipient_list=[email],
@@ -10,5 +10,6 @@ def send_welcome_mail(email, name, surname):
         html_message=f"""<div align='center'>
         <img src='https://i.ibb.co/HCdHPpx/dumbell.png'>
         <h1>Hello,{name} {surname} </h1>
+        Your code to confirm registation is: <bold>{code}</bold>
         </div>"""
     )
