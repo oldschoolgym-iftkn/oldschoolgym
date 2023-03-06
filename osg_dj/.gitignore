@@ -14,6 +14,9 @@ __pycache__/
 *.ttf
 *.svg
 *.pdf
+# Exceptions
+!default_F.png
+!default_M.png
 
 # Distribution / packaging
 .Python

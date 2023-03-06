@@ -59,7 +59,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     role = models.IntegerField(choices=ROLES)
     avatar = ResizedImageField(upload_to=avatar_path, size=[512, 512], crop=[
-                               'middle', 'center'], keep_meta=False, force_format='PNG')  # TODO: default value
+                               'middle', 'center'], keep_meta=False, force_format='PNG', default='default.png')  # TODO: default value
     gender = models.CharField(max_length=1, choices=GENDERS)
     verifying = models.OneToOneField(
         UserVerification, on_delete=models.CASCADE)
@@ -72,3 +72,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     def __repr__(self):
         return f'{self.first_name} {self.last_name} : {self.email}'
+
+    @property
+    def get_default_img(self):
+        return 'avatar_'+self.gender+'.png'
