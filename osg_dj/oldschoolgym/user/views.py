@@ -2,16 +2,18 @@ from .models import MyUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import MyUserSerializer
+from .serializers import MyUserSerializer, ConfirmMailSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from drf_yasg.utils import swagger_auto_schema
+from .utils import get_header_params
 
 
 class TestMe(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        return Response({'status': '200'}, status=status.HTTP_200_OK)
+        return Response({'status': 200}, status=status.HTTP_200_OK)
 
 
 class UserAPI(APIView):
@@ -31,3 +33,22 @@ class UserAPI(APIView):
             return Response(user.data, status=status.HTTP_200_OK)
         else:
             return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(method='post', request_body=ConfirmMailSerializer, manual_parameters=get_header_params())
+@api_view(['POST',])
+@permission_classes([IsAuthenticated])
+def confirm_email(request):
+
+    serialized_data = ConfirmMailSerializer(data=request.data)
+    if serialized_data.is_valid():
+        print(request.user.verifying.code)
+        if request.user.verifying.code == serialized_data.data['code']:
+            request.user.verifying.is_activate = True
+            print(request.user.verifying.is_activate)
+            request.user.verifying.save()
+            print(request.user.verifying.__dict__)
+            return Response('The mail was successfully confirmed!', status=status.HTTP_200_OK)
+        else:
+            return Response('Code to confirm is uncorrect!', status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    return Response(serialized_data.errors, status=status.HTTP_400_BAD_REQUEST)

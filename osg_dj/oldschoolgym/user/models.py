@@ -1,9 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django_resized import ResizedImageField
 from .utils import generate_confirmation_code
-from .manager import MyUserManager
-from annoying.fields import AutoOneToOneField
+
 ROLES = (
     (0, 'customer'),
     (1, 'coach')
@@ -15,21 +14,38 @@ GENDERS = (
 )
 
 
-def avatar_path(instance, filename):
-    extension = filename.split('.')[-1]
-    username = instance.email.split('@')[0]
-    new_filename = "gym_%s.%s" % (username, extension)
+class MyUserManager(BaseUserManager):
+    def create_verifying(self):
+        user_verification = UserVerification()
+        user_verification.save(self._db)
+        return user_verification
 
-    return new_filename
+    def create_user(self, email, password, **extra_fields):
+        if not email or not password:
+            raise ValueError('User must have email and password!')
+        user = self.model(email=self.normalize_email(email), **extra_fields)
+        user.verifying = self.create_verifying()
+        user.set_password(password)
+        user.save(self._db)
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        superuser = self.create_user(email=email, password=password,
+                                     is_staff=True, is_superuser=True, **extra_fields)
+        return superuser
 
 
 class UserVerification(models.Model):
     code = models.CharField(max_length=6, default=generate_confirmation_code)
     is_activate = models.BooleanField(default=False)
 
-    @classmethod
-    def get_new(cls):
-        return cls.objects.create().id
+
+def avatar_path(instance, filename):
+    extension = filename.split('.')[-1]
+    username = instance.email.split('@')[0]
+    new_filename = "gym_%s.%s" % (username, extension)
+
+    return new_filename
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
@@ -43,10 +59,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     role = models.IntegerField(choices=ROLES)
     avatar = ResizedImageField(upload_to=avatar_path, size=[512, 512], crop=[
-                               'middle', 'center'], keep_meta=False, force_format='PNG')
+                               'middle', 'center'], keep_meta=False, force_format='PNG')  # TODO: default value
     gender = models.CharField(max_length=1, choices=GENDERS)
     verifying = models.OneToOneField(
-        UserVerification, on_delete=models.CASCADE, default=UserVerification.get_new)
+        UserVerification, on_delete=models.CASCADE)
     objects = MyUserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

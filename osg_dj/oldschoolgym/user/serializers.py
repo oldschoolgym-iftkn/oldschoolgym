@@ -16,3 +16,7 @@ class MyUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = MyUser.objects.create_user(**validated_data)
         return user
+
+
+class ConfirmMailSerializer(serializers.Serializer):
+    code = serializers.CharField(min_length=6, max_length=6)
