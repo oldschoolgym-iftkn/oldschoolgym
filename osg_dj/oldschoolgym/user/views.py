@@ -39,15 +39,13 @@ class UserAPI(APIView):
 @api_view(['POST',])
 @permission_classes([IsAuthenticated])
 def confirm_email(request):
-
     serialized_data = ConfirmMailSerializer(data=request.data)
+    if request.user.validation.is_active:
+        return Response('User email has already confirmed!', status.HTTP_409_CONFLICT)
     if serialized_data.is_valid():
-        print(request.user.verifying.code)
         if request.user.verifying.code == serialized_data.data['code']:
             request.user.verifying.is_activate = True
-            print(request.user.verifying.is_activate)
             request.user.verifying.save()
-            print(request.user.verifying.__dict__)
             return Response('The mail was successfully confirmed!', status=status.HTTP_200_OK)
         else:
             return Response('Code to confirm is uncorrect!', status=status.HTTP_422_UNPROCESSABLE_ENTITY)
