@@ -55,6 +55,8 @@ def phone_validator(value):
         raise ValidationError(
             f'Значення {value} не схоже на реальний номер телефону!', params={'phone': value})
 
+# Дописати last_login
+
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
