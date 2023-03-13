@@ -6,7 +6,6 @@ from .utils import generate_confirmation_code
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 
-
 ROLES = (
     (0, 'Customer'),
     (1, 'Coach')
@@ -58,6 +57,10 @@ def phone_validator(value):
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True)

@@ -7,17 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from drf_yasg.utils import swagger_auto_schema
 from .utils import get_header_params
-
-
-class TestMe(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, format=None):
-        return Response({'status': 200}, status=status.HTTP_200_OK)
+from .permissions import VerifiedUserOnly
 
 
 class UserAPI(APIView):
-    """API with user"""
 
     @swagger_auto_schema(operation_description="Get all users", responses={200: MyUserSerializer(many=True)})
     def get(self, request, format=None):

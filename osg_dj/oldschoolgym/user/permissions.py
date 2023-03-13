@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission
 
 
 class VerifiedUserOnly(BasePermission):
-    message = 'User must verify email to provide access!'
+    message = 'Only users with verified email have access!'
 
     def has_permission(self, request, view):
         return (request.user and request.user.is_authenticated and
@@ -10,7 +10,7 @@ class VerifiedUserOnly(BasePermission):
 
 
 class VerifiedCoachOnly(BasePermission):
-    message = 'Coach must verify email to provide access!'
+    message = 'Only coaches with verified email have access!'
 
     def has_permission(self, request, view):
         return (request.user and request.user.is_authenticated and

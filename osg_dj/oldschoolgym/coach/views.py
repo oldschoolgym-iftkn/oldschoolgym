@@ -1,6 +1,6 @@
-from user.permissions import VerifiedCoachOnly
+from user.permissions import VerifiedCoachOnly, VerifiedUserOnly
 from rest_framework.decorators import api_view, permission_classes
-from .serializers import CoachSerializer
+from .serializers import CoachSerializer, UserApplicationSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from user.utils import get_header_params
@@ -20,3 +20,14 @@ def send_coach_application(request):
         serialized_data.save(user_profile=request.user)
         return Response(serialized_data.data, status=status.HTTP_200_OK)
     return Response(serialized_data.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(method='post', request_body=UserApplicationSerializer, manual_parameters=get_header_params())
+@api_view(['POST',])
+@permission_classes([VerifiedUserOnly])
+def send_user_application(request):
+    user_application = UserApplicationSerializer(data=request.data)
+    if user_application.is_valid():
+        user_application.save(user=request.user)
+        return Response(user_application.data, status=status.HTTP_200_OK)
+    return Response(user_application.errors, status=status.HTTP_400_BAD_REQUEST)
