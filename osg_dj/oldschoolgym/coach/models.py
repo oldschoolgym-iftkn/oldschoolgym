@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from user.models import MyUser
+
 
 TYPES = (
     (0, 'Дистанійно'),
@@ -25,4 +27,5 @@ class Coach(models.Model):
     price = models.IntegerField(validators=[price_validator])
     info_block = models.CharField(max_length=60)
     additional_block = models.CharField(max_length=60)
-    # TODO: дописати філд з категорією
+    user_profile = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    is_confirmed = models.BooleanField(default=False)
