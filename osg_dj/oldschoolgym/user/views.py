@@ -40,7 +40,7 @@ class UserAPI(APIView):
 @permission_classes([IsAuthenticated])
 def confirm_email(request):
     serialized_data = ConfirmMailSerializer(data=request.data)
-    if request.user.validation.is_active:
+    if request.user.verifying.is_activate:
         return Response('User email has already confirmed!', status.HTTP_409_CONFLICT)
     if serialized_data.is_valid():
         if request.user.verifying.code == serialized_data.data['code']:

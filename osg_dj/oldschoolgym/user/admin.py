@@ -4,9 +4,10 @@ from datetime import datetime, timezone
 
 
 class MyUserAdmin(admin.ModelAdmin):
-    readonly_fields = ('last_login', 'is_superuser', 'email')
-    exclude = ('password',)
-    list_display = ('username', 'last_online', 'is_staff')
+    readonly_fields = ('last_login', 'is_superuser',
+                       'email', 'role', 'gender', 'phone', 'bday')
+    exclude = ('password', 'verifying')
+    list_display = ('email', 'last_online', 'role')
     list_filter = ('is_staff',)
 
     def last_online(self, obj):

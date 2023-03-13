@@ -8,13 +8,13 @@ from django.core.validators import MinLengthValidator
 
 
 ROLES = (
-    (0, 'customer'),
-    (1, 'coach')
+    (0, 'Customer'),
+    (1, 'Coach')
 )
 
 GENDERS = (
-    ('M', 'male'),
-    ('F', 'female')
+    ('M', 'Male'),
+    ('F', 'Female')
 )
 
 
@@ -52,7 +52,7 @@ def avatar_path(instance, filename):
 
 
 def phone_validator(value):
-    if re.find(r'[^\d()+-]', value):
+    if re.search(r'[^\d()+-]', value):
         raise ValidationError(
             f'Значення {value} не схоже на реальний номер телефону!', params={'phone': value})
 
