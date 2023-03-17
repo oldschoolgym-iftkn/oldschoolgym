@@ -8,6 +8,15 @@ from drf_yasg.utils import swagger_auto_schema
 from .models import Coach
 
 
+@swagger_auto_schema(method='get')
+@api_view(['GET'])
+def get_confirmed_coaches(request):
+    coaches = Coach.objects.filter(
+        is_confirmed=True).select_related('user_profile').all()
+    serialized_data = CoachSerializer(coaches, many=True)
+    return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+
 @swagger_auto_schema(method='post', request_body=CoachSerializer, manual_parameters=get_header_params())
 @api_view(['POST',])
 @permission_classes([VerifiedCoachOnly])

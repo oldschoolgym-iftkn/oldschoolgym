@@ -17,5 +17,11 @@ class MyUserSerializer(serializers.ModelSerializer):
         return user
 
 
+class MyUserSerializerToView(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone')
+
+
 class ConfirmMailSerializer(serializers.Serializer):
     code = serializers.CharField(min_length=6, max_length=6)
