@@ -7,7 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from drf_yasg.utils import swagger_auto_schema
 from .utils import get_header_params
-from .permissions import VerifiedUserOnly
 
 
 class UserAPI(APIView):

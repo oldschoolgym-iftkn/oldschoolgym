@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSockets test</title>
+</head>
+<script>
+    const ws = new WebSocket("ws://127.0.0.1:8000/ws/");
+    ws.onmessage = function (e) {
+        document.getElementById("info").textContent = JSON.stringify(JSON.parse(e.data), undefined, 2);
+        console.log(e.data)
+    }
+    function test() {
+        ws.send(JSON.stringify({
+            action: "list",
+            request_id: new Date().getTime()
+        }))
+    };
+</script>
+
+<body>
+    <button id="list" onclick="test()">List</button>
+    <pre id="info">.</pre>
+</body>
+
+</html>

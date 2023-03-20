@@ -7,20 +7,23 @@ For more information on this file, see
 https://docs.djangoproject.com/en/4.1/howto/deployment/asgi/
 """
 
+from chat import routing
 import os
-
+import django
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
-from chat.middleware import JWTAuthMiddleware
-# from chat import routing TODO: дописати роутінг
+from chat.middleware import MyTokenMiddleware
+
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'oldschoolgym.settings')
-# django.setup()
+django.setup()
 
 application = ProtocolTypeRouter(
     {
         'http': get_asgi_application(),
-        'websocket': JWTAuthMiddleware(
-            URLRouter(  # роутінг
+        'websocket': MyTokenMiddleware(
+            URLRouter(
+                routing.websockets_urlpattern
             ))
     }
 )

@@ -20,6 +20,7 @@ from django.urls import path, re_path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from .views import swagger_redirect
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -44,6 +45,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('coach/', include('coach.urls')),
+    path('chat/', include('chat.urls')),
+    path('', swagger_redirect)
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
