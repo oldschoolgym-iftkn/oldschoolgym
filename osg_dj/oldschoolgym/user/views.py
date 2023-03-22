@@ -5,6 +5,8 @@ from rest_framework import status
 from .serializers import MyUserSerializer, ConfirmMailSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from chat.serializers import ChatSerializer
+from .permissions import VerifiedOnly
 from drf_yasg.utils import swagger_auto_schema
 from .utils import get_header_params
 
@@ -42,3 +44,12 @@ def confirm_email(request):
         else:
             return Response('Code to confirm is uncorrect!', status=status.HTTP_422_UNPROCESSABLE_ENTITY)
     return Response(serialized_data.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(method='get', manual_parameters=get_header_params())
+@api_view(['GET',])
+@permission_classes([VerifiedOnly])
+def get_all_chats(request):
+    chats = MyUser.objects.get(pk=request.user.id).chats.all()
+    serialized_chats = ChatSerializer(chats, many=True)
+    return Response(serialized_chats.data, status=status.HTTP_200_OK)
