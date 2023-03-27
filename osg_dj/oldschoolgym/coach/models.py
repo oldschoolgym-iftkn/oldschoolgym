@@ -43,18 +43,25 @@ class Coach(models.Model):
         validators=[price_validator])
     info_block = models.CharField(max_length=60)
     additional_block = models.CharField(max_length=60)
-    user_profile = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    user_profile = models.OneToOneField(
+        MyUser, on_delete=models.CASCADE, related_name='coach_account')
     category = models.SmallIntegerField(choices=CATEGORIES)
     is_confirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user_profile.first_name} {self.user_profile.last_name}'
 
-# TODO: додати related name
-
 
 class UserApplication(models.Model):
-    user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
-    coach = models.ForeignKey(Coach, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        MyUser, on_delete=models.CASCADE, related_name='my_application')
+    coach = models.ForeignKey(
+        Coach, on_delete=models.CASCADE, related_name='user_applications')
     message = models.CharField(max_length=50)
     is_accepted = models.BooleanField(default=False)
+
+
+class Client(models.Model):
+    user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    tax = models.IntegerField()
+    count_of_train = models.IntegerField()

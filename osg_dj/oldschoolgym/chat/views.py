@@ -6,8 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import permission_classes
-from .utils import get_query_params
-from user.utils import get_header_params
+from user.utils import get_header_params, get_query_params
 from user.permissions import VerifiedOnly
 
 
@@ -43,7 +42,6 @@ class MessageAPIView(APIView):
             return Response('Check the chat id!', status=status.HTTP_400_BAD_REQUEST)
         # TODO: check if user has access to get history of this chat
         if Chat.objects.filter(pk=chat_id).exists():
-            print(request.user.id)
             if request.user in Chat.objects.get(pk=chat_id).users.all():
                 msg = Chat.objects.get(pk=chat_id).messages.all()
                 serialized_msg = MessageSerializer(msg, many=True)

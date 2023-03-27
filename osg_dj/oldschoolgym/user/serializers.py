@@ -17,6 +17,14 @@ class MyUserSerializer(serializers.ModelSerializer):
         return user
 
 
+class MyUserSerializerToUpdate(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        exclude = ('user_permissions', 'groups', 'password', 'email')
+        read_only_fields = ('created_at', 'is_superuser',
+                            'is_staff', 'last_login', 'groups', 'user_permissions', 'verifying')
+
+
 class MyUserSerializerToView(serializers.ModelSerializer):
     class Meta:
         model = MyUser

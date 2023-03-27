@@ -40,3 +40,12 @@ def send_user_application(request):
         user_application.save(user=request.user)
         return Response(user_application.data, status=status.HTTP_200_OK)
     return Response(user_application.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(method='get', response={200: UserApplicationSerializer(many=True)}, manual_parameters=get_header_params())
+@api_view(['GET',])
+@permission_classes([VerifiedCoachOnly])
+def get_my_application(request):
+    my_applications = UserApplicationSerializer(
+        Coach.objects.get(user_profile=request.user).user_applications.all(), many=True)
+    return Response(my_applications.data, status=status.HTTP_200_OK)

@@ -25,24 +25,20 @@ class JWTAuthMiddleware:
     async def __call__(self, scope, receive, send):
         close_old_connections()
         headers = dict(scope['headers'])
-        if b'authorization' in headers:
-            token = headers[b'authorization'].decode('utf-8').split()[-1]
-        else:
-            token = None
+        if not b'authorization' in headers:
+            scope['user'] = AnonymousUser()
+            return await self.inner(dict(scope), receive, send)
+        token = headers[b'authorization'].decode('utf-8').split()[-1]
         try:
             UntypedToken(token)
-        except (InvalidToken, TokenError) as error:
+        except TokenError as error:
             print(error)
             scope['user'] = AnonymousUser()
             return await self.inner(dict(scope), receive, send)
         else:
             decode_info = jwt_decode(
                 token, settings.SECRET_KEY, algorithms=['HS256'])
-            if decode_info['exp'] < datetime.utcnow():
-                print('Token is expired!')
-                scope['user'] = AnonymousUser()
-            else:
-                scope['user'] = get_user(user_id=decode_info['user_id'])
+            scope['user'] = await get_user(user_id=decode_info['user_id'])
         return await self.inner(dict(scope), receive, send)
 
 
