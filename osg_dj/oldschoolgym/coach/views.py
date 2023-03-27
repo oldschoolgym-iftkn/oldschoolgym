@@ -6,9 +6,13 @@ from rest_framework import status
 from user.utils import get_header_params
 from drf_yasg.utils import swagger_auto_schema
 from .models import Coach
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 
 
 @swagger_auto_schema(method='get')
+@cache_page(60*60)
 @api_view(['GET'])
 def get_confirmed_coaches(request):
     coaches = Coach.objects.filter(
@@ -43,6 +47,8 @@ def send_user_application(request):
 
 
 @swagger_auto_schema(method='get', response={200: UserApplicationSerializer(many=True)}, manual_parameters=get_header_params())
+@cache_page(60*15)
+@vary_on_headers("Authorization",)
 @api_view(['GET',])
 @permission_classes([VerifiedCoachOnly])
 def get_my_application(request):

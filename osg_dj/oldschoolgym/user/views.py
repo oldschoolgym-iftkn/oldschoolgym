@@ -8,11 +8,15 @@ from rest_framework.decorators import api_view, permission_classes
 from chat.serializers import ChatSerializer
 from .permissions import VerifiedOnly
 from drf_yasg.utils import swagger_auto_schema
-from .utils import get_header_params, get_query_params, get_form_params
+from .utils import get_header_params, get_query_params
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 
 
 class UserAPI(APIView):
 
+    @method_decorator(cache_page(60*15, key_prefix='users'))
     @swagger_auto_schema(operation_description="To get all users.\nReturns a list with user (confirmed/unconfirmed).",
                          responses={200: MyUserSerializer(many=True)})
     def get(self, request, format=None):
@@ -71,8 +75,8 @@ class UserAPI(APIView):
             return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@ swagger_auto_schema(method='post', request_body=ConfirmMailSerializer, manual_parameters=get_header_params(),
-                      operation_description="To confirm user email.")
+@swagger_auto_schema(method='post', request_body=ConfirmMailSerializer, manual_parameters=get_header_params(),
+                     operation_description="To confirm user email.")
 @api_view(['POST',])
 @permission_classes([IsAuthenticated])
 def confirm_email(request):
@@ -89,8 +93,10 @@ def confirm_email(request):
     return Response(serialized_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(method='get', manual_parameters=get_header_params(),
+@swagger_auto_schema(method='get',  manual_parameters=get_header_params(),
                      operation_description="To get user`s chats. Returns all chat, where user is a member.")
+@cache_page(60*15)
+@vary_on_headers("Authorization",)
 @api_view(['GET',])
 @permission_classes([VerifiedOnly])
 def get_all_chats(request):
