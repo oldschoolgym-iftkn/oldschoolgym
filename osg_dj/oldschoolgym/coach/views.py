@@ -13,7 +13,6 @@ from django.views.decorators.vary import vary_on_headers
 
 @swagger_auto_schema(method='get')
 @cache_page(60*60)
-@api_view(['GET'])
 def get_confirmed_coaches(request):
     coaches = Coach.objects.filter(
         is_confirmed=True).select_related('user_profile').all()
