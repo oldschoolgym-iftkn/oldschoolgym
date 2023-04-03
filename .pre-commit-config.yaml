@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  - repo: local
+    hooks:
+      - id: flake8
+        name: flake8
+        entry: flake8
+        language: python
+        types: [python]
+        additional_dependencies:
+          - "flake8-bandit"
+          - "flake8-broken-line"
+          - "flake8-bugbear"
+          - "flake8-builtins"
+          - "flake8-commas"
+          - "flake8-comprehensions"
+          - "flake8-debugger"
+          - "flake8-eradicate"
+          - "flake8-executable"
+          - "flake8-fixme"
+        args:
+          - "--config=osg_dj/.flake8"
