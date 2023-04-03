@@ -1,9 +1,8 @@
-from datetime import datetime
 from django.conf import settings
 from jwt import decode as jwt_decode
 from django.db import close_old_connections
 from rest_framework_simplejwt.tokens import UntypedToken
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from channels.db import database_sync_to_async
@@ -25,7 +24,7 @@ class JWTAuthMiddleware:
     async def __call__(self, scope, receive, send):
         close_old_connections()
         headers = dict(scope['headers'])
-        if not b'authorization' in headers:
+        if b'authorization' not in headers:
             scope['user'] = AnonymousUser()
             return await self.inner(dict(scope), receive, send)
         token = headers[b'authorization'].decode('utf-8').split()[-1]

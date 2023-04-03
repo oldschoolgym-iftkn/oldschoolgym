@@ -1,9 +1,5 @@
-from user.models import MyUser
 from .models import Chat, Message
 from .serializers import MessageSerializer
-from user.serializers import MyUserSerializer
-from djangochannelsrestframework import mixins
-from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.contrib.auth.models import AnonymousUser

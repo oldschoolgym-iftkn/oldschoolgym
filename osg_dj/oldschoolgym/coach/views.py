@@ -6,7 +6,6 @@ from rest_framework import status
 from user.utils import get_header_params
 from drf_yasg.utils import swagger_auto_schema
 from .models import Coach
-from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 

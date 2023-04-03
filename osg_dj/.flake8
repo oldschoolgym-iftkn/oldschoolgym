@@ -1,0 +1,12 @@
+[flake8]
+exclude = 
+    oldschoolgym/*/migrations/
+    oldschoolgym/*/__pycache__
+    oldschoolgym/*/tests.py
+    oldschoolgym/manage.py
+    oldschoolgym/oldschoolgym/settings.py
+    oldschoolgym/user/apps.py
+    .venv
+    .env
+max-complexity = 8
+max-line-length = 120

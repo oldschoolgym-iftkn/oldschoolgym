@@ -27,9 +27,9 @@ def experience_validator(value):
 
 
 def price_validator(value):
-    if not value in range(100, 1001):
+    if value not in range(100, 1001):
         raise ValidationError(
-            f'Ціна має бути в діапазоні від 100 до 1000 грн!', params={'price': value})
+            'Ціна має бути в діапазоні від 100 до 1000 грн!', params={'price': value})
 
 
 class Coach(models.Model):

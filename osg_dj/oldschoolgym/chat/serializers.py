@@ -1,8 +1,5 @@
 from rest_framework import serializers
 from .models import Chat, Message
-from rest_framework.exceptions import ValidationError
-from rest_framework import status
-from user.serializers import MyUserSerializerToView
 
 
 class ChatSerializer(serializers.ModelSerializer):
