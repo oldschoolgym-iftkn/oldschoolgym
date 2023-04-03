@@ -19,7 +19,7 @@ def get_confirmed_coaches(request):
     return Response(serialized_data.data, status=status.HTTP_200_OK)
 
 
-@swagger_auto_schema(method='post', request_body=CoachSerializer, manual_parameters=get_header_params())
+@swagger_auto_schema(method='post', request_body=CoachSerializer, manual_parameters=[get_header_params()])
 @api_view(['POST',])
 @permission_classes([VerifiedCoachOnly])
 def send_coach_application(request):
@@ -33,7 +33,7 @@ def send_coach_application(request):
     return Response(serialized_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(method='post', request_body=UserApplicationSerializer, manual_parameters=get_header_params())
+@swagger_auto_schema(method='post', request_body=UserApplicationSerializer, manual_parameters=[get_header_params()])
 @api_view(['POST',])
 @permission_classes([VerifiedUserOnly])
 def send_user_application(request):
@@ -44,7 +44,8 @@ def send_user_application(request):
     return Response(user_application.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(method='get', response={200: UserApplicationSerializer(many=True)}, manual_parameters=get_header_params())
+@swagger_auto_schema(method='get', response={200: UserApplicationSerializer(many=True)},
+                     manual_parameters=[get_header_params()])
 @cache_page(60*15)
 @vary_on_headers("Authorization",)
 @api_view(['GET',])

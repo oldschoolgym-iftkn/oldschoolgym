@@ -15,7 +15,8 @@ class ChatAPIView(APIView):
         serialized_chats = ChatSerializer(all_chats, many=True)
         return Response(serialized_chats.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(operation_description="Create chat", request_body=ChatSerializer, responses={200: ChatSerializer})
+    @swagger_auto_schema(operation_description="Create chat", request_body=ChatSerializer,
+                         responses={200: ChatSerializer})
     def post(self, request, format=None):
         chat = ChatSerializer(data=request.data)
         if chat.is_valid():
@@ -27,7 +28,8 @@ class ChatAPIView(APIView):
 class MessageAPIView(APIView):
     permission_classes = [VerifiedOnly]
 
-    @swagger_auto_schema(manual_parameters=get_query_params('chat_id', 'Return messages history in chat')+get_header_params(),
+    @swagger_auto_schema(manual_parameters=[get_query_params('chat_id', 'Return messages history in chat'),
+                                            get_header_params()],
                          responses={200: MessageSerializer(many=True)})  # CODE SMELL?
     def get(self, request, format=None):
         try:
@@ -44,8 +46,9 @@ class MessageAPIView(APIView):
         else:
             return Response('Chat with id could not be found!', status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(operation_description="Create message", request_body=MessageSerializer, responses={200: MessageSerializer},
-                         manual_parameters=get_header_params())
+    @swagger_auto_schema(operation_description="Create message", request_body=MessageSerializer,
+                         responses={200: MessageSerializer},
+                         manual_parameters=[get_header_params()])
     def post(self, request, format=None):
         msg = MessageSerializer(data=request.data)
         if msg.is_valid():
