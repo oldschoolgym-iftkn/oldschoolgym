@@ -4,6 +4,9 @@ repos:
     hooks:
       - id: check-merge-conflict
       - id: debug-statements
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
 
   - repo: local
     hooks:
@@ -24,5 +27,4 @@ repos:
           - "flake8-executable"
           - "flake8-fixme"
         args:
-          - "."
           - "--config=.flake8"
