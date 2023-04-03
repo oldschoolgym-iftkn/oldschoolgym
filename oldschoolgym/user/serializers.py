@@ -1,8 +1,17 @@
-from .models import MyUser
+from .models import MyUser, UserVerification
 from rest_framework import serializers
 
 
+class UserVerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserVerification
+        exclude = ('id', 'code')
+        read_only_fields = ('is_activate',)
+
+
 class MyUserSerializer(serializers.ModelSerializer):
+    verifying = UserVerificationSerializer()
+
     class Meta:
         model = MyUser
         exclude = ('user_permissions', 'groups')

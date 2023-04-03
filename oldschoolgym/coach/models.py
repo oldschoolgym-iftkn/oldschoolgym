@@ -39,8 +39,7 @@ class Coach(models.Model):
     type_training = models.SmallIntegerField(choices=TYPES)
     experience = models.SmallIntegerField(
         validators=[experience_validator])
-    price = models.SmallIntegerField(
-        validators=[price_validator])
+    rates = models.JSONField()
     info_block = models.CharField(max_length=60)
     additional_block = models.CharField(max_length=60)
     user_profile = models.OneToOneField(

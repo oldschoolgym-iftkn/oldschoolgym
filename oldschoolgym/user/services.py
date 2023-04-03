@@ -12,9 +12,8 @@ def send_welcome_mail(email, name, surname, code):
         <h3>Вітаємо, {name} {surname} </h3>
         <h4>Ваш код для підтвердження реєстрації: </h4>
         <div style="
-        box-shadow:inset 0px 34px 0px -15px #b54b3a;
-        background:linear-gradient(to bottom, #a73f2d 5%, #b34332 100%);
-        background-color:#a73f2d;
+        background: rgb(43,171,198);
+        background: linear-gradient(90deg, rgba(43,171,198,1) 0%, rgba(73,105,159,1) 50%, rgba(20,78,196,1) 100%);
         border:1px solid #241d13;
         display:inline-block;
         cursor:pointer;

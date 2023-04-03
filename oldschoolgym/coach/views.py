@@ -1,6 +1,6 @@
 from user.permissions import VerifiedCoachOnly, VerifiedUserOnly
 from rest_framework.decorators import api_view, permission_classes
-from .serializers import CoachSerializer, UserApplicationSerializer
+from .serializers import CoachSerializerToCreate, CoachSerializerToView, UserApplicationSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from user.utils import get_header_params
@@ -10,22 +10,23 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 
 
-@swagger_auto_schema(method='get')
+@swagger_auto_schema(method='get', response={200: CoachSerializerToView(many=True)})
 @cache_page(60*60)
+@api_view(['GET'])
 def get_confirmed_coaches(request):
     coaches = Coach.objects.filter(
         is_confirmed=True).select_related('user_profile').all()
-    serialized_data = CoachSerializer(coaches, many=True)
+    serialized_data = CoachSerializerToView(coaches, many=True)
     return Response(serialized_data.data, status=status.HTTP_200_OK)
 
 
-@swagger_auto_schema(method='post', request_body=CoachSerializer, manual_parameters=[get_header_params()])
+@swagger_auto_schema(method='post', request_body=CoachSerializerToCreate, manual_parameters=[get_header_params()])
 @api_view(['POST'])
 @permission_classes([VerifiedCoachOnly])
 def send_coach_application(request):
     if Coach.objects.filter(user_profile=request.user.id).exists():
-        return Response('You already have sent the application!', status=status.HTTP_409_CONFLICT)
-    serialized_data = CoachSerializer(
+        return Response({'user_id': 'You already have sent the application!'}, status=status.HTTP_409_CONFLICT)
+    serialized_data = CoachSerializerToCreate(
         data=request.data)
     if serialized_data.is_valid():
         serialized_data.save(user_profile=request.user)

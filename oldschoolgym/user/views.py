@@ -104,3 +104,16 @@ def get_all_chats(request):
     chats = MyUser.objects.get(pk=request.user.id).chats.all()
     serialized_chats = ChatSerializer(chats, many=True)
     return Response(serialized_chats.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(method='get', manual_parameters=[get_query_params("user_id", "User id")],
+                     operation_description="To get user with specific id. Returns single user object.")
+@cache_page(60 * 15)
+@api_view(['GET'])
+def get_user_by_id(request):
+    try:
+        user = MyUser.objects.get(pk=request.query_params.get('user_id'))
+    except MyUser.DoesNotExist:
+        return Response({'id': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    user_serialized = MyUserSerializer(user)
+    return Response(user_serialized.data, status=status.HTTP_200_OK)

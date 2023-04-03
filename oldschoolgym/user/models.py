@@ -55,8 +55,6 @@ def phone_validator(value):
         raise ValidationError(
             f'Значення {value} не схоже на реальний номер телефону!', params={'phone': value})
 
-# Дописати last_login
-
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
@@ -65,13 +63,13 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    email = models.EmailField(unique=True, editable=False)
+    email = models.EmailField(unique=True)
     bday = models.DateField()
     password = models.TextField()
     created_at = models.DateField(editable=False, auto_now_add=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    role = models.IntegerField(choices=ROLES, editable=False)
+    role = models.IntegerField(choices=ROLES, default=0)
     avatar = ResizedImageField(upload_to=avatar_path, size=[512, 512], crop=[
                                'middle', 'center'], keep_meta=False, force_format='PNG', default='default.png')
     phone = models.CharField(max_length=17,
