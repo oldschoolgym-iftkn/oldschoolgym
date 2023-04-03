@@ -24,4 +24,5 @@ repos:
           - "flake8-executable"
           - "flake8-fixme"
         args:
+          - "."
           - "--config=.flake8"
