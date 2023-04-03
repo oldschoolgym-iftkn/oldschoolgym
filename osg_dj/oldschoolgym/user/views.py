@@ -78,7 +78,7 @@ class UserAPI(APIView):
 
 @swagger_auto_schema(method='post', request_body=ConfirmMailSerializer, manual_parameters=[get_header_params()],
                      operation_description="To confirm user email.")
-@api_view(['POST',])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def confirm_email(request):
     serialized_data = ConfirmMailSerializer(data=request.data)
@@ -97,8 +97,8 @@ def confirm_email(request):
 @swagger_auto_schema(method='get', manual_parameters=[get_header_params()],
                      operation_description="To get user`s chats. Returns all chat, where user is a member.")
 @cache_page(60 * 15)
-@vary_on_headers("Authorization",)
-@api_view(['GET',])
+@vary_on_headers("Authorization")
+@api_view(['GET'])
 @permission_classes([VerifiedOnly])
 def get_all_chats(request):
     chats = MyUser.objects.get(pk=request.user.id).chats.all()

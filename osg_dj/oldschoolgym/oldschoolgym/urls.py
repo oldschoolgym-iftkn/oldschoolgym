@@ -47,7 +47,7 @@ urlpatterns = [
     path('coach/', include('coach.urls')),
     path('chat/', include('chat.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('', swagger_redirect)
+    path('', swagger_redirect),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

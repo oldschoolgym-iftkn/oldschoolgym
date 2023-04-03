@@ -8,12 +8,12 @@ from django.core.validators import MinLengthValidator
 
 ROLES = (
     (0, 'Customer'),
-    (1, 'Coach')
+    (1, 'Coach'),
 )
 
 GENDERS = (
     ('M', 'Male'),
-    ('F', 'Female')
+    ('F', 'Female'),
 )
 
 

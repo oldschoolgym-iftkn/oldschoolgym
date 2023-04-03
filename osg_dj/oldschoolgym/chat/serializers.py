@@ -3,7 +3,6 @@ from .models import Chat, Message
 
 
 class ChatSerializer(serializers.ModelSerializer):
-    # users = MyUserSerializerToView(many=True)
     last_msg = serializers.SerializerMethodField()
 
     class Meta:

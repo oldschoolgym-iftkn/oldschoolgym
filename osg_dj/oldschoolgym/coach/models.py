@@ -6,7 +6,7 @@ from user.models import MyUser
 TYPES = (
     (0, 'Remote'),
     (1, 'Offline'),
-    (3, 'Both')
+    (3, 'Both'),
 )
 
 CATEGORIES = (
@@ -16,7 +16,7 @@ CATEGORIES = (
     (3, 'Strongman'),
     (4, 'Armlifting'),
     (5, 'Gymnastic'),
-    (6, 'Bikini Fitness')
+    (6, 'Bikini Fitness'),
 )
 
 

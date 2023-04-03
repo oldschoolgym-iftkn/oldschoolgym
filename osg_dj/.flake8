@@ -1,5 +1,5 @@
 [flake8]
-extend-ignore = E231
+extend-ignore = E231, A002
 exclude = 
     oldschoolgym/*/migrations/
     oldschoolgym/*/__pycache__

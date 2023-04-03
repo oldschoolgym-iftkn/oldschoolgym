@@ -27,5 +27,5 @@ def send_welcome_mail(email, name, surname, code):
         text-shadow:0px -1px 0px #7a2a1d;">{code}</div>
         <p><small>Звертаємо вашу увагу, ви не можете користуватись непідтвердженним аккаунтом</small></p>
         <small>З повагою, адміністрація Old School Gym</small>
-        </div>"""
+        </div>""",
     )

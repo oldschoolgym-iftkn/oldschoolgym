@@ -1,9 +1,9 @@
-from random import randint
+from random import SystemRandom
 from drf_yasg import openapi
 
 
 def generate_confirmation_code() -> str:
-    return str(randint(100, 999999)).zfill(6)
+    return str(SystemRandom().randint(100, 999999)).zfill(6)
 
 
 def get_header_params(name: str = 'Authorization', description: str = 'Access token'):

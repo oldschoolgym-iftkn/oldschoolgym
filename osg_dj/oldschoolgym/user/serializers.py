@@ -9,7 +9,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'is_superuser',
                             'is_staff', 'last_login', 'groups', 'user_permissions', 'verifying')
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
         }
 
     def create(self, validated_data):

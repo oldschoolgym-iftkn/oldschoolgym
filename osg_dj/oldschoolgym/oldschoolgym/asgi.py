@@ -23,7 +23,7 @@ application = ProtocolTypeRouter(
         'http': get_asgi_application(),
         'websocket': MyTokenMiddleware(
             URLRouter(
-                routing.websockets_urlpattern
-            ))
-    }
+                routing.websockets_urlpattern,
+            )),
+    },
 )

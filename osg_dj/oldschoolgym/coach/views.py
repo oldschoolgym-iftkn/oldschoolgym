@@ -20,7 +20,7 @@ def get_confirmed_coaches(request):
 
 
 @swagger_auto_schema(method='post', request_body=CoachSerializer, manual_parameters=[get_header_params()])
-@api_view(['POST',])
+@api_view(['POST'])
 @permission_classes([VerifiedCoachOnly])
 def send_coach_application(request):
     if Coach.objects.filter(user_profile=request.user.id).exists():
@@ -34,7 +34,7 @@ def send_coach_application(request):
 
 
 @swagger_auto_schema(method='post', request_body=UserApplicationSerializer, manual_parameters=[get_header_params()])
-@api_view(['POST',])
+@api_view(['POST'])
 @permission_classes([VerifiedUserOnly])
 def send_user_application(request):
     user_application = UserApplicationSerializer(data=request.data)
@@ -47,8 +47,8 @@ def send_user_application(request):
 @swagger_auto_schema(method='get', response={200: UserApplicationSerializer(many=True)},
                      manual_parameters=[get_header_params()])
 @cache_page(60*15)
-@vary_on_headers("Authorization",)
-@api_view(['GET',])
+@vary_on_headers("Authorization")
+@api_view(['GET'])
 @permission_classes([VerifiedCoachOnly])
 def get_my_application(request):
     my_applications = UserApplicationSerializer(
