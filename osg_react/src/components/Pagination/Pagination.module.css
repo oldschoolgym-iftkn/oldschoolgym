@@ -1,0 +1,26 @@
+.root li {
+	display: inline-block;
+}
+.root li:last-child {
+	margin-right: auto;
+}
+.root a {
+	text-align: center;
+	border: 1px solid black;
+	border-radius: 10px;
+	width: 4rem;
+	height: 4rem;
+	margin-right: 10px;
+	cursor: pointer;
+	display: inline-block;
+	color: black;
+	padding: 25%;
+}
+.root a:hover {
+	background-color: rgba(64, 64, 64, 0.5);
+	color: #fff;
+}
+.root :global .selected a {
+	background-color: black;
+	color: #fff;
+}
