@@ -22,7 +22,7 @@ export default function Header({ main, full }) {
 	const headerContainer = 'flex flex-wrap items-center p-2 mx-auto max-xl:flex max-xl:flex-col';
 	return (
 		<header className="fixed top-0 z-20 w-full text-white bg-black border-b-2 border-white body-font">
-			<div className={main && full ? headerContainer + ' container' : headerContainer}>
+			<div className={full ? headerContainer + ' container' : headerContainer}>
 				{/* <div className="container grid items-center grid-cols-4 p-2 mx-auto max-xl:flex max-xl:flex-col"> */}
 				{/* <div className="container flex flex-col flex-wrap items-center justify-between p-2 mx-auto md:flex-row "> */}
 				<Link to="/" className="flex items-center font-normal title-font md:mb-0">
