@@ -6,6 +6,8 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from user.utils import get_header_params, get_query_params
 from user.permissions import VerifiedOnly
+from user.models import MyUser
+from rest_framework.decorators import api_view
 
 
 class ChatAPIView(APIView):
@@ -23,6 +25,29 @@ class ChatAPIView(APIView):
             chat.save()
             return Response(chat.data, status=status.HTTP_200_OK)
         return Response(chat.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(operation_description="Delete chat", responses={204: {}},
+                         manual_parameters=[get_query_params('chat_id', 'Chat id')])
+    def delete(self, request):
+        try:
+            chat = Chat.objects.get(pk=request.query_params.get('chat_id'))
+        except Chat.DoesNotExist:
+            return Response({'chat_id': 'Chat doesnt exist!'}, status=status.HTTP_404_NOT_FOUND)
+        chat.delete()
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+
+@swagger_auto_schema(method='get', responses={200: ChatSerializer},
+                     operation_description='To get user`s chats.',
+                     manual_parameters=[get_query_params('user_id', 'User id')])
+@api_view(['GET'])
+def get_chat_by_id(request):
+    try:
+        chats = MyUser.objects.get(pk=request.query_params.get('user_id')).chats
+    except MyUser.DoesNotExist:
+        return Response({'user_id': 'User doesnt exist!'}, status=status.HTTP_404_NOT_FOUND)
+    serialized_data = ChatSerializer(chats, many=True)
+    return Response(serialized_data.data, status=status.HTTP_200_OK)
 
 
 class MessageAPIView(APIView):

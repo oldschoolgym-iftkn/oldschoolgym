@@ -9,5 +9,8 @@ exclude =
     oldschoolgym/user/apps.py
     .venv
     .env
+    Dockerfile
+    docker-compose.yml
+    .dockerignore
 max-complexity = 8
 max-line-length = 120

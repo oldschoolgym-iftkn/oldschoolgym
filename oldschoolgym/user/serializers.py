@@ -10,13 +10,11 @@ class UserVerificationSerializer(serializers.ModelSerializer):
 
 
 class MyUserSerializer(serializers.ModelSerializer):
-    verifying = UserVerificationSerializer()
-
     class Meta:
         model = MyUser
         exclude = ('user_permissions', 'groups')
         read_only_fields = ('created_at', 'is_superuser',
-                            'is_staff', 'last_login', 'groups', 'user_permissions', 'verifying')
+                            'is_staff', 'last_login', 'groups', 'verifying')
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -31,13 +29,17 @@ class MyUserSerializerToUpdate(serializers.ModelSerializer):
         model = MyUser
         exclude = ('user_permissions', 'groups', 'password', 'email')
         read_only_fields = ('created_at', 'is_superuser',
-                            'is_staff', 'last_login', 'groups', 'user_permissions', 'verifying')
+                            'is_staff', 'last_login', 'groups', 'verifying')
 
 
 class MyUserSerializerToView(serializers.ModelSerializer):
+    verifying = UserVerificationSerializer()
+
     class Meta:
         model = MyUser
-        fields = ('id', 'first_name', 'last_name', 'email', 'phone')
+        exclude = ('user_permissions', 'groups', 'password')
+        read_only_fields = ('created_at', 'is_superuser',
+                            'is_staff', 'last_login', 'groups', 'verifying')
 
 
 class ConfirmMailSerializer(serializers.Serializer):

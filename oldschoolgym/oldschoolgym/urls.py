@@ -46,7 +46,6 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('coach/', include('coach.urls')),
     path('chat/', include('chat.urls')),
-    path('__debug__/', include('debug_toolbar.urls')),
     path('', swagger_redirect),
 ]
 if settings.DEBUG:
