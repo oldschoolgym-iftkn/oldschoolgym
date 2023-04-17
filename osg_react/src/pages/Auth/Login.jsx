@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import HeaderAuth from '../../components/HeaderAuth';
@@ -8,6 +8,9 @@ import useAuth from '../../hooks/useAuth';
 const LOGIN_URL = '/user/api/token/';
 
 const Login = () => {
+	const location = useLocation();
+	const from = location.state?.from?.pathname || '/';
+
 	const { auth, setAuth } = useAuth();
 	const [authError, setAuthError] = useState(null);
 	const {
@@ -52,7 +55,7 @@ const Login = () => {
 	};
 
 	if (auth) {
-		return <Navigate to={'/profile'} replace />;
+		return <Navigate to={from} replace />;
 	}
 
 	return (
