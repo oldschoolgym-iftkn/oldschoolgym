@@ -1,12 +1,21 @@
-import React from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link, Navigate } from 'react-router-dom';
+
 import HeaderAuth from '../../components/HeaderAuth';
+import axios from '../../api/axios.js';
+import useAuth from '../../hooks/useAuth';
+const LOGIN_URL = '/user/api/token/';
+const REGISTER_URL = '/user/api/';
 
 const Register = () => {
+	const { auth, setAuth } = useAuth();
+	const [authError, setAuthError] = useState(null);
+
 	const {
 		register,
 		handleSubmit,
-		// setError,
+		setError,
 		// eslint-disable-next-line
 		formState: { errors, isValid },
 	} = useForm({
@@ -22,26 +31,62 @@ const Register = () => {
 		// shouldUseNativeValidation: true,
 	});
 
-	const onSubmit = async (values) => {
-		console.log(values);
-		// const data = await fetchRegister(values);
+	const login = async (values) => {
+		try {
+			const response = await axios.post(LOGIN_URL, {
+				email: values.email,
+				password: values.password,
+			});
 
-		// if (!data.payload) {
-		// 	return alert('Registration failed');
-		// }
+			if (response.status !== 200) {
+				return alert('Login failed');
+			}
 
-		// if ('token' in data.payload) {
-		// 	localStorage.setItem('token', data.payload.token);
-		// }
+			const accessToken = response?.data?.access;
+			const refreshToken = response?.data?.refresh;
+
+			setAuth({ accessToken, refreshToken });
+		} catch (err) {
+			if (!err?.response) {
+				setAuthError('Сервер не віподвідає');
+			} else {
+				setAuthError('Невірні вхідні дані');
+			}
+			console.error(err);
+		}
 	};
 
-	// const handleSubmit = (event) => {
-	// 	console.log(event);
-	// 	event.preventDefault();
-	// };
-	// if (isAuth) {
-	// 	return <Navigate to={'/'} />;
-	// }
+	const onSubmit = async (values) => {
+		try {
+			const response = await axios.post(REGISTER_URL, {
+				first_name: values.first_name,
+				last_name: values.last_name,
+				email: values.email,
+				bday: '17-04-2023',
+				password: values.password,
+				role: values.role,
+				phone: values.phone,
+				gender: values.gender,
+			});
+			if (response.status !== 200) {
+				return alert('Register failed');
+			}
+
+			login(values);
+		} catch (err) {
+			if (!err?.response) {
+				setAuthError('Сервер не віподвідає');
+			} else {
+				setAuthError('Невірні вхідні дані');
+			}
+			console.error(err);
+		}
+	};
+
+	if (auth) {
+		return <Navigate to={'/profile'} replace />;
+	}
+
 	return (
 		<div className="min-h-screen">
 			<HeaderAuth />
@@ -75,6 +120,13 @@ const Register = () => {
 				</div>
 				<div className="p-6 space-y-4 border border-black shadow-lg shadow-gray-400/80 rounded-xl 2xl:space-y-6 sm:p-8">
 					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+						{authError ? (
+							<p className="text-center p-2.5 text-red-500 border text-lg border-red-500 bg-red-300 rounded-lg">
+								{authError}
+							</p>
+						) : (
+							<></>
+						)}
 						<div className="">
 							<label htmlFor="first_name" className="block mb-2 font-medium text-black">
 								Ваше ім'я
@@ -185,9 +237,9 @@ const Register = () => {
 					</button>
 					<div className="space-x-2 text-sm font-light text-gray-500">
 						<span>Вже маєте аккаунт?</span>
-						<a href="/sign-in" className="font-medium text-black hover:underline">
+						<Link to="/sign-in" className="font-medium text-black hover:underline">
 							Увійти в аккаунт
-						</a>
+						</Link>
 					</div>
 				</div>
 			</form>

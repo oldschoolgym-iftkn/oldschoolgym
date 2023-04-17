@@ -1,12 +1,19 @@
-import React from 'react';
+import { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import HeaderAuth from '../../components/HeaderAuth';
 
-const Register = () => {
+import HeaderAuth from '../../components/HeaderAuth';
+import axios from '../../api/axios.js';
+import useAuth from '../../hooks/useAuth';
+const LOGIN_URL = '/user/api/token/';
+
+const Login = () => {
+	const { auth, setAuth } = useAuth();
+	const [authError, setAuthError] = useState(null);
 	const {
 		register,
 		handleSubmit,
-		// setError,
+		setError,
 		// eslint-disable-next-line
 		formState: { errors, isValid },
 	} = useForm({
@@ -15,29 +22,39 @@ const Register = () => {
 			password: '',
 		},
 		mode: 'onChange',
-		// shouldUseNativeValidation: true,
 	});
 
 	const onSubmit = async (values) => {
-		console.log(values);
-		// const data = await fetchRegister(values);
+		try {
+			const response = await axios.post(LOGIN_URL, {
+				email: values.email,
+				password: values.password,
+			});
 
-		// if (!data.payload) {
-		// 	return alert('Registration failed');
-		// }
+			if (response.status !== 200) {
+				return alert('Login failed');
+			}
 
-		// if ('token' in data.payload) {
-		// 	localStorage.setItem('token', data.payload.token);
-		// }
+			const accessToken = response?.data?.access;
+			const refreshToken = response?.data?.refresh;
+
+			setAuth({ accessToken, refreshToken });
+		} catch (err) {
+			if (!err?.response) {
+				setAuthError('Сервер не віподвідає');
+			} else {
+				setAuthError('Невірні вхідні дані');
+			}
+			setError('email', {}, { shouldFocus: true });
+			setError('password');
+			console.error(err);
+		}
 	};
 
-	// const handleSubmit = (event) => {
-	// 	console.log(event);
-	// 	event.preventDefault();
-	// };
-	// if (isAuth) {
-	// 	return <Navigate to={'/'} />;
-	// }
+	if (auth) {
+		return <Navigate to={'/profile'} replace />;
+	}
+
 	return (
 		<div className="min-h-screen">
 			<HeaderAuth />
@@ -46,6 +63,13 @@ const Register = () => {
 					<h1 className="mb-16 mr-2.5 text-4xl text-center">Вхід</h1>
 				</div>
 				<div className="px-10 py-12 space-y-4 border border-black shadow-lg max-md:py-8 max-md:px-6 w-96 shadow-gray-400/80 rounded-xl 2xl:space-y-6">
+					{authError ? (
+						<p className="text-center p-2.5 text-red-500 border text-lg border-red-500 bg-red-300 rounded-lg">
+							{authError}
+						</p>
+					) : (
+						<></>
+					)}
 					<div>
 						<label htmlFor="email" className="block mb-2 font-medium text-black">
 							Електронна пошта
@@ -81,14 +105,14 @@ const Register = () => {
 						Увійти
 					</button>
 					<div className="space-x-2 text-sm font-light text-gray-500">
-						<a href="/register" className="float-left font-medium text-black hover:underline">
+						<Link to="/register" className="float-left font-medium text-black hover:underline">
 							Зареєструватись
-						</a>
-						<a
-							href="/password-recovery"
+						</Link>
+						<Link
+							to="/password-recovery"
 							className="float-right text-gray-700 font-extralight hover:underline">
 							Забули пароль?
-						</a>
+						</Link>
 					</div>
 				</div>
 			</form>
@@ -96,4 +120,4 @@ const Register = () => {
 	);
 };
 
-export default Register;
+export default Login;
