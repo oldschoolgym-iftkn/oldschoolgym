@@ -46,6 +46,7 @@ class Coach(models.Model):
         MyUser, on_delete=models.CASCADE, related_name='coach_account')
     category = models.SmallIntegerField(choices=CATEGORIES)
     is_confirmed = models.BooleanField(default=False)
+    city = models.CharField(max_length=20)
 
     def __str__(self):
         return f'{self.user_profile.first_name} {self.user_profile.last_name}'
@@ -56,6 +57,7 @@ class UserApplication(models.Model):
         MyUser, on_delete=models.CASCADE, related_name='my_application')
     coach = models.ForeignKey(
         Coach, on_delete=models.CASCADE, related_name='user_applications')
+    subject = models.CharField(max_length=15)
     message = models.CharField(max_length=50)
     is_accepted = models.BooleanField(default=False)
 

@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import (MyUserSerializer, ConfirmMailSerializer,
-                          MyUserSerializerToUpdate, MyUserSerializerToView)
+                          MyUserSerializerToUpdate, MyUserSerializerToView,
+                          MyTokenObtainPairSerializer)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from chat.serializers import ChatSerializer
@@ -13,6 +14,7 @@ from .utils import get_header_params, get_query_params
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class UserAPI(APIView):
@@ -118,3 +120,7 @@ def get_user_by_id(request):
         return Response({'id': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
     user_serialized = MyUserSerializerToView(user)
     return Response(user_serialized.data, status=status.HTTP_200_OK)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

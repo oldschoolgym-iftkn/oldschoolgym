@@ -1,5 +1,6 @@
 from .models import MyUser, UserVerification
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserVerificationSerializer(serializers.ModelSerializer):
@@ -44,3 +45,11 @@ class MyUserSerializerToView(serializers.ModelSerializer):
 
 class ConfirmMailSerializer(serializers.Serializer):
     code = serializers.CharField(min_length=6, max_length=6)
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['role'] = user.role
+        return token
