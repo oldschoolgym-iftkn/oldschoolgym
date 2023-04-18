@@ -27,7 +27,7 @@ const Home = () => {
 								</div>
 							</div>
 							<div className="mx-auto w-fit ">
-								<Button linkTo={'/cabinet/messages'}>Переглянути</Button>
+								<Button linkTo={'/cabinet/calendar'}>Переглянути</Button>
 							</div>
 						</div>
 					</div>
