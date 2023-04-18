@@ -51,7 +51,7 @@ const Register = () => {
 	};
 
 	if (auth) {
-		return <Navigate to={'/profile'} replace />;
+		return <Navigate to={'/cabinet'} replace />;
 	}
 
 	return (

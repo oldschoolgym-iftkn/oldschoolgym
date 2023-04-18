@@ -27,7 +27,7 @@ const Home = () => {
 								</div>
 							</div>
 							<div className="mx-auto w-fit ">
-								<Button linkTo={'/profile/messages'}>Переглянути</Button>
+								<Button linkTo={'/cabinet/messages'}>Переглянути</Button>
 							</div>
 						</div>
 					</div>
@@ -44,7 +44,7 @@ const Home = () => {
 								/>
 							</div>
 							<div className="mx-auto w-fit ">
-								<Button linkTo={'/profile/clients'}>Переглянути</Button>
+								<Button linkTo={'/cabinet/clients'}>Переглянути</Button>
 							</div>
 						</div>
 					</div>
@@ -64,20 +64,20 @@ const Home = () => {
 								</p>
 							</div>
 							<div className="mx-auto w-fit ">
-								<Button linkTo={'/profile/messages'}>Переглянути</Button>
+								<Button linkTo={'/cabinet/messages'}>Переглянути</Button>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className="flex flex-col h-full">
-					<h4 className="text-center">Чати</h4>
+					<h4 className="text-center">Заявки</h4>
 					<div className="flex-1 p-6 border border-black rounded-3xl">
 						<div className="flex flex-col justify-between h-full p-4 space-y-4 overflow-y-auto border border-black rounded-3xl ">
 							<div className="flex items-center justify-center flex-1 space-x-4">
 								<img src="/img/request_big_icon.svg" alt="requestIcon" className="w-56 h-56" />
 							</div>
 							<div className="mx-auto w-fit ">
-								<Button linkTo={'/profile/requests'}>Переглянути</Button>
+								<Button linkTo={'/cabinet/requests'}>Переглянути</Button>
 							</div>
 						</div>
 					</div>

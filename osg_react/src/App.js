@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 
 import RequireAuth from './components/RequireAuth';
-import Profile from './pages/Profile';
+import Cabinet from './pages/Cabinet';
 import MainCTA from './pages/MainCTA';
 import Coaches from './pages/Coaches';
 import Register from './pages/Auth/Register';
@@ -22,7 +22,7 @@ function App() {
 			<Route path="/password-recovery" element={<Recovery />} />
 
 			<Route element={<RequireAuth />}>
-				<Route path="/profile/*" element={<Profile />} />
+				<Route path="/cabinet/*" element={<Cabinet />} />
 			</Route>
 		</Routes>
 	);

@@ -3,17 +3,6 @@ import { Link } from 'react-router-dom';
 
 import { UserIcon } from '@heroicons/react/24/outline';
 
-// const navigation = [
-// 	{ name: 'Dashboard', href: '#', current: true },
-// 	{ name: 'Team', href: '#', current: false },
-// 	{ name: 'Projects', href: '#', current: false },
-// 	{ name: 'Calendar', href: '#', current: false },
-// ];
-
-// function classNames(...classes) {
-// 	return classes.filter(Boolean).join(' ');
-// }
-
 export default function Header({ main, full }) {
 	const navMain =
 		'grid items-center justify-center grid-cols-3 col-span-2 text-2xl md:ml-auto md:mr-auto shrink max-2xl:text-xl';
@@ -75,7 +64,7 @@ export default function Header({ main, full }) {
 						</Link>
 					)}
 				</nav>
-				<Link to="/profile/">
+				<Link to="/cabinet">
 					<button className="p-1 align-middle rounded h-11 w-11 max-md:h-8 max-md:w-8 justify-self-end focus:outline-none hover:bg-gray-400">
 						<UserIcon className="" />
 					</button>
