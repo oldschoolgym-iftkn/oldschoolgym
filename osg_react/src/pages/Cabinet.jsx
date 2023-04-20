@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Header from '../components/Header';
@@ -14,6 +14,9 @@ import {
 } from '@heroicons/react/24/outline';
 import useAxios from '../hooks/useAxios';
 import useAuth from '../hooks/useAuth';
+import Messages from '../components/Messages/Messages';
+import Chat from '../components/Messages/Chat';
+import { ChatProvider } from '../context/ChatProvider';
 
 const navUser = [
 	{ name: 'Головна', icon: <HomeIcon />, href: '/cabinet' },
@@ -47,34 +50,39 @@ const navCoach = [
 ];
 
 const Cabinet = () => {
-	const { user } = useAuth();
+	const { user, setUser } = useAuth();
 	const api = useAxios();
+	const [user_profile, setUser_profile] = useState({});
 
+	const getUser_profile = () => {
+		api.get('/user/api/get_user_by_id/', { params: { user_id: user.user_id } }).then((res) => {
+			setUser_profile(res.data);
+			setUser({ ...user, user_profile: res.data });
+		});
+		// .finally(() => {
+		// 	setLoading(false);
+		// });
+	};
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		// getSome();
-	});
-	// const getSome = async () => {
-	// 	const response = await api
-	// 		.get('/chat/api/message/', { params: { id: 1 } })
-	// 		.then((res) => {
-	// 			console.log(res.data);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 		});
-	// };
+		getUser_profile();
+	}, []);
 	const currentNav = user.role === 0 ? navUser : navCoach;
 	return (
 		<div className="flex flex-col h-full ">
 			<Header />
 			<div className="flex flex-row h-screen pt-[60px]">
-				<SideBar navigation={currentNav} />
+				<SideBar navigation={currentNav} avatar={user_profile.avatar} />
 				<main className="flex-1 h-full overflow-y-auto text-5xl p-7 ">
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/requests" element={<div>Requests</div>} />
-						<Route path="/messages" element={<div>Messages</div>} />
+
+						<Route element={<ChatProvider />}>
+							<Route path="/messages" element={<Messages />} />
+							<Route path="/messages/:id" element={<Chat />} />
+						</Route>
+
 						{user.role === 0 ? (
 							<Route path="/coaches" element={<div>Coaches</div>} />
 						) : (
