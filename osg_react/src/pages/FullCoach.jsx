@@ -5,20 +5,22 @@ import { useForm, Controller } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import Header from '../components/Header';
-// import { useSelector } from 'react-redux';
-// import axios from '../axios';
+import axios from '../api/axios';
 
 Modal.setAppElement('#root');
 
 const exampleCoach = {
 	id: 1,
-	avatarUrl: 'https://flowbite.com/docs/images/people/profile-picture-1.jpg',
-	name: 'Василенко Іван Іванович',
-	spec: 'Кросфіт',
-	type: 'онлайн/офлайн',
-	exp: '10 років',
-	email: 'vasilenko228@gmail.com',
-	phone: '+380631231234',
+	user_profile: {
+		avatar: 'https://flowbite.com/docs/images/people/profile-picture-2.jpg',
+		first_name: 'Андрій',
+		last_name: 'Кіко',
+	},
+	category: 'Кросфіт',
+	type_training: 'онлайн/офлайн',
+	experience: '10 років',
+	info_block:
+		'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eius impedit voluptate porro quas animi non.',
 };
 const subs = ['Одне заняття', 'Пакет занять', 'Місячний абонемент']; //
 
@@ -141,62 +143,27 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 };
 
 const FullCoach = () => {
-	//// const auth = useSelector((state) => state.auth);
-	//// const isLogged = localStorage.getItem('token') && Boolean(auth.data);
-
-	// const [post, setPost] = React.useState();
-	// const [isLoading, setLoading] = React.useState(true);
+	const [showModal, setShowModal] = useState({ show: false, activeSubType: 0 });
+	const [coach, setCoach] = useState({});
+	const [isLoading, setLoading] = useState(true);
 	const { id } = useParams();
 
-	// React.useEffect(() => {
-	// 	axios
-	// 		.get(`/posts/${id}`)
-	// 		.then((res) => {
-	// 			setPost(res.data);
-	// 			setLoading(false);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 			alert('Error retrieving post');
-	// 		});
-	// }, [id]);
+	const getCoach = () => {
+		axios
+			.get('/user/api/get_user_by_id/', { params: { user_id: id } })
+			.then((res) => {
+				// setCoach(res.data);
+				setCoach({ ...exampleCoach, user_profile: res.data });
+				setLoading(false);
+			})
+			.finally(() => {});
+	};
 
-	// const fetchComments = () => {
-	// 	axios
-	// 		.get(`/comments/${id}`)
-	// 		.then((res) => {
-	// 			setComments(res.data);
-	// 			setCommentsLoading(false);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.warn('Error fetching comments');
-	// 			alert('Error retrieving comments');
-	// 		});
-	// };
-	// React.useEffect(() => {
-	// 	fetchComments();
-	// }, []);
+	useEffect(() => {
+		window.scrollTo(0, 0);
+		getCoach();
+	}, []);
 
-	// const onSendComment = async (text) => {
-	// 	try {
-	// 		const fields = {
-	// 			text,
-	// 		};
-
-	// 		await axios.post(`/comments/${id}`, fields);
-
-	// 		fetchComments();
-	// 	} catch (err) {
-	// 		console.warn(err);
-	// 		alert('Failed creating comment');
-	// 	}
-	// };
-
-	// if (isLoading) {
-	// 	return <Post isLoading={true} isFullCoach />;
-	// }
-
-	const [showModal, setShowModal] = useState({ show: false, activeSubType: 0 });
 	const openModal = (type) => {
 		setShowModal({ show: true, activeSubType: type });
 	};
@@ -205,62 +172,71 @@ const FullCoach = () => {
 		setShowModal({ show: false, activeSubType: 0 });
 	};
 
+	if (isLoading) {
+		return <p>Loading...</p>;
+	}
+
 	return (
 		<div className="flex flex-col min-h-screen App">
 			<Header main />
 			<div className="mt-[60px] min-h-full">
-				<div className="p-16 m-6 space-y-24 border border-black">
-					<div className="grid grid-cols-3 grid-rows-2 gap-16">
-						<div className="row-span-2 border-2 border-black rounded-2xl">
-							<img
-								src={exampleCoach.avatarUrl}
-								alt="Coach"
-								className="mx-auto border-b-2 border-black rounded-t-[0.9rem] w-fit"
-							/>
-							<div className="px-10 py-6 space-y-6">
-								<p className="text-3xl font-medium text-center">{exampleCoach.name}</p>
-								<button
-									onClick={openModal}
-									className="inline-block select-none text-center w-full min-w-[16rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
-									Написати тренеру
-								</button>
-								<button
-									onClick={openModal}
-									className="inline-block select-none text-center w-full min-w-[16rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
-									Відправити заявку
-								</button>
+				{isLoading ? (
+					<p>Loading...</p>
+				) : (
+					<div className="p-16 m-6 space-y-24 border border-black">
+						<div className="grid grid-cols-3 grid-rows-2 gap-16">
+							<div className="row-span-2 border-2 border-black rounded-2xl">
+								<img
+									src={process.env.REACT_APP_API_URL + coach.user_profile.avatar}
+									alt="Coach"
+									className="mx-auto  rounded-t-[0.9rem] w-fit"
+								/>
+								<div className="px-10 py-6 space-y-6 border-t-2 border-black">
+									<p className="text-3xl font-medium text-center">
+										{coach.user_profile.last_name + ' ' + coach.user_profile.first_name}
+									</p>
+									<button
+										onClick={openModal}
+										className="inline-block select-none text-center w-full min-w-[16rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
+										Написати тренеру
+									</button>
+									<button
+										onClick={openModal}
+										className="inline-block select-none text-center w-full min-w-[16rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
+										Відправити заявку
+									</button>
+								</div>
 							</div>
-						</div>
-						<div className="px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
-							<div className="w-full p-4 border-b border-black">
-								<span className="block text-lg text-gray-500 select-none font-extralight">
-									Пошта
-								</span>
-								<p className="text-2xl font-medium">{exampleCoach.email}</p>
+							<div className="px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
+								<div className="w-full p-4 border-b border-black">
+									<span className="block text-lg text-gray-500 select-none font-extralight">
+										Пошта
+									</span>
+									<p className="text-2xl font-medium">{coach.user_profile.email}</p>
+								</div>
+								<div className="w-full p-4 border-b border-black">
+									<span className="block text-lg text-gray-500 select-none font-extralight">
+										Телефон
+									</span>
+									<p className="text-2xl font-medium">{coach.user_profile.phone}</p>
+								</div>
 							</div>
-							<div className="w-full p-4 border-b border-black">
-								<span className="block text-lg text-gray-500 select-none font-extralight">
-									Телефон
-								</span>
-								<p className="text-2xl font-medium">{exampleCoach.phone}</p>
+							<div className="px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
+								<div className="w-full p-4 border-b border-black">
+									<span className="block text-lg text-gray-500 select-none font-extralight">
+										Спеціалізація
+									</span>
+									<p className="text-2xl font-medium">{coach.category}</p>
+								</div>
+								<div className="w-full p-4 border-b border-black">
+									<span className="block text-lg text-gray-500 select-none font-extralight">
+										Тип тренувань
+									</span>
+									<p className="text-2xl font-medium">{coach.type_training}</p>
+								</div>
 							</div>
-						</div>
-						<div className="px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
-							<div className="w-full p-4 border-b border-black">
-								<span className="block text-lg text-gray-500 select-none font-extralight">
-									Спеціалізація
-								</span>
-								<p className="text-2xl font-medium">{exampleCoach.spec}</p>
-							</div>
-							<div className="w-full p-4 border-b border-black">
-								<span className="block text-lg text-gray-500 select-none font-extralight">
-									Тип тренувань
-								</span>
-								<p className="text-2xl font-medium">{exampleCoach.type}</p>
-							</div>
-						</div>
-						<div className="col-span-2 px-10 py-6 space-y-4 text-2xl text-left border-2 border-black rounded-2xl">
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, suscipit vel nemo a,
+							<div className="col-span-2 px-10 py-6 space-y-4 text-2xl text-left border-2 border-black rounded-2xl">
+								{/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, suscipit vel nemo a,
 							cupiditate aliquam ullam velit modi nam at totam est voluptate! Dignissimos
 							doloremque, vero fugit iure voluptate eaque exercitationem debitis quisquam odio ipsum
 							temporibus quia! Vel, et nisi quod suscipit magni quo maxime in facere sint totam
@@ -268,18 +244,20 @@ const FullCoach = () => {
 							itaque vitae soluta voluptatem! Natus nam fuga mollitia autem repudiandae expedita
 							provident harum hic eveniet quam dicta sint voluptate architecto dolor magnam
 							consequatur odio cupiditate a asperiores repellat, doloribus illo vitae. Quaerat alias
-							sunt minus?
+							sunt minus? */}
+								{coach.info_block}
+							</div>
+						</div>
+						<div className="px-24 space-y-8 text-center">
+							<h2 className="text-3xl">Абонементи на вибір</h2>
+							<div className="grid grid-cols-3 gap-10">
+								<Plan {...exampleSubsription} onClick={() => openModal(0)} />
+								<Plan {...exampleSubsription} onClick={() => openModal(1)} />
+								<Plan {...exampleSubsription} onClick={() => openModal(2)} />
+							</div>
 						</div>
 					</div>
-					<div className="px-24 space-y-8 text-center">
-						<h2 className="text-3xl">Абонементи на вибір</h2>
-						<div className="grid grid-cols-3 gap-10">
-							<Plan {...exampleSubsription} onClick={() => openModal(0)} />
-							<Plan {...exampleSubsription} onClick={() => openModal(1)} />
-							<Plan {...exampleSubsription} onClick={() => openModal(2)} />
-						</div>
-					</div>
-				</div>
+				)}
 			</div>
 			<OrderModal modalIsOpen={showModal} closeModal={closeModal} />
 		</div>
