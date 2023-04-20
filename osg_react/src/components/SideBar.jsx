@@ -10,7 +10,7 @@ const Button = ({ linkTo, renderIcon, onClick, children }) => {
 		<NavLink
 			onClick={onClick}
 			to={linkTo}
-			end
+			end={linkTo === '/cabinet'}
 			className={({ isActive, isPending }) => {
 				return (
 					'block py-2 pl-1 pr-4 space-x-4 ' +
@@ -25,7 +25,7 @@ const Button = ({ linkTo, renderIcon, onClick, children }) => {
 	);
 };
 
-const SideBar = ({ navigation }) => {
+const SideBar = ({ navigation, avatar }) => {
 	const { logOutUser } = useAuth();
 	const navigate = useNavigate();
 
@@ -38,8 +38,8 @@ const SideBar = ({ navigation }) => {
 		<aside className="flex flex-col py-8 text-white bg-black w-96">
 			<div className="mx-auto my-10 space-y-4 w-fit">
 				<img
-					className="w-48 h-48 border-4 border-white rounded-full"
-					src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
+					className="w-48 h-48 border-4 border-white rounded-full bg-white/75"
+					src={process.env.REACT_APP_API_URL + avatar}
 					alt="avatar"
 				/>
 				<NavLink
