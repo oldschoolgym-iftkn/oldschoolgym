@@ -1,3 +1,4 @@
+from urllib.parse import parse_qs
 from django.conf import settings
 from jwt import decode as jwt_decode
 from django.db import close_old_connections
@@ -23,11 +24,11 @@ class JWTAuthMiddleware:
 
     async def __call__(self, scope, receive, send):
         close_old_connections()
-        headers = dict(scope['headers'])
-        if b'sec-websocket-protocol' not in headers:
+        url_q = parse_qs(scope['query_string'])
+        if not url_q.get(b'authorization')[0]:
             scope['user'] = AnonymousUser()
             return await self.inner(dict(scope), receive, send)
-        token = headers[b'sec-websocket-protocol'].decode('utf-8')
+        token = url_q.get(b'authorization')[0].decode('utf-8')
         try:
             UntypedToken(token)
         except TokenError as error:
