@@ -27,7 +27,7 @@ class JWTAuthMiddleware:
         if b'sec-websocket-protocol' not in headers:
             scope['user'] = AnonymousUser()
             return await self.inner(dict(scope), receive, send)
-        token = headers[b'sec-websocket-protocol'].decode('utf-8').split()[-1]
+        token = headers[b'sec-websocket-protocol'].decode('utf-8')
         try:
             UntypedToken(token)
         except TokenError as error:
