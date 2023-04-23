@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
+import Loading from '../components/Loading';
 // import useAuth from '../hooks/useAuth';
 
 const ChatContext = createContext({});
@@ -38,7 +39,7 @@ export const ChatProvider = () => {
 	const contextData = { userChats };
 	return (
 		<ChatContext.Provider value={contextData}>
-			{initLoading ? null : <Outlet />}
+			{initLoading ? <Loading /> : <Outlet />}
 		</ChatContext.Provider>
 	);
 };

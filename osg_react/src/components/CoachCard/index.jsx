@@ -3,7 +3,7 @@ import Button from '../Button';
 
 const CoachCard = ({ coach }) => {
 	return (
-		<div className="flex flex-col border-2 border-black rounded-lg h-fit">
+		<div className="flex flex-col text-center border-2 border-black rounded-lg h-fit">
 			<div className="p-4 space-y-4">
 				<img
 					src={process.env.REACT_APP_API_URL + coach.user_profile.avatar}
@@ -20,7 +20,7 @@ const CoachCard = ({ coach }) => {
 				<div>Тип занять: {coach.type_training}</div>
 				<div>Досвід: {coach.experience}</div>
 			</div>
-			<div className="py-6">
+			<div className="py-6 mx-auto">
 				<Button linkTo={`/coaches/${coach.id}`}>Переглянути профіль</Button>
 			</div>
 		</div>

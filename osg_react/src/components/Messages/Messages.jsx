@@ -8,12 +8,14 @@ const Messages = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
 	return (
-		<div className="flex flex-col h-full border border-black">
-			<div className="text-2xl border-b border-black">
-				<button className="inline-block py-4 font-bold border-r border-black px-14">
+		<div className="flex flex-col h-full border border-black rounded-3xl">
+			<div className="text-2xl border-b border-black max-lg:flex max-lg:flex-col">
+				<button className="inline-block py-4 font-bold border-r border-black px-14 max-lg:border-b max-lg:border-r-0">
 					Чати з клієнтами
 				</button>
-				<button className="inline-block py-4 border-r border-black px-14">Всі чати</button>
+				<button className="inline-block py-4 border-r border-black px-14 max-lg:border-none">
+					Всі чати
+				</button>
 			</div>
 			<div className="flex-1 p-12 overflow-y-auto text-2xl">
 				<div className="h-full overflow-y-auto border-2 border-black rounded-3xl">

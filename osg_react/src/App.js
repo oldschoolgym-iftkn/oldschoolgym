@@ -10,6 +10,7 @@ import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import Recovery from './pages/Auth/Recovery';
 import FullCoach from './pages/FullCoach';
+import MissingPage from './components/MissingPage';
 
 function App() {
 	return (
@@ -24,6 +25,8 @@ function App() {
 			<Route element={<RequireAuth />}>
 				<Route path="/cabinet/*" element={<Cabinet />} />
 			</Route>
+
+			<Route path="/*" element={<MissingPage header />} />
 		</Routes>
 	);
 }

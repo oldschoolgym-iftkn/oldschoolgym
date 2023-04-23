@@ -14,7 +14,7 @@ const Button = ({ linkTo, children, square }) => {
 	return (
 		<Link
 			to={linkTo}
-			className="inline-block select-none text-center min-w-[16rem] hover:bg-neutral-700 px-8 py-2 rounded-full text-base leading-none font-normal bg-black text-white">
+			className="inline-block mx-auto select-none text-center min-w-[16rem] hover:bg-neutral-700 px-8 py-2 rounded-full text-base leading-none font-normal bg-black text-white">
 			{children}
 		</Link>
 	);

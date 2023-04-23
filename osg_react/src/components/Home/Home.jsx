@@ -3,7 +3,7 @@ import Button from '../Button';
 
 const Home = () => {
 	return (
-		<div className="h-full p-4 border border-black">
+		<div className="h-full p-4 border border-black rounded-3xl">
 			<div className="grid grid-cols-[repeat(2,1fr)] grid-rows-[repeat(2,minmax(0,1fr))] h-full gap-8 px-4 text-2xl font-semibold max-xl:grid-cols-1 ">
 				<div className="flex flex-col h-full">
 					<h4 className="text-center">План занять</h4>

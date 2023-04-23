@@ -6,6 +6,8 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import Header from '../components/Header';
 import axios from '../api/axios';
+import Loading from '../components/Loading';
+import MissingPage from '../components/MissingPage';
 
 Modal.setAppElement('#root');
 
@@ -146,6 +148,7 @@ const FullCoach = () => {
 	const [showModal, setShowModal] = useState({ show: false, activeSubType: 0 });
 	const [coach, setCoach] = useState({});
 	const [isLoading, setLoading] = useState(true);
+	const [notFound, setNotFound] = useState(false);
 	const { id } = useParams();
 
 	const getCoach = () => {
@@ -155,6 +158,9 @@ const FullCoach = () => {
 				// setCoach(res.data);
 				setCoach({ ...exampleCoach, user_profile: res.data });
 				setLoading(false);
+			})
+			.catch(() => {
+				setNotFound(true);
 			})
 			.finally(() => {});
 	};
@@ -171,17 +177,16 @@ const FullCoach = () => {
 	const closeModal = () => {
 		setShowModal({ show: false, activeSubType: 0 });
 	};
-
-	if (isLoading) {
-		return <p>Loading...</p>;
+	if (notFound) {
+		return <MissingPage header />;
 	}
 
 	return (
 		<div className="flex flex-col min-h-screen App">
 			<Header main />
-			<div className="mt-[60px] min-h-full">
+			<div className="mt-[60px] flex-grow max-xl:pt-[146px] min-h-full">
 				{isLoading ? (
-					<p>Loading...</p>
+					<Loading />
 				) : (
 					<div className="p-16 m-6 space-y-24 border border-black">
 						<div className="grid grid-cols-3 grid-rows-2 gap-16">

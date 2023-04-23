@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 
 import axios from '../api/axios.js';
+import Loading from '../components/Loading.jsx';
 const LOGIN_URL = '/user/api/token/';
 const REGISTER_URL = '/user/api/';
 
@@ -102,7 +103,9 @@ export const AuthProvider = ({ children }) => {
 	}, [auth, initLoading]);
 
 	return (
-		<AuthContext.Provider value={contextData}>{initLoading ? null : children}</AuthContext.Provider>
+		<AuthContext.Provider value={contextData}>
+			{initLoading ? <Loading /> : children}
+		</AuthContext.Provider>
 	);
 };
 

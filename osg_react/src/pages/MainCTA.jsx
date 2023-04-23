@@ -9,7 +9,7 @@ const MainCTA = () => {
 		window.scrollTo(0, 0);
 	});
 	return (
-		<div className="flex flex-col min-h-screen App">
+		<div className="flex flex-col min-h-screen text-center App">
 			<Header main full />
 			<Main />
 			<Footer />

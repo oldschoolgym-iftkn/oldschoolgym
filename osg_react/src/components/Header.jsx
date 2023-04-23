@@ -7,7 +7,7 @@ export default function Header({ main, full }) {
 	const navMain =
 		'grid items-center justify-center grid-cols-3 col-span-2 text-2xl md:ml-auto md:mr-auto shrink max-2xl:text-xl';
 	const nav =
-		'flex flex-wrap items-center justify-center col-span-2 text-2xl md:ml-auto md:mr-auto shrink';
+		'flex flex-wrap items-center justify-center col-span-2 text-2xl md:ml-auto md:mr-auto shrink max-2xl:text-xl ';
 	const headerContainer = 'flex flex-wrap items-center p-2 mx-auto max-xl:flex max-xl:flex-col';
 	return (
 		<header className="fixed top-0 z-20 w-full text-white bg-black border-b-2 border-white body-font">

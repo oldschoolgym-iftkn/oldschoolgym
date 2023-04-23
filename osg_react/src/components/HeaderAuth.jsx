@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const HeaderAuth = () => {
+const HeaderAuth = ({ fixed }) => {
 	return (
-		<header className="py-4">
+		<header className={fixed ? 'py-4 fixed w-full' : 'py-4'}>
 			<div className="container p-2 mx-auto bg-white">
 				<Link to="/" className="flex items-center font-normal w-fit title-font md:mb-0">
 					<span

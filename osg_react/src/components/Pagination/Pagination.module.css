@@ -1,8 +1,16 @@
 .root li {
 	display: inline-block;
 }
+
+.root {
+	display: block;
+	user-select: none;
+}
+.root li:first-child {
+	margin-right: 10px;
+}
 .root li:last-child {
-	margin-right: auto;
+	margin-left: 10px;
 }
 .root a {
 	text-align: center;
