@@ -7,7 +7,8 @@ import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
 	const location = useLocation();
-	const from = location.state?.from?.pathname || '/';
+	// const from = location.state?.from?.pathname || '/cabinet';
+	const from = '/cabinet';
 
 	const { user, logInUser } = useAuth();
 	const [authError, setAuthError] = useState(null);
@@ -39,7 +40,7 @@ const Login = () => {
 		}
 	};
 
-	if (user) {
+	if (user?.user_profile) {
 		return <Navigate to={from} replace />;
 	}
 

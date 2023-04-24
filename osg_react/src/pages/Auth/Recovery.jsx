@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import HeaderAuth from '../../components/HeaderAuth';
 
-const Register = () => {
+const Recovery = () => {
 	const {
 		register,
 		handleSubmit,
@@ -74,4 +74,4 @@ const Register = () => {
 	);
 };
 
-export default Register;
+export default Recovery;

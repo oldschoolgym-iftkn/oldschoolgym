@@ -11,6 +11,8 @@ import Login from './pages/Auth/Login';
 import Recovery from './pages/Auth/Recovery';
 import FullCoach from './pages/FullCoach';
 import MissingPage from './components/MissingPage';
+import ConfirmEmail from './components/ConfirmEmail';
+import RequireEmailConfirm from './components/RequireEmailConfirm';
 
 function App() {
 	return (
@@ -23,7 +25,10 @@ function App() {
 			<Route path="/password-recovery" element={<Recovery />} />
 
 			<Route element={<RequireAuth />}>
-				<Route path="/cabinet/*" element={<Cabinet />} />
+				<Route element={<RequireEmailConfirm />}>
+					<Route path="/cabinet/*" element={<Cabinet />} />
+				</Route>
+				<Route path="/confirm-email" element={<ConfirmEmail />} />
 			</Route>
 
 			<Route path="/*" element={<MissingPage header />} />
