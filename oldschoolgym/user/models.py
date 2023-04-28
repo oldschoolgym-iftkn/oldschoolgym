@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django_resized import ResizedImageField
 from .utils import generate_confirmation_code
 from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MinValueValidator
 
 ROLES = (
     (0, 'Customer'),
@@ -75,6 +75,12 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=17,
                              validators=[phone_validator, MinLengthValidator(10)])
     gender = models.CharField(max_length=1, choices=GENDERS)
+    weight = models.FloatField(default=0.0, validators=[
+        MinValueValidator(limit_value=0.0),
+    ])
+    height = models.IntegerField(default=0, validators=[
+        MinValueValidator(limit_value=0),
+    ])
     verifying = models.OneToOneField(
         UserVerification, on_delete=models.CASCADE)
     objects = MyUserManager()

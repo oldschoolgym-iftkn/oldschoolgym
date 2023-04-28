@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view, permission_classes
 from chat.serializers import ChatSerializer
 from .permissions import VerifiedOnly
 from drf_yasg.utils import swagger_auto_schema
-from .utils import get_header_params, get_query_params
+from .utils import get_header_params, get_query_params, clear_cache_by_key
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
@@ -91,6 +91,7 @@ def confirm_email(request):
         if request.user.verifying.code == serialized_data.data['code']:
             request.user.verifying.is_activate = True
             request.user.verifying.save()
+            clear_cache_by_key('get_user_by_id')
             return Response({}, status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'code': 'Code to confirm is uncorrect!'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
@@ -111,7 +112,7 @@ def get_all_chats(request):
 
 @swagger_auto_schema(method='get', manual_parameters=[get_query_params("user_id", "User id")],
                      operation_description='To get user with specific id. Returns single user object.')
-@cache_page(60 * 15)
+@cache_page(60 * 15, key_prefix='get_user_by_id')
 @api_view(['GET'])
 def get_user_by_id(request):
     try:
