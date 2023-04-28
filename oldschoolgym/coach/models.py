@@ -40,8 +40,8 @@ class Coach(models.Model):
     experience = models.SmallIntegerField(
         validators=[experience_validator])
     rates = models.JSONField()
-    info_block = models.CharField(max_length=60)
-    additional_block = models.CharField(max_length=60)
+    info_block = models.CharField(max_length=250)
+    additional_block = models.CharField(max_length=250)
     user_profile = models.OneToOneField(
         MyUser, on_delete=models.CASCADE, related_name='coach_account')
     category = models.SmallIntegerField(choices=CATEGORIES)
@@ -58,7 +58,7 @@ class UserApplication(models.Model):
     coach = models.ForeignKey(
         Coach, on_delete=models.CASCADE, related_name='user_applications')
     subject = models.CharField(max_length=15)
-    message = models.CharField(max_length=50)
+    message = models.CharField(max_length=250)
     is_accepted = models.BooleanField(default=False)
 
 

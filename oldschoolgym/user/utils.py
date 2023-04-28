@@ -1,5 +1,6 @@
 from random import SystemRandom
 from drf_yasg import openapi
+from django.core.cache import cache
 
 
 def generate_confirmation_code() -> str:
@@ -22,3 +23,9 @@ def get_form_params(name: str, description: str = '', type=openapi.TYPE_FILE):
     form_param = openapi.Parameter(
         name, openapi.IN_FORM, description=description, type=type)
     return form_param
+
+
+def clear_cache_by_key(key:str):
+    for key_in_cache in cache.keys('*'):
+        if key in key_in_cache:
+            cache.delete(key_in_cache)

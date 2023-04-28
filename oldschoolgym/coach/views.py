@@ -77,3 +77,15 @@ def get_my_application(request):
     my_applications = UserApplicationSerializer(
         Coach.objects.get(user_profile=request.user).user_applications.all(), many=True)
     return Response(my_applications.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(method='get', responses={200: UserApplicationSerializer(many=True)},
+                     operation_description='To get user application',
+                     manual_parameters=[get_header_params()])
+@api_view(['GET'])
+@permission_classes([VerifiedUserOnly])
+def get_application_as_user(request):
+    print(type(request.user))
+    my_applications = UserApplicationSerializer(
+        request.user.my_application)
+    return Response(my_applications.data, status=status.HTTP_200_OK)
