@@ -8,7 +8,7 @@ const RequireEmailConfirm = () => {
 	return user?.user_profile?.verifying.is_activate ? (
 		<Outlet />
 	) : (
-		<Navigate to="/confirm-email" state={{ from: location }} replace />
+		<Navigate to={'/confirm-email'} state={{ from: location }} replace />
 	);
 };
 

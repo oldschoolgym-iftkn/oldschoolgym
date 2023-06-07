@@ -11,11 +11,7 @@ const HomeUser = () => {
 						<div className="flex flex-col justify-between h-full p-4 space-y-4 border border-black rounded-3xl">
 							<div className="flex-1 block space-x-4 overflow-y-auto ">
 								<div className="flex-1 space-y-2">
-									<p>01.02.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
+									<p>01.02.2023 / 11:15-12:35 / Одне заняття </p>
 								</div>
 							</div>
 							<div className="mx-auto w-fit ">

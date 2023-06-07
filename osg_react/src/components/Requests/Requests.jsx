@@ -58,8 +58,8 @@ const Requests = () => {
 					</div>
 					<div className="flex flex-1">
 						<div className="m-4 space-y-[25px]">
-							{people.map(() => (
-								<button className="block">
+							{people.map((obj, index) => (
+								<button key={index} className="block">
 									<StopIcon className="w-8 h-8" />
 								</button>
 							))}
@@ -89,29 +89,6 @@ const Requests = () => {
 							))}
 						</div>
 					</div>
-					{[].map((chat, index) => (
-						<div key={index} className="border-b border-black">
-							<div className="flex transition ease-out duration-200 bg-transparent rounded-3xl hover:bg-neutral-400/90 hover:scale-[102%] hover:rounded-3xl">
-								<button
-									onClick={() => {
-										// navigate('/cabinet/messages/' + (index + 1));
-									}}
-									className="flex flex-grow py-3 text-left justify-items-start">
-									<img
-										src={
-											process.env.REACT_APP_API_URL +
-											chat.users.find((obj) => obj.id !== user.user_id).avatar
-										}
-										alt="Img"
-										className="inline-block w-10 h-10 mx-6 border border-black rounded-full"
-									/>
-									<div className="flex-1 inline-block">
-										{chat.users.find((obj) => obj.id !== user.user_id).first_name}
-									</div>
-								</button>
-							</div>
-						</div>
-					))}
 				</div>
 			</div>
 		</div>

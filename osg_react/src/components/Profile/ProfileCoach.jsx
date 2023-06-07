@@ -104,155 +104,156 @@ const ProfileCoach = () => {
 		setShowEditModal({ show: false });
 	};
 	return (
-		// <div className="w-full space-y-6">
-		<form
-			className="w-full px-16 py-8 space-y-8 border border-black rounded-3xl"
-			onSubmit={handleSubmit(onSubmit)}>
-			<h2 className="text-4xl ">Профіль тренера</h2>
-			<div className="px-24 space-y-8 text-center">
-				<h3 className="text-3xl">Інформація про вас</h3>
-				<div className="w-full px-10 py-6 text-2xl text-left border-2 border-black rounded-2xl">
-					<div className="max-w-3xl mx-auto space-y-2">
-						<div>
-							<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
-								Місто
-							</span>
-							<Controller
-								control={control}
-								name="city"
-								render={() => (
-									<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
-										{cities.map((obj, index) => (
-											<option key={index} value={obj} className="text-lg">
-												{obj}
-											</option>
-										))}
-									</select>
-								)}
-							/>
-						</div>
-
-						<div>
-							<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
-								Спеціалізація
-							</span>
-							<Controller
-								control={control}
-								name="category"
-								render={() => (
-									<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
-										{specs.map((obj, index) => (
-											<option key={index} value={String(index)} className="text-lg">
-												{obj}
-											</option>
-										))}
-									</select>
-								)}
-							/>
-						</div>
-						<div className="text-xl">
-							<label className="inline-block px-4 text-lg text-gray-500 select-none font-extralight">
-								Досвід:
-							</label>
-							<input
-								type="number"
-								defaultValue={0}
-								min={0}
-								max={30}
-								{...register('experience', { required: 'Вкажіть свій досвід' })}
-								className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
-							/>
-						</div>
-						<div className="">
-							<div className="block px-4 text-lg text-gray-500 select-none font-extralight">
-								Тип занять
+		<>
+			<form
+				className="w-full px-16 py-8 space-y-8 border border-black rounded-3xl"
+				onSubmit={handleSubmit(onSubmit)}>
+				<h2 className="text-4xl ">Профіль тренера</h2>
+				<div className="px-24 space-y-8 text-center">
+					<h3 className="text-3xl">Інформація про вас</h3>
+					<div className="w-full px-10 py-6 text-2xl text-left border-2 border-black rounded-2xl">
+						<div className="max-w-3xl mx-auto space-y-2">
+							<div>
+								<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+									Місто
+								</span>
+								<Controller
+									control={control}
+									name="city"
+									render={() => (
+										<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
+											{cities.map((obj, index) => (
+												<option key={index} value={obj} className="text-lg">
+													{obj}
+												</option>
+											))}
+										</select>
+									)}
+								/>
 							</div>
-							<ul className="items-center w-full text-lg text-black border border-black rounded-lg 2xl:flex">
-								<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
-									<input
-										id="typeOnline"
-										type="radio"
-										value="0"
-										{...register('type_training', {
-											required: 'Вкажіть тип занять',
-											validate: validation.type_training,
-										})}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="typeOnline" className="text-black align-middle">
-										Онлайн
-									</label>
-								</li>
-								<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
-									<input
-										id="typeOffline"
-										type="radio"
-										value="1"
-										{...register('type_training', {
-											required: 'Вкажіть тип занять',
-											validate: validation.type_training,
-										})}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="typeOffline" className="text-black align-middle">
-										Офлайн
-									</label>
-								</li>
-								<li className="w-full p-2.5">
-									<input
-										id="typeMixed"
-										type="radio"
-										value="3"
-										{...register('type_training', {
-											required: 'Вкажіть тип занять',
-											validate: validation.type_training,
-										})}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="typeMixed" className="text-black align-middle">
-										Змішаний
-									</label>
-								</li>
-							</ul>
+
+							<div>
+								<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+									Спеціалізація
+								</span>
+								<Controller
+									control={control}
+									name="category"
+									render={() => (
+										<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
+											{specs.map((obj, index) => (
+												<option key={index} value={String(index)} className="text-lg">
+													{obj}
+												</option>
+											))}
+										</select>
+									)}
+								/>
+							</div>
+							<div className="text-xl">
+								<label className="inline-block px-4 text-lg text-gray-500 select-none font-extralight">
+									Досвід:
+								</label>
+								<input
+									type="number"
+									defaultValue={0}
+									min={0}
+									max={30}
+									{...register('experience', { required: 'Вкажіть свій досвід' })}
+									className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
+								/>
+							</div>
+							<div className="">
+								<div className="block px-4 text-lg text-gray-500 select-none font-extralight">
+									Тип занять
+								</div>
+								<ul className="items-center w-full text-lg text-black border border-black rounded-lg 2xl:flex">
+									<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
+										<input
+											id="typeOnline"
+											type="radio"
+											value="0"
+											{...register('type_training', {
+												required: 'Вкажіть тип занять',
+												validate: validation.type_training,
+											})}
+											className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
+										/>
+										<label htmlFor="typeOnline" className="text-black align-middle">
+											Онлайн
+										</label>
+									</li>
+									<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
+										<input
+											id="typeOffline"
+											type="radio"
+											value="1"
+											{...register('type_training', {
+												required: 'Вкажіть тип занять',
+												validate: validation.type_training,
+											})}
+											className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
+										/>
+										<label htmlFor="typeOffline" className="text-black align-middle">
+											Офлайн
+										</label>
+									</li>
+									<li className="w-full p-2.5">
+										<input
+											id="typeMixed"
+											type="radio"
+											value="3"
+											{...register('type_training', {
+												required: 'Вкажіть тип занять',
+												validate: validation.type_training,
+											})}
+											className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
+										/>
+										<label htmlFor="typeMixed" className="text-black align-middle">
+											Змішаний
+										</label>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
+					<div className="px-10 py-6 space-y-2 text-2xl text-left border-2 border-black rounded-2xl">
+						<label
+							htmlFor="description"
+							className="block text-lg text-gray-500 select-none font-extralight">
+							Опис профілю
+						</label>
+						<textarea
+							placeholder="Розкажіть про себе..."
+							rows={6}
+							maxLength={250}
+							aria-invalid={errors.info_block ? 'true' : 'false'}
+							{...register('info_block', { required: 'Вкажіть опис свого профілю' })}
+							className="w-full text-2xl rounded aria-[invalid=true]:border-red-500 aria-[invalid=true]:border-2 resize-none placeholder:text-xl  border-black/30 focus:border-black/60 focus:ring-black/60"></textarea>
+					</div>
 				</div>
-				<div className="px-10 py-6 space-y-2 text-2xl text-left border-2 border-black rounded-2xl">
-					<label
-						htmlFor="description"
-						className="block text-lg text-gray-500 select-none font-extralight">
-						Опис профілю
-					</label>
-					<textarea
-						placeholder="Розкажіть про себе..."
-						rows={6}
-						maxLength={250}
-						aria-invalid={errors.info_block ? 'true' : 'false'}
-						{...register('info_block', { required: 'Вкажіть опис свого профілю' })}
-						className="w-full text-2xl rounded aria-[invalid=true]:border-red-500 aria-[invalid=true]:border-2 resize-none placeholder:text-xl  border-black/30 focus:border-black/60 focus:ring-black/60"></textarea>
+				<div className="px-24 space-y-8 text-center">
+					<h3 className="text-3xl">Абонементи на вибір</h3>
+					<div className="grid grid-cols-2 gap-24">
+						{rates.map((rate, index) => (
+							<Plan {...rate} key={index} onClick={() => openEditRateModal(index)} />
+						))}
+					</div>
 				</div>
-			</div>
-			<div className="px-24 space-y-8 text-center">
-				<h3 className="text-3xl">Абонементи на вибір</h3>
-				<div className="grid grid-cols-2 gap-24">
-					{rates.map((rate, index) => (
-						<Plan {...rate} key={index} onClick={() => openEditRateModal(index)} />
-					))}
-				</div>
-			</div>
-			<button
-				type="button"
-				onClick={() => openCreateRateModal()}
-				className="block mx-auto select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-4 rounded-2xl text-xl leading-none font-normal bg-black text-white">
-				Додати новий тариф
-			</button>
-			<div className="flex justify-end space-x-10">
 				<button
-					type="submit"
-					className="inline-block select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
-					Запросити верифікацію
+					type="button"
+					onClick={() => openCreateRateModal()}
+					className="block mx-auto select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-4 rounded-2xl text-xl leading-none font-normal bg-black text-white">
+					Додати новий тариф
 				</button>
-			</div>
+				<div className="flex justify-end space-x-10">
+					<button
+						type="submit"
+						className="inline-block select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
+						Запросити верифікацію
+					</button>
+				</div>
+			</form>
 			<CreateRateModal
 				modalIsOpen={showModal}
 				closeModal={closeCreateRateModal}
@@ -271,8 +272,7 @@ const ProfileCoach = () => {
 					setRates((prev) => prev.filter((rate, i) => i !== index));
 				}}
 			/>
-		</form>
-		// </div>
+		</>
 	);
 };
 const exampleSubsription = {
@@ -294,7 +294,10 @@ const Plan = ({ rate_name, cost, lessons_count, imageUrl, description, onClick }
 			</div>
 			<img src="/img/plan_img.png" alt="subImg" className="max-w-full mx-auto" />
 			<p className="text-xl text-white">{description}</p>
-			<button className="p-2 text-xl bg-white rounded-full min-w-[16rem]" onClick={onClick}>
+			<button
+				type="button"
+				className="p-2 text-xl bg-white rounded-full min-w-[16rem]"
+				onClick={onClick}>
 				Редагувати
 			</button>
 		</div>
