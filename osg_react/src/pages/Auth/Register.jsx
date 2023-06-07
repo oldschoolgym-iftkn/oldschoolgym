@@ -165,7 +165,7 @@ const Register = () => {
 									className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
 								/>
 								<label htmlFor="genderMale" className="text-black align-middle">
-									Чулувік
+									Чоловіча
 								</label>
 							</li>
 							<li className="w-full p-2.5">
@@ -177,7 +177,7 @@ const Register = () => {
 									className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
 								/>
 								<label htmlFor="genderFemale" className="text-black align-middle">
-									Жінка
+									Жіноча
 								</label>
 							</li>
 						</ul>

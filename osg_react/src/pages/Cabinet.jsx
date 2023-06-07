@@ -22,6 +22,7 @@ import HomeCoach from '../components/Home/HomeCoach';
 import HomeUser from '../components/Home/HomeUser';
 import Coaches from '../components/UserList/Coaches';
 import Clients from '../components/UserList/Clients';
+import CalendarCoach from '../components/Calendar/CalendarCoach';
 
 const navUser = [
 	{ name: 'Головна', icon: <HomeIcon />, href: '/cabinet' },
@@ -69,9 +70,9 @@ const Cabinet = () => {
 	return (
 		<div className="flex flex-col h-full ">
 			<Header />
-			<div className="flex flex-row h-screen pt-[60px] max-xl:pt-[146px]">
+			<div className="flex flex-row overflow-y-auto h-screen max-xl:h-full pt-[60px] max-xl:pt-[146px]">
 				<SideBar navigation={currentNav} avatar={user.user_profile.avatar} />
-				<main className="flex-1 h-full overflow-y-auto text-5xl p-7 ">
+				<main className="flex-1 h-full text-5xl p-7 ">
 					<Routes>
 						<Route path="/" element={user.role === 0 ? <HomeUser /> : <HomeCoach />} />
 						<Route path="/profile" element={<Profile />} />
@@ -87,7 +88,7 @@ const Cabinet = () => {
 						) : (
 							<Route path="/clients" element={<Clients />} />
 						)}
-						<Route path="/calendar" element={<div>Calendar</div>} />
+						<Route path="/calendar" element={<CalendarCoach />} />
 						<Route path="*" element={<MissingPage />} />
 					</Routes>
 				</main>
