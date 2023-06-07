@@ -10,7 +10,7 @@ const Login = () => {
 	// const from = location.state?.from?.pathname || '/cabinet';
 	const from = '/cabinet';
 
-	const { user, logInUser } = useAuth();
+	const { auth, logInUser } = useAuth();
 	const [authError, setAuthError] = useState(null);
 	const {
 		register,
@@ -30,7 +30,7 @@ const Login = () => {
 		const error = await logInUser(values);
 		if (error) {
 			if (!error.response) {
-				setAuthError('Сервер не віподвідає');
+				setAuthError('Сервер не відповідає');
 			} else {
 				setAuthError('Невірні вхідні дані');
 			}
@@ -40,8 +40,8 @@ const Login = () => {
 		}
 	};
 
-	if (user?.user_profile) {
-		return <Navigate to={from} replace />;
+	if (auth) {
+		return <Navigate to={'/cabinet'} replace />;
 	}
 
 	return (

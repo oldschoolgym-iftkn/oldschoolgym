@@ -27,6 +27,9 @@ export const AuthProvider = ({ children }) => {
 
 	const api = useAxios();
 	const [initLoading, setInitLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const [success, setSuccess] = useState(false);
+	const [error, setError] = useState(false);
 
 	const logInUser = async ({ email, password }) => {
 		try {
@@ -96,6 +99,51 @@ export const AuthProvider = ({ children }) => {
 					...jwt_decode(auth.access),
 					user_profile: response.data,
 				});
+				setSuccess(true);
+				setLoading(false);
+				setInitLoading(false);
+				return null;
+			}
+			setError(true);
+			setLoading(false);
+			return response;
+		} catch (err) {
+			setError(true);
+			setLoading(false);
+			return err;
+		}
+	};
+
+	const updateUserProfile = async (data) => {
+		try {
+			const response = await axios.patch('/user/api/', data, {
+				params: { user_id: jwt_decode(auth.access).user_id },
+			});
+			if (response.status === 200) {
+				setUser({
+					...jwt_decode(auth.access),
+					user_profile: { ...response.data, verifying: user.userprofile.verifying },
+				});
+				console.log('setUser from updateProfile', {
+					...jwt_decode(auth.access),
+					user_profile: { ...response.data, verifying: user.userprofile.verifying },
+				});
+				return null;
+			}
+			// setInitLoading(false);
+			return response;
+		} catch (err) {
+			return err;
+		}
+	};
+
+	const sendCoachApplication = async (data) => {
+		try {
+			const response = await axios.post('/coach/api/send_coach_application', data, {
+				params: { user_id: jwt_decode(auth.access).user_id },
+			});
+			if (response.status === 200) {
+				console.log('sendCoachApplication');
 				return null;
 			}
 			// setInitLoading(false);
@@ -110,37 +158,47 @@ export const AuthProvider = ({ children }) => {
 		setAuth,
 		user,
 		setUser,
+		loading,
+		success,
+		error,
 		logInUser,
 		registerUser,
 		logOutUser,
 		loadUserProfile,
+		updateUserProfile,
+		sendCoachApplication,
 	};
 
-	useEffect(() => {
-		// if (initLoading) {
-		// 	updateToken();
-		// }
+	// useEffect(() => {
+	// 	// if (initLoading) {
+	// 	// 	updateToken();
+	// 	// }
 
-		// const repeatTime = 25 * 1000;
-		// const interval = setInterval(() => {
-		// 	if (auth) {
-		// 		updateToken();
-		// 	}
-		// }, repeatTime);
+	// 	// const repeatTime = 25 * 1000;
+	// 	// const interval = setInterval(() => {
+	// 	// 	if (auth) {
+	// 	// 		updateToken();
+	// 	// 	}
+	// 	// }, repeatTime);
 
-		// return () => clearInterval(interval);
-		if (auth) {
-			// setUser(jwt_decode(auth.access));
-			if (!loadUserProfile()) console.log('logout?');
-			setInitLoading(false);
-		} else {
-			setInitLoading(false);
-		}
-	}, [auth]);
+	// 	// return () => clearInterval(interval);
+	// 	if (auth) {
+	// 		if (initLoading) loadUserProfile();
+	// 		// setUser(jwt_decode(auth.access));
+	// 		// if (!loadUserProfile()) console.log('logout?');
+	// 		// setInitLoading(false);
+	// 	} else {
+	// 		setInitLoading(false);
+	// 	}
+	// }, [auth, initLoading]);
 	// console.log({ user });
+
 	return (
 		<AuthContext.Provider value={contextData}>
-			{initLoading ? <Loading /> : children}
+			{
+				// initLoading ? <Loading /> :
+				children
+			}
 		</AuthContext.Provider>
 	);
 };
