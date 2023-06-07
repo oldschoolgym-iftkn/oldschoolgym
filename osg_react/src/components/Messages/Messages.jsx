@@ -10,11 +10,11 @@ const Messages = () => {
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
 			<div className="text-2xl border-b border-black max-lg:flex max-lg:flex-col">
-				<button className="inline-block py-4 font-bold border-r border-black px-14 max-lg:border-b max-lg:border-r-0">
-					Чати з клієнтами
-				</button>
-				<button className="inline-block py-4 border-r border-black px-14 max-lg:border-none">
+				<button className="inline-block py-4 font-bold border-r border-black bg-neutral-300 px-14 max-lg:border-none rounded-tl-3xl">
 					Всі чати
+				</button>
+				<button className="inline-block py-4 border-r border-black px-14 max-lg:border-b max-lg:border-r-0">
+					Чати з клієнтами
 				</button>
 			</div>
 			<div className="flex-1 p-12 overflow-y-auto text-2xl">
@@ -24,7 +24,10 @@ const Messages = () => {
 							<div className="flex transition ease-out duration-200 bg-transparent rounded-3xl hover:bg-neutral-400/90 hover:scale-[102%] hover:rounded-3xl">
 								<button
 									onClick={() => {
-										navigate('/cabinet/messages/' + (index + 1));
+										// navigate('/cabinet/messages/' + (index + 1));
+										navigate(
+											'/cabinet/messages/' + chat.users.find((obj) => obj.id !== user.user_id).id,
+										);
 									}}
 									className="flex flex-grow py-3 text-left justify-items-start">
 									<img

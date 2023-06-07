@@ -12,18 +12,24 @@ import MissingPage from '../MissingPage';
 import Loading from '../Loading';
 
 const Chat = () => {
-	const [isLoading, setLoading] = useState(true);
 	const navigate = useNavigate();
 	const axios = useAxios();
 	const { id } = useParams();
 	const indexChat = Number(id) - 1;
 	const { user, auth } = useAuth();
-	const { userChats } = useChat();
+	const { userChats, createChat, createChatError } = useChat();
+	const [isLoading, setLoading] = useState(true);
+	const [isError, setIsError] = useState(() => createChatError);
 	const textAreaRef = useRef(null);
 	const containerRef = useRef(null);
 	const [userMessage, setUserMessage] = useState('');
+	console.log({ userChats });
+	const [chat, setChat] = useState(
+		userChats.find((chat) => chat.users.find((user) => user.id === Number(id))),
+	);
+	console.log({ chat, id }); //
 	const [socketUrl, setSocketUrl] = useState(
-		process.env.REACT_APP_API_WEBSOCKETS_URL + `/ws/chat/${userChats[indexChat].id}/`,
+		process.env.REACT_APP_API_WEBSOCKETS_URL + `/ws/chat/${chat?.id}/`,
 	);
 	const [messageHistory, setMessageHistory] = useState([]);
 	const lastMessageRef = useRef(null);
@@ -31,9 +37,6 @@ const Chat = () => {
 	useEffect(() => {
 		containerRef.current?.scroll({ top: containerRef.current?.scrollHeight, behavior: 'smooth' });
 	}, [messageHistory]);
-	// useEffect(() => {
-	// 	lastMessageRef?.current?.scrollIntoView({ behavior: 'smooth' });
-	// }, [lastMessageRef]);
 
 	useEffect(() => {
 		if (textAreaRef.current) {
@@ -59,12 +62,17 @@ const Chat = () => {
 
 	const getMessageHistory = () => {
 		axios
-			.get('/chat/api/message/', { params: { chat_id: userChats[indexChat].id } })
+			.get('/chat/api/message/', { params: { chat_id: chat.id } })
 			.then((res) => {
 				setMessageHistory(res.data);
 				setLoading(false);
-			});
+			})
+			.catch((err) => {});
 	};
+
+	// const createNewChat = (memberId) => {
+	// 	axios.post('/chat/api/chat/', { users: [user.id, memberId] }).then(joinC);
+	// };
 
 	const createNewMessage = (message) => {
 		setMessageHistory((prev) => prev.concat(message));
@@ -87,11 +95,22 @@ const Chat = () => {
 	};
 
 	useEffect(() => {
-		if (userChats[indexChat]) {
+		if (chat) {
 			getMessageHistory();
+		} else if (!isError && !createChatError) {
+			createChat(Number(id))
+				.then(() => {
+					setLoading(false);
+				})
+				.catch((err) => {
+					console.log(err);
+					setIsError(true);
+				});
 		}
-	}, []);
-	if (!userChats[indexChat]) {
+	}, [chat, createChat, createChatError, id, isError]);
+
+	console.log({ isError });
+	if (isError) {
 		return <MissingPage />;
 	}
 
@@ -99,7 +118,7 @@ const Chat = () => {
 		return <Loading />;
 	}
 
-	const member = userChats[indexChat].users.find((obj) => obj.id !== user.user_id);
+	const member = chat.users.find((obj) => obj.id !== user.user_id);
 
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
@@ -124,7 +143,7 @@ const Chat = () => {
 			<div className="flex flex-col flex-1 px-6 pb-5 space-y-px overflow-y-auto">
 				<div ref={containerRef} className="flex-1 px-16 overflow-y-auto text-base">
 					{messageHistory.map((message, index) => {
-						const sender = userChats[indexChat].users.find((obj) => obj.id === message.sender);
+						const sender = chat.users.find((obj) => obj.id === message.sender);
 						return (
 							<div
 								key={message.id}

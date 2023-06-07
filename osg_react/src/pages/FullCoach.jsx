@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useForm, Controller } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -200,11 +200,11 @@ const FullCoach = () => {
 									<p className="text-3xl font-medium text-center">
 										{coach.user_profile.last_name + ' ' + coach.user_profile.first_name}
 									</p>
-									<button
-										onClick={openModal}
+									<Link
+										to={'/cabinet/messages/' + id}
 										className="inline-block select-none text-center w-full min-w-[16rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
 										Написати тренеру
-									</button>
+									</Link>
 									<button
 										onClick={openModal}
 										className="inline-block select-none text-center w-full min-w-[16rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">

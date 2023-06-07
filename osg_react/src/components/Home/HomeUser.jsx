@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../Button';
 
-const Home = () => {
+const HomeUser = () => {
 	return (
 		<div className="h-full p-4 border border-black rounded-3xl">
 			<div className="grid grid-cols-[repeat(2,1fr)] grid-rows-[repeat(2,minmax(0,1fr))] h-full gap-8 px-4 text-2xl font-semibold max-xl:grid-cols-1 ">
@@ -16,14 +16,6 @@ const Home = () => {
 									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
 									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
 									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
-									<p>01.04.2023 / 11:15-12:35 / Lorem, ipsum. </p>
 								</div>
 							</div>
 							<div className="mx-auto w-fit ">
@@ -33,18 +25,14 @@ const Home = () => {
 					</div>
 				</div>
 				<div className="flex flex-col h-full">
-					<h4 className="text-center">Клієнти</h4>
+					<h4 className="text-center">Тренери</h4>
 					<div className="flex-1 p-6 overflow-y-auto border border-black rounded-3xl">
 						<div className="flex flex-col justify-between h-full p-4 space-y-4 border border-black rounded-3xl">
 							<div className="flex items-center justify-center flex-1 ">
-								<img
-									src="/img/client_big_icon.svg"
-									alt="clientIcon"
-									className="w-56 h-56 mx-auto"
-								/>
+								<img src="/img/coach_big_icon.svg" alt="coachIcon" className="w-56 h-56 mx-auto" />
 							</div>
 							<div className="mx-auto w-fit ">
-								<Button linkTo={'/cabinet/clients'}>Переглянути</Button>
+								<Button linkTo={'/cabinet/coaches'}>Переглянути</Button>
 							</div>
 						</div>
 					</div>
@@ -60,7 +48,7 @@ const Home = () => {
 									className="inline-block w-56 h-56"
 								/>
 								<p className="text-xl font-normal h-fit">
-									Будьте на зв’язку, переглядаючи чати зі своїми клієнтами
+									Будьте на зв’язку, переглядаючи чати зі своїми тренерами
 								</p>
 							</div>
 							<div className="mx-auto w-fit ">
@@ -87,4 +75,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default HomeUser;
