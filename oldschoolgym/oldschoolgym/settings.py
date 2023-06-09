@@ -61,6 +61,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    os.environ.get('ALLOWED_HOST'),
+]
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOST')]
 
 CORS_ALLOW_METHODS = (
