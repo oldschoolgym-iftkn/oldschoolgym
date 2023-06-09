@@ -65,7 +65,6 @@ CORS_ALLOWED_ORIGINS = [
     os.environ.get('ALLOWED_HOST'),
     'http://localhost:3000'
 ]
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOST')]
 
 CORS_ALLOW_METHODS = (
     "DELETE",
