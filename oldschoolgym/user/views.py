@@ -19,7 +19,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 class UserAPI(APIView):
 
-    @method_decorator(cache_page(60 * 15, key_prefix='users'))
+    # @method_decorator(cache_page(60 * 15, key_prefix='users'))
     @swagger_auto_schema(operation_description='To get all users.\nReturns a list with user (confirmed/unconfirmed).',
                          responses={200: MyUserSerializerToView(many=True)})
     def get(self, request, format=None):
@@ -100,7 +100,7 @@ def confirm_email(request):
 
 @swagger_auto_schema(method='get', manual_parameters=[get_header_params()],
                      operation_description='To get user`s chats. Returns all chat, where user is a member.')
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 @vary_on_headers("Authorization")
 @api_view(['GET'])
 @permission_classes([VerifiedOnly])
@@ -112,7 +112,7 @@ def get_all_chats(request):
 
 @swagger_auto_schema(method='get', manual_parameters=[get_query_params("user_id", "User id")],
                      operation_description='To get user with specific id. Returns single user object.')
-@cache_page(60 * 15, key_prefix='get_user_by_id')
+# @cache_page(60 * 15, key_prefix='get_user_by_id')
 @api_view(['GET'])
 def get_user_by_id(request):
     try:
