@@ -62,15 +62,11 @@ const Cabinet = () => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	// if (user.user_profile.verifying.is_activate !== true) {
-	// 	console.log('"cabinet" redirect to confirm, beacause email not activated');
-	// 	return <Navigate to={'/confirm-email'} replace />;
-	// }
 	const currentNav = user.role === 0 ? navUser : navCoach;
 	return (
 		<div className="flex flex-col h-full ">
 			<Header />
-			<div className="flex flex-row overflow-y-auto h-screen max-xl:h-full pt-[60px] max-xl:pt-[146px]">
+			<div className="flex flex-row overflow-y-auto h-screen pt-[60px] max-xl:pt-[146px]">
 				<SideBar navigation={currentNav} avatar={user.user_profile.avatar} />
 				<main className="flex-1 h-full text-5xl p-7 ">
 					<Routes>
