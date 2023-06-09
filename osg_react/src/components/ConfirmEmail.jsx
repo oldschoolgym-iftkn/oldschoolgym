@@ -11,8 +11,10 @@ const CONFIRM_EMAIL_URL = '/user/api/confirm_mail/';
 const ConfirmEmail = () => {
 	const navigate = useNavigate();
 	const api = useAxios();
-	const { user } = useAuth();
+	const { user, loadUserProfile } = useAuth();
 	const [confirmError, setConfirmError] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [success, setSuccess] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -32,6 +34,7 @@ const ConfirmEmail = () => {
 				code,
 			});
 			if (response.status === 204) {
+				await loadUserProfile();
 				return null;
 			}
 			return response;
@@ -52,11 +55,11 @@ const ConfirmEmail = () => {
 			setError('code', {}, { shouldFocus: true });
 			console.error(error);
 		} else {
-			navigate('/cabinet');
+			setSuccess(true);
 		}
 	};
-	if (user.user_profile.verifying.is_activate === true) {
-		console.log('"confirm" redirect to cabinet, beacause email confirmed');
+	if (user?.user_profile?.verifying.is_activate === true || success) {
+		console.log('"confirm" redirect to cabinet, because email confirmed');
 		return <Navigate to={'/cabinet'} replace />;
 	}
 	return (
@@ -98,7 +101,7 @@ const ConfirmEmail = () => {
 					<button
 						type="submit"
 						className="w-full shadow-md shadow-gray-400 text-white bg-black hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full px-5 py-2.5 text-center">
-						Підтвердити
+						{loading ? 'Підтвердження...' : 'Підтвердити'}
 					</button>
 				</div>
 			</form>

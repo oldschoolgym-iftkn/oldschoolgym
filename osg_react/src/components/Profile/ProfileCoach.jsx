@@ -1,8 +1,10 @@
 import Modal from 'react-modal';
 import { useForm, Controller } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
+
+Modal.setAppElement('#root');
 
 const cities = [
 	'Вінниця',
@@ -44,8 +46,10 @@ const specs = [
 ];
 
 const ProfileCoach = () => {
-	const [showModal, setShowModal] = useState({ show: false, activeSubType: 0 });
-	const { user } = useAuth();
+	const [showModal, setShowModal] = useState({ show: false });
+	const [showEditModal, setShowEditModal] = useState({ show: false });
+	const [rates, setRates] = useState([]);
+	const { sendCoachApplication } = useAuth();
 
 	const {
 		register,
@@ -58,9 +62,6 @@ const ProfileCoach = () => {
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
-			first_name: user.user_profile.first_name,
-			last_name: user.user_profile.last_name,
-			gender: user.user_profile.gender,
 			city: cities[0],
 			category: '0',
 			experience: 0,
@@ -83,350 +84,247 @@ const ProfileCoach = () => {
 			category: Number(values.category),
 			type_training: Number(values.category),
 			experience: Number(values.experience),
+			rates: JSON.stringify(rates),
 		};
-		console.log('Profile patch', parseValues);
+		console.log('sendCoach', parseValues);
+		sendCoachApplication(parseValues);
 	};
-	const openModal = (type) => {
-		setShowModal({ show: true, activeSubType: type });
+	const openCreateRateModal = () => {
+		setShowModal({ show: true });
 	};
 
-	const closeModal = () => {
-		setShowModal({ show: false, activeSubType: 0 });
+	const closeCreateRateModal = () => {
+		setShowModal({ show: false });
+	};
+	const openEditRateModal = (index) => {
+		setShowEditModal({ show: true, rate: rates[index], index });
+	};
+
+	const closeEditRateModal = () => {
+		setShowEditModal({ show: false });
 	};
 	return (
-		<div className="w-full space-y-6">
+		<>
 			<form
-				className="w-full p-16 space-y-12 border border-black rounded-3xl"
+				className="w-full px-16 py-8 space-y-8 border border-black rounded-3xl"
 				onSubmit={handleSubmit(onSubmit)}>
-				<div className="grid grid-cols-2 grid-rows-3 gap-16">
-					<div className="flex flex-col justify-center px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
-						<img
-							src={process.env.REACT_APP_API_URL + user.user_profile.avatar}
-							alt="Avatar"
-							className="w-40 h-40 mx-auto rounded-full select-none bg-black/20"
-						/>
-						<p className="text-3xl font-medium text-center">
-							{user.user_profile.first_name + ' ' + user.user_profile.last_name}
-						</p>
-					</div>
-					<div className="row-span-2 px-10 py-8 space-y-6 border-2 border-black rounded-2xl">
-						{/* <div className="border-t-2 border-black"></div> */}
-						<div className="w-full ">
-							<span className="block px-4 -mb-5 text-lg text-gray-500 bg-white select-none w-fit font-extralight">
-								Ім'я
-							</span>
-							<input
-								type="text"
-								defaultValue={user.user_profile.first_name}
-								{...register('first_name', { required: "Вкажіть своє ім'я" })}
-								className="w-full px-4 py-2 text-2xl bg-transparent border-0 border-b-2 border-black/40 focus:border- focus:border-black focus:ring-transparent"
-							/>
-						</div>
-						<div className="w-full ">
-							<span className="block px-4 -mb-5 text-lg text-gray-500 select-none font-extralight">
-								Прізвище
-							</span>
-							<input
-								type="text"
-								defaultValue={user.user_profile.last_name}
-								{...register('last_name', { required: 'Вкажіть своє прізвище' })}
-								className="w-full px-4 py-2 text-2xl bg-transparent border-0 border-b-2 border-black/40 focus:border- focus:border-black focus:ring-transparent"
-							/>
-						</div>
-						<div>
-							<label className="block px-4 text-lg text-gray-500 select-none font-extralight">
-								Стать
-							</label>
-							<ul className="items-center w-full text-lg text-black border border-black rounded-lg xl:flex">
-								<li className="w-full p-2.5 border-b border-black xl:border-b-0 xl:border-r">
-									<input
-										id="genderMale"
-										type="radio"
-										value="M"
-										{...register('gender', { required: 'Вкажіть стать' })}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="genderMale" className="text-black align-middle">
-										Чулувік
-									</label>
-								</li>
-								<li className="w-full p-2.5">
-									<input
-										id="genderFemale"
-										type="radio"
-										value="F"
-										{...register('gender', { required: 'Вкажіть стать' })}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="genderFemale" className="text-black align-middle">
-										Жінка
-									</label>
-								</li>
-							</ul>
-						</div>
-
-						<div>
-							<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
-								Місто
-							</span>
-							{/* <select
-								id=""
-								className="block w-full px-4 py-2 text-xl border border-black rounded-lg focus:ring-gray-500 focus:border-gray-500 ">
-								{cities.map((obj, index) => (
-									<option key={index} value={String(index)} className="text-lg">
-										{obj}
-									</option>
-								))}
-							</select> */}
-							<Controller
-								control={control}
-								name="city"
-								render={() => (
-									<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
-										{cities.map((obj, index) => (
-											<option key={index} value={obj} className="text-lg">
-												{obj}
-											</option>
-										))}
-									</select>
-								)}
-							/>
-						</div>
-
-						<div>
-							<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
-								Спеціалізація
-							</span>
-							{/* <select
-								id=""
-								className="block w-full px-4 py-2 text-xl border border-black rounded-lg focus:ring-gray-500 focus:border-gray-500 ">
-								{specs.map((obj, index) => (
-									<option key={index} value={String(index)} className="text-lg">
-										{obj}
-									</option>
-								))}
-							</select> */}
-							<Controller
-								control={control}
-								name="category"
-								render={() => (
-									<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
-										{specs.map((obj, index) => (
-											<option key={index} value={String(index)} className="text-lg">
-												{obj}
-											</option>
-										))}
-									</select>
-								)}
-							/>
-						</div>
-						<div className="text-xl">
-							<label className="inline-block px-4 text-lg text-gray-500 select-none font-extralight">
-								Досвід:
-							</label>
-							<input
-								type="number"
-								defaultValue={0}
-								min={0}
-								max={30}
-								{...register('experience', { required: 'Вкажіть свій досвід' })}
-								className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
-							/>
-						</div>
-						<div className="">
-							<div className="block px-4 text-lg text-gray-500 select-none font-extralight">
-								Тип занять
+				<h2 className="text-4xl ">Профіль тренера</h2>
+				<div className="px-24 space-y-8 text-center">
+					<h3 className="text-3xl">Інформація про вас</h3>
+					<div className="w-full px-10 py-6 text-2xl text-left border-2 border-black rounded-2xl">
+						<div className="max-w-3xl mx-auto space-y-2">
+							<div>
+								<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+									Місто
+								</span>
+								<Controller
+									control={control}
+									name="city"
+									render={() => (
+										<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
+											{cities.map((obj, index) => (
+												<option key={index} value={obj} className="text-lg">
+													{obj}
+												</option>
+											))}
+										</select>
+									)}
+								/>
 							</div>
-							{/* <div className="pl-2 text-xl">
-								<div className="space-x-2">
-									<input
-										type="checkbox"
-										// name="lessonsType"
-										id="lesson1"
-										{...register('type_training', {
-											required: 'Вкажіть опис свого профілю',
-											validate: validation.atLeastOne,
-										})}
-										className="rounded checked:bg-black focus:ring-gray-500"
-									/>
-									<label htmlFor="lesson1">онлайн</label>
-								</div>
-								<div className="space-x-2">
-									<input
-										type="checkbox"
-										// name="lessonsType"
-										id="lesson2"
-										{...register('type_training', {
-											required: 'Вкажіть опис свого профілю',
-											validate: validation.atLeastOne,
-										})}
-										className="rounded checked:bg-black focus:ring-gray-500"
-									/>
-									<label htmlFor="lesson2">офлайн</label>
-								</div>
-							</div> */}
-							<ul className="items-center w-full text-lg text-black border border-black rounded-lg 2xl:flex">
-								<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
-									<input
-										id="typeOnline"
-										type="radio"
-										value="0"
-										{...register('type_training', {
-											required: 'Вкажіть тип занять',
-											validate: validation.type_training,
-										})}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="typeOnline" className="text-black align-middle">
-										Онлайн
-									</label>
-								</li>
-								<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
-									<input
-										id="typeOffline"
-										type="radio"
-										value="1"
-										{...register('type_training', {
-											required: 'Вкажіть тип занять',
-											validate: validation.type_training,
-										})}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="typeOffline" className="text-black align-middle">
-										Офлайн
-									</label>
-								</li>
-								<li className="w-full p-2.5">
-									<input
-										id="typeMixed"
-										type="radio"
-										value="3"
-										{...register('type_training', {
-											required: 'Вкажіть тип занять',
-											validate: validation.type_training,
-										})}
-										className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
-									/>
-									<label htmlFor="typeMixed" className="text-black align-middle">
-										Змішаний
-									</label>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div className="px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
-						<div className="w-full px-4 pt-4 pb-2 border-b border-black">
-							<span className="block text-lg text-gray-500 select-none font-extralight">Пошта</span>
-							<p className="text-2xl font-medium">{user.user_profile.email}</p>
-						</div>
-						<div className="w-full px-4 pt-4 pb-2 border-b border-black">
-							<span className="block text-lg text-gray-500 select-none font-extralight">
-								Телефон
-							</span>
-							<p className="text-2xl font-medium">{user.user_profile.phone}</p>
-						</div>
-					</div>
 
-					<div
-						// contentEditable
-						// role="textbox"
-						className="col-span-2 px-10 py-6 space-y-2 text-2xl text-left border-2 border-black rounded-2xl">
+							<div>
+								<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+									Спеціалізація
+								</span>
+								<Controller
+									control={control}
+									name="category"
+									render={() => (
+										<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
+											{specs.map((obj, index) => (
+												<option key={index} value={String(index)} className="text-lg">
+													{obj}
+												</option>
+											))}
+										</select>
+									)}
+								/>
+							</div>
+							<div className="text-xl">
+								<label className="inline-block px-4 text-lg text-gray-500 select-none font-extralight">
+									Досвід:
+								</label>
+								<input
+									type="number"
+									defaultValue={0}
+									min={0}
+									max={30}
+									{...register('experience', { required: 'Вкажіть свій досвід' })}
+									className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
+								/>
+							</div>
+							<div className="">
+								<div className="block px-4 text-lg text-gray-500 select-none font-extralight">
+									Тип занять
+								</div>
+								<ul className="items-center w-full text-lg text-black border border-black rounded-lg 2xl:flex">
+									<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
+										<input
+											id="typeOnline"
+											type="radio"
+											value="0"
+											{...register('type_training', {
+												required: 'Вкажіть тип занять',
+												validate: validation.type_training,
+											})}
+											className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
+										/>
+										<label htmlFor="typeOnline" className="text-black align-middle">
+											Онлайн
+										</label>
+									</li>
+									<li className="w-full p-2.5 border-b border-black 2xl:border-b-0 2xl:border-r">
+										<input
+											id="typeOffline"
+											type="radio"
+											value="1"
+											{...register('type_training', {
+												required: 'Вкажіть тип занять',
+												validate: validation.type_training,
+											})}
+											className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
+										/>
+										<label htmlFor="typeOffline" className="text-black align-middle">
+											Офлайн
+										</label>
+									</li>
+									<li className="w-full p-2.5">
+										<input
+											id="typeMixed"
+											type="radio"
+											value="3"
+											{...register('type_training', {
+												required: 'Вкажіть тип занять',
+												validate: validation.type_training,
+											})}
+											className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
+										/>
+										<label htmlFor="typeMixed" className="text-black align-middle">
+											Змішаний
+										</label>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div className="px-10 py-6 space-y-2 text-2xl text-left border-2 border-black rounded-2xl">
 						<label
 							htmlFor="description"
 							className="block text-lg text-gray-500 select-none font-extralight">
 							Опис профілю
 						</label>
-						{/* <textarea id="description"></textarea> */}
-
 						<textarea
+							placeholder="Розкажіть про себе..."
 							rows={6}
 							maxLength={250}
+							aria-invalid={errors.info_block ? 'true' : 'false'}
 							{...register('info_block', { required: 'Вкажіть опис свого профілю' })}
-							className="w-full text-2xl rounded resize-none border-black/30 focus:border-black/60 focus:ring-black/60"></textarea>
+							className="w-full text-2xl rounded aria-[invalid=true]:border-red-500 aria-[invalid=true]:border-2 resize-none placeholder:text-xl  border-black/30 focus:border-black/60 focus:ring-black/60"></textarea>
 					</div>
 				</div>
-				<div className="flex justify-end space-x-10">
-					<button className="inline-block select-none text-center min-w-[20rem] hover:bg-neutral-400/50 px-8 py-3 rounded-full text-xl leading-none font-normal bg-white text-black border border-black">
-						Відмінити
-					</button>
-					<button
-						type="submit"
-						className="inline-block select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
-						Зберегти зміни
-					</button>
-				</div>
-			</form>
-			<div className="w-full p-16 space-y-12 border border-black rounded-3xl">
 				<div className="px-24 space-y-8 text-center">
-					<h2 className="text-3xl">Абонементи на вибір</h2>
+					<h3 className="text-3xl">Абонементи на вибір</h3>
 					<div className="grid grid-cols-2 gap-24">
-						<Plan {...exampleSubsription} onClick={() => openModal(0)} />
-						<Plan {...exampleSubsription} onClick={() => openModal(1)} />
-						{/* <Plan {...exampleSubsription} onClick={() => openModal(2)} /> */}
+						{rates.map((rate, index) => (
+							<Plan {...rate} key={index} onClick={() => openEditRateModal(index)} />
+						))}
 					</div>
 				</div>
 				<button
-					onClick={() => alert('boo')}
+					type="button"
+					onClick={() => openCreateRateModal()}
 					className="block mx-auto select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-4 rounded-2xl text-xl leading-none font-normal bg-black text-white">
 					Додати новий тариф
 				</button>
-				<OrderModal modalIsOpen={showModal} closeModal={closeModal} />
-			</div>
-		</div>
+				<div className="flex justify-end space-x-10">
+					<button
+						type="submit"
+						className="inline-block select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
+						Запросити верифікацію
+					</button>
+				</div>
+			</form>
+			<CreateRateModal
+				modalIsOpen={showModal}
+				closeModal={closeCreateRateModal}
+				createRate={(rate) => setRates((prev) => [...prev, rate])}
+			/>
+			<EditRateModal
+				modalIsOpen={showEditModal}
+				closeModal={closeEditRateModal}
+				editRate={(rate, index) =>
+					setRates((prev) => {
+						prev[index] = rate;
+						return prev;
+					})
+				}
+				deleteRate={(index) => {
+					setRates((prev) => prev.filter((rate, i) => i !== index));
+				}}
+			/>
+		</>
 	);
 };
 const exampleSubsription = {
 	name: 'Одне заняття',
 	cost: 250,
-	lessonCount: 1,
+	lesson_count: 1,
 	imageUrl: '/img/plan_img.png',
 	description: 'Спробуй себе на один раз з моїми вміннями та порадами',
 };
 const subs = ['Одне заняття', 'Пакет занять', 'Місячний абонемент']; //
 
-const Plan = ({ name, cost, lessonCount, imageUrl, description, onClick }) => {
+const Plan = ({ rate_name, cost, lessons_count, imageUrl, description, onClick }) => {
 	return (
 		<div className="inline-block p-8 space-y-16 text-center bg-black rounded-3xl">
 			<div className="p-5 space-y-4 text-2xl bg-white rounded-3xl">
-				<p className="text-3xl font-bold">{name}</p>
+				<p className="text-3xl font-bold">{rate_name}</p>
 				<p>Ціна: {cost}₴</p>
-				<p>Кількість занять: {lessonCount}</p>
+				<p>Кількість занять: {lessons_count}</p>
 			</div>
-			<img src={imageUrl} alt="subImg" className="max-w-full mx-auto" />
+			<img src="/img/plan_img.png" alt="subImg" className="max-w-full mx-auto" />
 			<p className="text-xl text-white">{description}</p>
-			<button className="p-2 text-xl bg-white rounded-full min-w-[16rem]" onClick={onClick}>
+			<button
+				type="button"
+				className="p-2 text-xl bg-white rounded-full min-w-[16rem]"
+				onClick={onClick}>
 				Редагувати
 			</button>
 		</div>
 	);
 };
 
-const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
+const CreateRateModal = ({ modalIsOpen, afterOpenModal, closeModal, createRate }) => {
 	const {
 		register,
 		handleSubmit,
 		reset,
-		control,
 		// setError,
 		// eslint-disable-next-line
 		formState: { errors, isValid },
 	} = useForm({
-		defaultValues: {
-			topic: '',
-			// subType: String(modalIsOpen.activeSubType),
-			desc: '',
-		},
-		mode: 'onSubmit',
+		mode: 'onChange',
 		// shouldUseNativeValidation: true,
 	});
-	const closeOrderModal = () => {
+	const closeCreateRateModal = () => {
 		closeModal();
 		reset();
 	};
 
 	const onSubmit = async (values) => {
 		console.log(values);
-		closeOrderModal();
+		createRate(values);
+		closeCreateRateModal();
 	};
 
 	return (
@@ -434,60 +332,192 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 			closeTimeoutMS={250}
 			isOpen={modalIsOpen.show}
 			onAfterOpen={afterOpenModal}
-			onRequestClose={closeOrderModal}
+			onRequestClose={closeCreateRateModal}
 			className={'mt-[84px] mx-auto w-fit '} //absolute inset-0
 			contentLabel="Fill order">
 			<div className="p-6 bg-white border border-black w-fit rounded-3xl  &[ReactModal__Overlay--after-open:translate-y-0]">
 				<div className="text-right">
-					<button onClick={closeModal}>
+					<button onClick={closeCreateRateModal}>
 						<XMarkIcon className="w-10 h-10 text-black" />
 					</button>
 				</div>
 				<form className="px-24 mb-12 space-y-12" onSubmit={handleSubmit(onSubmit)}>
-					<h2 className="px-6 text-4xl text-center">Заповніть заявку</h2>
+					<h2 className="px-6 text-4xl text-center">Введіть дані про тариф</h2>
 					<div className="w-full ">
 						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
-							Тема
+							Назва тарифу
 						</span>
 						<input
 							type="text"
-							{...register('topic', { required: 'Вкажіть тему' })}
-							className="w-full px-4 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
+							aria-invalid={errors.rate_name ? 'true' : 'false'}
+							{...register('rate_name', { required: 'Вкажіть назву' })}
+							className="w-full px-4 aria-[invalid=true]:border-red-500 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
 						/>
 					</div>
-					<div>
+					<div className="w-full ">
 						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
-							Виберіть абонемент
+							Ціна
 						</span>
-						<Controller
-							control={control}
-							name="subType"
-							render={() => (
-								<select
-									className="block w-full px-4 py-2 text-xl border rounded focus:ring-black focus:border-black "
-									defaultValue={String(modalIsOpen.activeSubType)}>
-									{subs.map((obj, index) => (
-										<option key={index} value={String(index)} className="text-lg">
-											{obj}
-										</option>
-									))}
-								</select>
-							)}
+						<input
+							type="number"
+							aria-invalid={errors.cost ? 'true' : 'false'}
+							min={0}
+							defaultValue={0}
+							{...register('cost', { required: 'Вкажіть ціну' })}
+							className="w-full px-4 aria-[invalid=true]:border-red-500 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
 						/>
 					</div>
+
+					<div className="w-full ">
+						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+							Кількість занять
+						</span>
+						<input
+							type="number"
+							aria-invalid={errors.lessons_count ? 'true' : 'false'}
+							min={1}
+							defaultValue={1}
+							{...register('lessons_count', { required: 'Вкажіть кількість занять' })}
+							className="w-full px-4 aria-[invalid=true]:border-red-500 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
+						/>
+					</div>
+
 					<div className="w-full">
 						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
 							Опис
 						</span>
 						<textarea
-							{...register('desc', { required: 'Вкажіть текст заявки' })}
-							className="w-full rounded resize-none min-h-[8rem] h-full text-xl focus:border-black focus:ring-black"></textarea>
+							aria-invalid={errors.desc ? 'true' : 'false'}
+							{...register('description', { required: 'Вкажіть текст заявки' })}
+							className="w-full aria-[invalid=true]:border-red-500 rounded resize-none min-h-[8rem] h-full text-xl focus:border-black focus:ring-black"></textarea>
 					</div>
 					<button
 						type="submit"
 						className="inline-block select-none text-center w-full min-w-[16rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
-						Відправити
+						Додати
 					</button>
+				</form>
+			</div>
+		</Modal>
+	);
+};
+const EditRateModal = ({ modalIsOpen, afterOpenModal, closeModal, editRate, deleteRate }) => {
+	const {
+		register,
+		handleSubmit,
+		reset,
+		// setError,
+		// eslint-disable-next-line
+		formState: { errors, isValid },
+	} = useForm({
+		defaultValues: {
+			rate_name: modalIsOpen.rate?.rate_name,
+			cost: modalIsOpen.rate?.cost,
+			lessons_count: modalIsOpen.rate?.lessons_count,
+			description: modalIsOpen.rate?.desc,
+		},
+		mode: 'onChange',
+		// shouldUseNativeValidation: true,
+	});
+	useEffect(() => {
+		reset();
+	}, [modalIsOpen, reset]);
+
+	const closeEditRateModal = () => {
+		closeModal();
+		reset();
+	};
+
+	const onSubmit = async (values) => {
+		console.log(values);
+		editRate(values, modalIsOpen.index);
+		closeEditRateModal();
+	};
+
+	const handleDelete = () => {
+		deleteRate(modalIsOpen.index);
+		closeEditRateModal();
+	};
+
+	return (
+		<Modal
+			closeTimeoutMS={250}
+			isOpen={modalIsOpen.show}
+			onAfterOpen={afterOpenModal}
+			onRequestClose={closeEditRateModal}
+			className={'mt-[84px] mx-auto w-fit '} //absolute inset-0
+			contentLabel="Fill order">
+			<div className="p-6 bg-white border border-black w-fit rounded-3xl  &[ReactModal__Overlay--after-open:translate-y-0]">
+				<div className="text-right">
+					<button onClick={closeEditRateModal}>
+						<XMarkIcon className="w-10 h-10 text-black" />
+					</button>
+				</div>
+				<form className="px-24 mb-12 space-y-12" onSubmit={handleSubmit(onSubmit)}>
+					<h2 className="px-6 text-4xl text-center">Змініть дані про тариф</h2>
+					<div className="w-full ">
+						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+							Назва тарифу
+						</span>
+						<input
+							type="text"
+							defaultValue={modalIsOpen.rate?.rate_name}
+							aria-invalid={errors.rate_name ? 'true' : 'false'}
+							{...register('rate_name', { required: 'Вкажіть назву' })}
+							className="w-full px-4 aria-[invalid=true]:border-red-500 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
+						/>
+					</div>
+					<div className="w-full ">
+						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+							Ціна
+						</span>
+						<input
+							type="number"
+							aria-invalid={errors.cost ? 'true' : 'false'}
+							min={0}
+							defaultValue={modalIsOpen.rate?.cost}
+							{...register('cost', { required: 'Вкажіть ціну' })}
+							className="w-full px-4 aria-[invalid=true]:border-red-500 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
+						/>
+					</div>
+
+					<div className="w-full ">
+						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+							Кількість занять
+						</span>
+						<input
+							type="number"
+							aria-invalid={errors.lessons_count ? 'true' : 'false'}
+							min={1}
+							defaultValue={modalIsOpen.rate?.lessons_count}
+							{...register('lessons_count', { required: 'Вкажіть кількість занять' })}
+							className="w-full px-4 aria-[invalid=true]:border-red-500 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
+						/>
+					</div>
+
+					<div className="w-full">
+						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
+							Опис
+						</span>
+						<textarea
+							defaultValue={modalIsOpen.rate?.description}
+							aria-invalid={errors.desc ? 'true' : 'false'}
+							{...register('description', { required: 'Вкажіть текст заявки' })}
+							className="w-full aria-[invalid=true]:border-red-500 rounded resize-none min-h-[8rem] h-full text-xl focus:border-black focus:ring-black"></textarea>
+					</div>
+					<div className="flex justify-between space-x-4">
+						<button
+							onClick={handleDelete}
+							type="button"
+							className="inline-block select-none text-center w-full min-w-[8rem] hover:bg-neutral-300 px-8 py-3 rounded-full text-xl leading-none font-normal bg-red-100 text-red-700 border border-black">
+							Видалити
+						</button>
+						<button
+							type="submit"
+							className="inline-block select-none text-center w-full min-w-[8rem] hover:bg-neutral-600 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white border border-black">
+							Зберегти
+						</button>
+					</div>
 				</form>
 			</div>
 		</Modal>

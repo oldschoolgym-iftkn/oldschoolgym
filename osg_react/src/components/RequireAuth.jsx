@@ -8,11 +8,16 @@ const RequireAuth = () => {
 	const location = useLocation();
 
 	useEffect(() => {
-		if (error || !auth) logOutUser();
-	}, [auth, error, logOutUser]);
+		if ((error || !auth) && !loading) {
+			console.log('logout reqAuth', { error, auth });
+			logOutUser();
+		}
+	}, [auth, error, loading, logOutUser]);
 	useEffect(() => {
-		loadUserProfile();
-	}, []);
+		if (auth) {
+			loadUserProfile();
+		}
+	}, [auth]);
 	// console.log('loading', { user, auth });
 	if ((!user?.user_profile && auth) || loading) {
 		return <Loading />;

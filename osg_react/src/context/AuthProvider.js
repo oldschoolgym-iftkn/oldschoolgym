@@ -85,6 +85,9 @@ export const AuthProvider = ({ children }) => {
 	const logOutUser = () => {
 		setAuth(null);
 		setUser(null);
+		setLoading(false);
+		setSuccess(false);
+		setError(false);
 		localStorage.removeItem('authTokens');
 	};
 
@@ -104,12 +107,13 @@ export const AuthProvider = ({ children }) => {
 				setInitLoading(false);
 				return null;
 			}
-			setError(true);
+			setError(false);
 			setLoading(false);
 			return response;
 		} catch (err) {
 			setError(true);
 			setLoading(false);
+			throw err;
 			return err;
 		}
 	};

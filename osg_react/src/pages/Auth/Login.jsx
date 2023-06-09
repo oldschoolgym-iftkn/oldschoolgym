@@ -12,6 +12,7 @@ const Login = () => {
 
 	const { auth, logInUser } = useAuth();
 	const [authError, setAuthError] = useState(null);
+	const [loading, setLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -27,6 +28,7 @@ const Login = () => {
 	});
 
 	const onSubmit = async (values) => {
+		setLoading(true);
 		const error = await logInUser(values);
 		if (error) {
 			if (!error.response) {
@@ -34,6 +36,7 @@ const Login = () => {
 			} else {
 				setAuthError('Невірні вхідні дані');
 			}
+			setLoading(false);
 			setError('email', {}, { shouldFocus: true });
 			setError('password');
 			console.error(error);
@@ -91,7 +94,7 @@ const Login = () => {
 					<button
 						type="submit"
 						className="w-full shadow-md shadow-gray-400 text-white bg-black hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full px-5 py-2.5 text-center">
-						Увійти
+						{loading ? 'Вхід...' : 'Увійти'}
 					</button>
 					<div className="space-x-2 text-sm font-light text-gray-500">
 						<Link to="/register" className="float-left font-medium text-black hover:underline">
