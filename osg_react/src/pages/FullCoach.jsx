@@ -167,7 +167,6 @@ const FullCoach = () => {
 	if (notFound) {
 		return <MissingPage header />;
 	}
-	console.log(user.user_id, Number(id));
 	return (
 		<div className="flex flex-col min-h-screen App">
 			<Header main />
