@@ -188,7 +188,7 @@ const FullCoach = () => {
 										{coach.user_profile.last_name + ' ' + coach.user_profile.first_name}
 									</p>
 									<Link
-										to={user.user_id !== Number(id) ? '/cabinet/messages/' + id : '/cabinet'}
+										to={user?.user_id !== Number(id) ? '/cabinet/messages/' + id : '/cabinet'}
 										className="inline-block select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
 										Написати тренеру
 									</Link>
