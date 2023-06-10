@@ -8,7 +8,7 @@ const CoachCard = ({ coach }) => {
 				<img
 					src={process.env.REACT_APP_API_URL + coach.user_profile.avatar}
 					alt="Coach"
-					className="w-64 h-64 mx-auto mt-2 rounded-[6rem] "
+					className="w-64 h-64 mx-auto mt-2 rounded-[6rem] object-scale-down"
 					loading="lazy"
 				/>
 				<div className="text-2xl">

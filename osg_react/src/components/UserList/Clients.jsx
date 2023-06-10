@@ -31,11 +31,11 @@ const Clients = () => {
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
 			<div className="flex-1 p-4 overflow-y-auto text-2xl">
-				<div className="flex flex-wrap [&>*]:m-4 justify-center">
+				<div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] justify-items-stretch gap-8">
 					{isLoading ? (
 						<Loading />
 					) : (
-						clientsList.map((p, index) => <ClientCard key={p.index} {...p} />)
+						clientsList.map((p, index) => <ClientCard key={p.id} {...p} />)
 					)}
 				</div>
 			</div>

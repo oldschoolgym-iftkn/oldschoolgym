@@ -57,10 +57,10 @@ const Register = () => {
 	return (
 		<div className="min-h-screen">
 			<HeaderAuth />
-			<form className="pb-8 mx-auto w-fit" onSubmit={handleSubmit(onSubmit)}>
-				<h1 className="text-4xl text-center ">Створити аккаунт</h1>
-				<div className="grid items-center grid-cols-2 gap-4 px-6 mt-2 text-xl select-none">
-					<div className="p-2.5">
+			<form className="px-4 pb-8 mx-auto w-fit" onSubmit={handleSubmit(onSubmit)}>
+				<h1 className="text-3xl text-center sm:text-4xl ">Створити аккаунт</h1>
+				<div className="grid items-center grid-cols-1 gap-2 px-1 my-2 text-lg select-none sm:grid-cols-2 sm:text-xl sm:gap-4 sm:px-6">
+					<div className="px-2 sm:px-2.5">
 						<input
 							type="radio"
 							id="accountChoice1"
@@ -72,7 +72,7 @@ const Register = () => {
 							Користувач
 						</label>
 					</div>
-					<div className="p-2.5">
+					<div className="px-2 sm:px-2.5">
 						<input
 							type="radio"
 							id="accountChoice2"

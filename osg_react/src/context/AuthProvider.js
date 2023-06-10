@@ -141,22 +141,6 @@ export const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const sendCoachApplication = async (data) => {
-		try {
-			const response = await axios.post('/coach/api/send_coach_application', data, {
-				params: { user_id: jwt_decode(auth.access).user_id },
-			});
-			if (response.status === 200) {
-				console.log('sendCoachApplication');
-				return null;
-			}
-			// setInitLoading(false);
-			return response;
-		} catch (err) {
-			return err;
-		}
-	};
-
 	const contextData = {
 		auth,
 		setAuth,
@@ -170,7 +154,6 @@ export const AuthProvider = ({ children }) => {
 		logOutUser,
 		loadUserProfile,
 		updateUserProfile,
-		sendCoachApplication,
 	};
 
 	// useEffect(() => {

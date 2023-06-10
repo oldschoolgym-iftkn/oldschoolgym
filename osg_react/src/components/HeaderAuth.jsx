@@ -4,17 +4,16 @@ import { Link } from 'react-router-dom';
 const HeaderAuth = ({ fixed }) => {
 	return (
 		<header className={fixed ? 'py-4 fixed w-full' : 'py-4'}>
-			<div className="container p-2 mx-auto bg-white">
-				<Link to="/" className="flex items-center font-normal w-fit title-font md:mb-0">
+			<div className="p-2 mx-auto bg-white sm:container">
+				<Link to="/" className="flex items-center mx-auto font-normal w-fit title-font md:mb-0">
 					<span
-						className="mr-1 -mb-1 text-6xl leading-none max-xl:text-5xl max-md:text-4xl"
+						className="mr-1 -mb-1 text-3xl leading-none 2xl:text-6xl xl:text-5xl md:text-4xl"
 						style={{ fontFamily: "'Stick No Bills', sans-serif" }}>
 						OLDSCHOOLGYM
 					</span>
 					<svg
-						width="74"
-						height="40"
-						viewBox="0 0 74 40"
+						className="md:w-[80px] md:h-[40px] w-[40px] h-[20px]"
+						viewBox="0 0 80 40"
 						fill="black"
 						xmlns="http://www.w3.org/2000/svg">
 						<g clipPath="url(#clip0_153_334)">

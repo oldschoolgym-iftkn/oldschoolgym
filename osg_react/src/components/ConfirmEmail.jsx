@@ -65,7 +65,7 @@ const ConfirmEmail = () => {
 	return (
 		<div className="min-h-screen">
 			<HeaderAuth />
-			<form className="pb-8 mx-auto w-fit" onSubmit={handleSubmit(onSubmit)}>
+			<form className="px-4 pb-8 mx-auto w-fit" onSubmit={handleSubmit(onSubmit)}>
 				<div className="flex flex-col justify-center mb-10 space-y-4">
 					<h1 className=" mr-2.5 text-4xl text-center">Підтвердження акаунту</h1>
 					<p className="text-xl text-center">

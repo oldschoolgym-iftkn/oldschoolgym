@@ -1,13 +1,18 @@
 import React from 'react';
 import DualRangeSlider from '../DualRangeSlider';
 
-const Filter = ({ specs }) => {
+const Filter = ({ specs, className }) => {
 	return (
-		<div className="select-none border-2 rounded-r-2xl border-black basis-1/5 p-6 space-y-14 text-black text-xl text-left">
+		<div
+			className={
+				'p-6 text-xl text-left text-black border-2 border-black select-none rounded-r-2xl space-y-14 max-sm:space-y-6' +
+				' ' +
+				className
+			}>
 			<div className="border-2 border-black rounded">
 				<select
 					id="countries"
-					className="border border-white rounded-lg text-xl focus:ring-gray-500 focus:border-gray-500 block w-full py-2 px-6 ">
+					className="block w-full px-6 py-2 text-xl border border-white rounded-lg focus:ring-gray-500 focus:border-gray-500 ">
 					<option defaultChecked className="text-lg">
 						Специфікація
 					</option>
@@ -18,9 +23,9 @@ const Filter = ({ specs }) => {
 					))}
 				</select>
 			</div>
-			<div className="border-2 border-black rounded py-6 px-6 space-y-4">
+			<div className="px-6 py-6 space-y-4 border-2 border-black rounded max-sm:space-y-2 max-sm:py-2">
 				<div className="">Тип занять</div>
-				<div className="space-y-2 pl-2 text-lg">
+				<div className="pl-2 space-y-2 text-lg">
 					<div className="space-x-2">
 						<input
 							type="checkbox"
@@ -41,7 +46,7 @@ const Filter = ({ specs }) => {
 					</div>
 				</div>
 			</div>
-			<div className="border-2 border-black rounded py-6 px-6 space-y-4">
+			<div className="px-6 py-6 space-y-4 border-2 border-black rounded max-sm:py-2">
 				<div className="">Досвід роботи</div>
 				<DualRangeSlider minValue={0} maxValue={30} outFromValue outToValue />
 			</div>

@@ -6,7 +6,7 @@ import {
 	StopIcon,
 } from '@heroicons/react/24/outline';
 
-const tabs = ['Нові заявки', 'В обробці', 'Відхилені', 'Прийняті'];
+const tabs = ['Нові', 'В обробці', 'Відхилені', 'Прийняті'];
 const people = [
 	{ first_name: 'Олександр', gender: true, date: Math.round(1 + Math.random() * (30 - 1)) },
 	{ first_name: 'Марія', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
@@ -14,29 +14,25 @@ const people = [
 	{ first_name: 'Олена', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
 	{ first_name: 'Сергій', gender: true, date: Math.round(1 + Math.random() * (30 - 1)) },
 	{ first_name: 'Анна', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Юлія', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Катерина', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Дмитро', gender: true, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Петро', gender: true, date: Math.round(1 + Math.random() * (30 - 1)) },
 ];
 
 const Requests = () => {
 	const user = {};
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
-			<div className="text-2xl border-b border-black max-lg:flex max-lg:flex-col">
+			<div className="grid grid-flow-col text-lg border-b border-black divide-x-2 md:text-xl justify-stretch">
 				{tabs.map((tab, index) => (
 					<button
 						key={index}
-						className="inline-block py-4 border-r border-black hover:font-bold transition-color hover:bg-neutral-300 group px-14 max-lg:border-b max-lg:border-r-0 first:rounded-tl-3xl">
+						className="inline-block px-2 py-2 first:rounded-tl-3xl last:rounded-tr-3xl lg:px-4 lg:py-4 hover:font-bold transition-color hover:bg-neutral-300 group">
 						<p className="transition-transform group-hover:-translate-y-1">{tab}</p>
 					</button>
 				))}
 			</div>
-			<div className="flex-1 p-12 overflow-y-auto text-2xl">
+			<div className="flex-1 p-8 overflow-y-auto text-xl max-md:p-4">
 				<div className="flex flex-col h-full overflow-y-auto border-2 border-black rounded-3xl">
-					<div className="flex items-center justify-between p-4 pb-0">
-						<div className="space-x-4">
+					<div className="flex items-center justify-between px-3 py-1">
+						<div className="flex items-center space-x-4">
 							<button>
 								<CheckCircleIcon className="w-8 h-8" />
 							</button>
@@ -44,7 +40,7 @@ const Requests = () => {
 								<EllipsisVerticalIcon className="w-8 h-8" />
 							</button>
 						</div>
-						<div className="flex space-x-2">
+						<div className="flex items-center space-x-2">
 							<span>
 								{1}/{1}
 							</span>
@@ -57,7 +53,7 @@ const Requests = () => {
 						</div>
 					</div>
 					<div className="flex flex-1">
-						<div className="m-4 space-y-[25px]">
+						<div className="m-3 space-y-[25px]">
 							{people.map((obj, index) => (
 								<button key={index} className="block">
 									<StopIcon className="w-8 h-8" />
@@ -72,18 +68,18 @@ const Requests = () => {
 											onClick={() => {
 												// navigate('/cabinet/messages/' + (index + 1));
 											}}
-											className="flex-1 flex-grow py-2 text-left justify-items-start">
+											className="flex items-center flex-1 flex-grow py-2 text-left justify-items-center">
 											<img
 												src={
 													process.env.REACT_APP_API_URL +
 													(p.gender ? '/media/default_M.png' : '/media/default_F.png')
 												}
 												alt="Img"
-												className="inline-block w-10 h-10 mx-6 border border-black rounded-full"
+												className="inline-block w-10 h-10 mx-3 border border-black rounded-full"
 											/>
-											<div className="flex-1 inline-block">{p.first_name}</div>
+											<div className="flex-1 inline-block truncate">{p.first_name}</div>
+											<p className="px-2 text-xl">{p.date} чер.</p>
 										</button>
-										<p className="px-4 text-xl">{p.date} чер.</p>
 									</div>
 								</div>
 							))}

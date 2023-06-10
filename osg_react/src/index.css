@@ -25,8 +25,12 @@ body {
 
 .ReactModal__Overlay {
 	opacity: 0;
+	z-index: 50;
 	transform: translateY(-100px);
 	transition: all 250ms ease-in-out;
+	overflow-y: auto;
+	max-height: 100vh;
+	display: flex;
 }
 
 .ReactModal__Overlay--after-open {

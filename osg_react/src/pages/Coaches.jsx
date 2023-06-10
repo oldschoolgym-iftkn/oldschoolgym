@@ -51,15 +51,19 @@ const Coaches = () => {
 	}, []);
 	return (
 		<div className="flex flex-col min-h-screen App">
-			<Header main />
-			<div className="flex flex-grow pt-[60px] max-xl:pt-[146px] my-8 min-h-full">
-				<Filter specs={exampleSpecs} />
-				<div className="flex-grow px-32 space-y-12">
+			<Header main full noFixed />
+			<div className="flex flex-grow min-h-full py-6 max-sm:flex-col">
+				<Filter
+					specs={exampleSpecs}
+					className="max-sm:rounded-2xl rounded-r-2xl max-sm:mx-3 max-sm:mb-8"
+				/>
+				<div className="flex-1 px-3 space-y-8 sm:px-8">
 					{isLoading ? (
 						<Loading />
 					) : (
 						<>
-							<div className="grid justify-items-stretch gap-20 grid-cols-3 max-2xl:grid-cols-2 max-[1156px]:grid-cols-1 ">
+							{/* <div className="flex flex-wrap gap-8 justify-evenly"> */}
+							<div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] justify-items-stretch gap-8">
 								{coachesList.map((obj, index) => (
 									<CoachCard
 										key={obj.id}

@@ -23,6 +23,7 @@ import HomeUser from '../components/Home/HomeUser';
 import Coaches from '../components/UserList/Coaches';
 import Clients from '../components/UserList/Clients';
 import CalendarCoach from '../components/Calendar/CalendarCoach';
+import MobileCabinetNav from '../components/MobileCabinetNav';
 
 const navUser = [
 	{ name: 'Головна', icon: <HomeIcon />, href: '/cabinet' },
@@ -57,6 +58,7 @@ const navCoach = [
 
 const Cabinet = () => {
 	const { user } = useAuth();
+	const [mobileNavShow, setMobileNavShow] = useState({ show: false });
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -64,32 +66,40 @@ const Cabinet = () => {
 
 	const currentNav = user.role === 0 ? navUser : navCoach;
 	return (
-		<div className="flex flex-col h-full ">
-			<Header />
-			<div className="flex flex-row overflow-y-auto h-screen pt-[60px] max-xl:pt-[146px]">
-				<SideBar navigation={currentNav} avatar={user.user_profile.avatar} />
-				<main className="flex-1 h-full text-5xl p-7 ">
-					<Routes>
-						<Route path="/" element={user.role === 0 ? <HomeUser /> : <HomeCoach />} />
-						<Route path="/profile" element={<Profile />} />
-						<Route path="/requests" element={<Requests />} />
+		<>
+			<div className="flex flex-col min-h-screen ">
+				<Header openBurger={() => setMobileNavShow({ show: true })} />
+				<div className="flex flex-row flex-1 overflow-y-auto">
+					<SideBar navigation={currentNav} avatar={user.user_profile.avatar} />
+					<main className="flex-1 p-4 text-5xl md:p-8 ">
+						<Routes>
+							<Route path="/" element={user.role === 1 ? <HomeUser /> : <HomeCoach />} />
+							<Route path="/profile" element={<Profile />} />
+							<Route path="/requests" element={<Requests />} />
 
-						<Route element={<ChatProvider />}>
-							<Route path="/messages" element={<Messages />} />
-							<Route path="/messages/:id" element={<Chat />} />
-						</Route>
+							<Route element={<ChatProvider />}>
+								<Route path="/messages" element={<Messages />} />
+								<Route path="/messages/:id" element={<Chat />} />
+							</Route>
 
-						{user.role === 0 ? (
-							<Route path="/coaches" element={<Coaches />} />
-						) : (
-							<Route path="/clients" element={<Clients />} />
-						)}
-						<Route path="/calendar" element={<CalendarCoach />} />
-						<Route path="*" element={<MissingPage />} />
-					</Routes>
-				</main>
+							{user.role === 0 ? (
+								<Route path="/coaches" element={<Coaches />} />
+							) : (
+								<Route path="/clients" element={<Clients />} />
+							)}
+							<Route path="/calendar" element={<CalendarCoach />} />
+							<Route path="*" element={<MissingPage />} />
+						</Routes>
+					</main>
+				</div>
 			</div>
-		</div>
+			<MobileCabinetNav
+				modalIsOpen={mobileNavShow}
+				closeModal={() => setMobileNavShow({ show: false })}
+				navigation={currentNav}
+				avatar={user.user_profile.avatar}
+			/>
+		</>
 	);
 };
 

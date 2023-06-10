@@ -30,7 +30,7 @@ const cities = [
 	'Чернігів',
 ];
 
-const UserInfo = () => {
+const UserInfo = ({ className }) => {
 	const { user, updateUserProfile } = useAuth();
 	const {
 		register,
@@ -78,22 +78,25 @@ const UserInfo = () => {
 	};
 	return (
 		<form
-			className="w-full px-16 py-8 space-y-8 border border-black rounded-3xl"
+			className={
+				'w-full px-12 py-6 max-lg:px-8 max-lg:py-4 space-y-4 border border-black rounded-3xl' +
+				' ' +
+				className
+			}
 			onSubmit={handleSubmit(onSubmit)}>
-			<h2 className="text-4xl ">Дані користувача</h2>
-			<div className="grid grid-cols-2 grid-rows-2 gap-16">
-				<div className="flex flex-col justify-center px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
+			<h2 className="text-2xl lg:text-4xl">Дані користувача</h2>
+			<div className="grid grid-cols-2 grid-rows-2 gap-8 max-lg:gap-6 max-lg:grid-cols-1 max-lg:grid-rows-4">
+				<div className="flex flex-col justify-center p-6 space-y-4 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
 					<img
 						src={process.env.REACT_APP_API_URL + user.user_profile.avatar}
 						alt="Avatar"
-						className="w-40 h-40 mx-auto rounded-full select-none bg-black/20"
+						className="object-scale-down mx-auto rounded-full select-none w-36 bg-black/20"
 					/>
-					<p className="text-3xl font-medium text-center">
+					<p className="text-2xl font-medium text-center">
 						{user.user_profile.first_name + ' ' + user.user_profile.last_name}
 					</p>
 				</div>
-				<div className="row-span-2 px-10 py-8 space-y-6 border-2 border-black rounded-2xl">
-					{/* <div className="border-t-2 border-black"></div> */}
+				<div className="row-span-2 p-6 space-y-6 border-2 border-black max-lg:p-4 max-lg:order-3 rounded-2xl">
 					<div className="w-full ">
 						<span className="block px-4 -mb-5 text-lg text-gray-500 bg-white select-none w-fit font-extralight">
 							Ім'я
@@ -102,7 +105,7 @@ const UserInfo = () => {
 							type="text"
 							defaultValue={user.user_profile.first_name}
 							{...register('first_name', { required: "Вкажіть своє ім'я" })}
-							className="w-full px-4 py-2 text-2xl bg-transparent border-0 border-b-2 border-black/40 focus:border- focus:border-black focus:ring-transparent"
+							className="w-full px-4 py-2 text-xl bg-transparent border-0 border-b-2 border-black/40 focus:border- focus:border-black focus:ring-transparent"
 						/>
 					</div>
 					<div className="w-full ">
@@ -113,7 +116,7 @@ const UserInfo = () => {
 							type="text"
 							defaultValue={user.user_profile.last_name}
 							{...register('last_name', { required: 'Вкажіть своє прізвище' })}
-							className="w-full px-4 py-2 text-2xl bg-transparent border-0 border-b-2 border-black/40 focus:border- focus:border-black focus:ring-transparent"
+							className="w-full px-4 py-2 text-xl bg-transparent border-0 border-b-2 border-black/40 focus:border- focus:border-black focus:ring-transparent"
 						/>
 					</div>
 					<div>
@@ -172,21 +175,21 @@ const UserInfo = () => {
 						/>
 					</div>
 				</div>
-				<div className="px-10 py-6 space-y-4 text-left border-2 border-black rounded-2xl">
-					<div className="w-full px-4 pt-4 pb-2 border-b border-black">
+				<div className="p-6 space-y-2 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
+					<div className="w-full px-4 pt-4 pb-2 overflow-y-auto border-b border-black">
 						<span className="block text-lg text-gray-500 select-none font-extralight">Пошта</span>
-						<p className="text-2xl font-medium">{user.user_profile.email}</p>
+						<p className="text-xl font-medium w-fit">{user.user_profile.email}</p>
 					</div>
 					<div className="w-full px-4 pt-4 pb-2 border-b border-black">
 						<span className="block text-lg text-gray-500 select-none font-extralight">Телефон</span>
-						<p className="text-2xl font-medium">{user.user_profile.phone}</p>
+						<p className="text-xl font-medium">{user.user_profile.phone}</p>
 					</div>
 				</div>
 			</div>
 			<div className="flex justify-end space-x-10">
 				<button
 					type="submit"
-					className="inline-block select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
+					className="inline-block select-none text-center min-w-[10rem] hover:bg-neutral-700 px-6 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
 					Зберегти зміни
 				</button>
 			</div>

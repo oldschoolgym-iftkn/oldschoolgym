@@ -9,15 +9,17 @@ const Messages = () => {
 	const navigate = useNavigate();
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
-			<div className="text-2xl border-b border-black max-lg:flex max-lg:flex-col">
-				<button className="inline-block py-4 font-bold border-r border-black bg-neutral-300 px-14 max-lg:border-none rounded-tl-3xl">
-					Всі чати
+			<div className="grid grid-flow-col text-lg border-b border-black divide-x-2 md:text-xl justify-stretch">
+				<button className="inline-block px-2 py-2 first:rounded-tl-3xl last:rounded-tr-3xl lg:px-4 lg:py-4 hover:font-bold transition-color hover:bg-neutral-300 group">
+					<p className="transition-transform group-hover:-translate-y-1">{'Всі чати'}</p>
 				</button>
-				<button className="inline-block py-4 border-r border-black px-14 max-lg:border-b max-lg:border-r-0">
-					Чати з клієнтами
+				<button className="inline-block px-2 py-2 first:rounded-tl-3xl last:rounded-tr-3xl lg:px-4 lg:py-4 hover:font-bold transition-color hover:bg-neutral-300 group">
+					<p className="transition-transform group-hover:-translate-y-1">
+						{user.role === 0 ? 'Чати з тренерами' : 'Чати з клієнтами'}
+					</p>
 				</button>
 			</div>
-			<div className="flex-1 p-12 overflow-y-auto text-2xl">
+			<div className="flex-1 p-4 overflow-y-auto text-2xl md:p-8 ">
 				<div className="h-full overflow-y-auto border-2 border-black rounded-3xl">
 					{userChats.map((chat, index) => (
 						<div key={index} className="border-b border-black">

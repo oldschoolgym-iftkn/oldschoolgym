@@ -35,8 +35,8 @@ const SideBar = ({ navigation, avatar }) => {
 	};
 
 	return (
-		<aside className="flex flex-col py-8 text-white bg-black max-xl:py-4 max-xl:w-80 w-96">
-			<div className="mx-auto my-10 space-y-4 max-xl:space-y-2 max-xl:my-2 w-fit">
+		<aside className="flex flex-col p-2 px-12 text-white bg-black max-sm:px-6 max-sm:hidden">
+			<div className="mx-auto my-4 space-y-4 max-xl:space-y-2 max-xl:my-2 w-fit">
 				<img
 					className="h-40 border-4 border-white rounded-full max-xl:h-32 bg-white/75"
 					src={process.env.REACT_APP_API_URL + avatar}
@@ -60,7 +60,7 @@ const SideBar = ({ navigation, avatar }) => {
 					<div className="flex-1"></div>
 				</NavLink>
 			</div>
-			<nav className="flex-grow mx-12 my-4 space-y-4 text-left max-xl:space-y-2">
+			<nav className="flex-grow mx-auto space-y-4 text-left max-xl:space-y-2">
 				{navigation.map((obj, index) => (
 					<Button key={index} linkTo={obj.href} renderIcon={obj.icon}>
 						{obj.name}

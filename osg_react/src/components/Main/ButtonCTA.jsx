@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const ButtonCTA = ({ linkTo, children }) => {
 	return (
 		<Link to={linkTo}>
-			<button className="min-w-[32rem] hover:bg-neutral-700 px-24 py-3 rounded-3xl text-[2.5rem] leading-[3rem] bg-black text-white">
+			<button className="sm:min-w-[20rem] hover:bg-neutral-700 px-6 sm:px-20 py-3 max-sm:w-4/5 rounded-3xl text-2xl lg:text-4xl leading-[3rem] bg-black text-white">
 				{children}
 			</button>
 		</Link>

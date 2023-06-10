@@ -3,6 +3,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
+import useAxios from '../../hooks/useAxios';
+import Plan from '../FullCoach/Plan';
 
 Modal.setAppElement('#root');
 
@@ -49,7 +51,23 @@ const ProfileCoach = () => {
 	const [showModal, setShowModal] = useState({ show: false });
 	const [showEditModal, setShowEditModal] = useState({ show: false });
 	const [rates, setRates] = useState([]);
-	const { sendCoachApplication } = useAuth();
+	const { user } = useAuth();
+	const api = useAxios();
+	const sendCoachApplication = async (data) => {
+		try {
+			const response = await api.post('/coach/api/send_coach_application', data, {
+				params: { user_id: user.user_id },
+			});
+			if (response.status === 200) {
+				console.log('sendCoachApplication');
+				return null;
+			}
+			// setInitLoading(false);
+			return response;
+		} catch (err) {
+			return err;
+		}
+	};
 
 	const {
 		register,
@@ -84,6 +102,7 @@ const ProfileCoach = () => {
 			category: Number(values.category),
 			type_training: Number(values.category),
 			experience: Number(values.experience),
+			additional_block: 'add_block',
 			rates: JSON.stringify(rates),
 		};
 		console.log('sendCoach', parseValues);
@@ -106,12 +125,12 @@ const ProfileCoach = () => {
 	return (
 		<>
 			<form
-				className="w-full px-16 py-8 space-y-8 border border-black rounded-3xl"
+				className="w-full px-12 py-6 space-y-4 border border-black max-lg:px-8 max-lg:py-4 rounded-3xl"
 				onSubmit={handleSubmit(onSubmit)}>
-				<h2 className="text-4xl ">Профіль тренера</h2>
-				<div className="px-24 space-y-8 text-center">
-					<h3 className="text-3xl">Інформація про вас</h3>
-					<div className="w-full px-10 py-6 text-2xl text-left border-2 border-black rounded-2xl">
+				<h2 className="text-2xl lg:text-4xl">Профіль тренера</h2>
+				<div className="space-y-4 text-center xl:space-y-8 xl:px-24">
+					<h3 className="text-xl lg:text-3xl">Інформація про вас</h3>
+					<div className="p-4 text-2xl text-left border-2 border-black sm:px-10 sm:py-6 rounded-2xl">
 						<div className="max-w-3xl mx-auto space-y-2">
 							<div>
 								<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
@@ -217,7 +236,7 @@ const ProfileCoach = () => {
 							</div>
 						</div>
 					</div>
-					<div className="px-10 py-6 space-y-2 text-2xl text-left border-2 border-black rounded-2xl">
+					<div className="p-4 space-y-2 text-2xl text-left border-2 border-black sm:px-10 sm:py-6 rounded-2xl">
 						<label
 							htmlFor="description"
 							className="block text-lg text-gray-500 select-none font-extralight">
@@ -232,24 +251,29 @@ const ProfileCoach = () => {
 							className="w-full text-2xl rounded aria-[invalid=true]:border-red-500 aria-[invalid=true]:border-2 resize-none placeholder:text-xl  border-black/30 focus:border-black/60 focus:ring-black/60"></textarea>
 					</div>
 				</div>
-				<div className="px-24 space-y-8 text-center">
-					<h3 className="text-3xl">Абонементи на вибір</h3>
-					<div className="grid grid-cols-2 gap-24">
+				<div className="space-y-4 text-center xl:px-12 xl:space-y-8">
+					<h3 className="text-xl lg:text-3xl">Абонементи на вибір</h3>
+					<div className="flex flex-wrap justify-center gap-4 md:gap-8">
 						{rates.map((rate, index) => (
-							<Plan {...rate} key={index} onClick={() => openEditRateModal(index)} />
+							<Plan
+								{...rate}
+								key={index}
+								onClick={() => openEditRateModal(index)}
+								buttonLabel={'Змінити'}
+							/>
 						))}
 					</div>
 				</div>
 				<button
 					type="button"
 					onClick={() => openCreateRateModal()}
-					className="block mx-auto select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-4 rounded-2xl text-xl leading-none font-normal bg-black text-white">
+					className="block mx-auto select-none text-center min-w-[10rem] hover:bg-neutral-700 px-6 py-4 rounded-2xl text-xl leading-none font-normal bg-black text-white">
 					Додати новий тариф
 				</button>
 				<div className="flex justify-end space-x-10">
 					<button
 						type="submit"
-						className="inline-block select-none text-center min-w-[20rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
+						className="inline-block select-none text-center min-w-[10rem] hover:bg-neutral-700 px-6 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
 						Запросити верифікацію
 					</button>
 				</div>
@@ -284,7 +308,7 @@ const exampleSubsription = {
 };
 const subs = ['Одне заняття', 'Пакет занять', 'Місячний абонемент']; //
 
-const Plan = ({ rate_name, cost, lessons_count, imageUrl, description, onClick }) => {
+const Plan1 = ({ rate_name, cost, lessons_count, imageUrl, description, onClick }) => {
 	return (
 		<div className="inline-block p-8 space-y-16 text-center bg-black rounded-3xl">
 			<div className="p-5 space-y-4 text-2xl bg-white rounded-3xl">
@@ -323,7 +347,7 @@ const CreateRateModal = ({ modalIsOpen, afterOpenModal, closeModal, createRate }
 
 	const onSubmit = async (values) => {
 		console.log(values);
-		createRate(values);
+		createRate({ ...values, imageUrl: '/img/plan_img.png' });
 		closeCreateRateModal();
 	};
 
@@ -331,17 +355,18 @@ const CreateRateModal = ({ modalIsOpen, afterOpenModal, closeModal, createRate }
 		<Modal
 			closeTimeoutMS={250}
 			isOpen={modalIsOpen.show}
-			onAfterOpen={afterOpenModal}
+			onAfterOpen={() => (document.body.style.overflow = 'hidden')}
+			onAfterClose={() => (document.body.style.overflow = 'unset')}
 			onRequestClose={closeCreateRateModal}
-			className={'mt-[84px] mx-auto w-fit '} //absolute inset-0
-			contentLabel="Fill order">
+			className={'mx-auto my-auto w-fit '} //absolute inset-0
+			contentLabel="Fill create rate">
 			<div className="p-6 bg-white border border-black w-fit rounded-3xl  &[ReactModal__Overlay--after-open:translate-y-0]">
 				<div className="text-right">
 					<button onClick={closeCreateRateModal}>
 						<XMarkIcon className="w-10 h-10 text-black" />
 					</button>
 				</div>
-				<form className="px-24 mb-12 space-y-12" onSubmit={handleSubmit(onSubmit)}>
+				<form className="mb-12 space-y-4 sm:space-y-8 sm:px-24" onSubmit={handleSubmit(onSubmit)}>
 					<h2 className="px-6 text-4xl text-center">Введіть дані про тариф</h2>
 					<div className="w-full ">
 						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
@@ -350,7 +375,7 @@ const CreateRateModal = ({ modalIsOpen, afterOpenModal, closeModal, createRate }
 						<input
 							type="text"
 							aria-invalid={errors.rate_name ? 'true' : 'false'}
-							{...register('rate_name', { required: 'Вкажіть назву' })}
+							{...register('name', { required: 'Вкажіть назву' })}
 							className="w-full px-4 aria-[invalid=true]:border-red-500 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
 						/>
 					</div>
@@ -443,17 +468,18 @@ const EditRateModal = ({ modalIsOpen, afterOpenModal, closeModal, editRate, dele
 		<Modal
 			closeTimeoutMS={250}
 			isOpen={modalIsOpen.show}
-			onAfterOpen={afterOpenModal}
+			onAfterOpen={() => (document.body.style.overflow = 'hidden')}
+			onAfterClose={() => (document.body.style.overflow = 'unset')}
 			onRequestClose={closeEditRateModal}
-			className={'mt-[84px] mx-auto w-fit '} //absolute inset-0
-			contentLabel="Fill order">
+			className={'mx-auto my-auto w-fit '} //absolute inset-0
+			contentLabel="Fill edit rate">
 			<div className="p-6 bg-white border border-black w-fit rounded-3xl  &[ReactModal__Overlay--after-open:translate-y-0]">
 				<div className="text-right">
 					<button onClick={closeEditRateModal}>
 						<XMarkIcon className="w-10 h-10 text-black" />
 					</button>
 				</div>
-				<form className="px-24 mb-12 space-y-12" onSubmit={handleSubmit(onSubmit)}>
+				<form className="mb-12 space-y-4 sm:space-y-8 sm:px-24" onSubmit={handleSubmit(onSubmit)}>
 					<h2 className="px-6 text-4xl text-center">Змініть дані про тариф</h2>
 					<div className="w-full ">
 						<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
