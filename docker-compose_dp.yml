@@ -76,7 +76,7 @@ services:
       - 'traefik.http.services.nginx.loadbalancer.server.port=8080'
     volumes:
       - type: bind
-        source: ${pwd}/nginx.conf
+        source: ./nginx.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - web
