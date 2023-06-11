@@ -1,9 +1,8 @@
-version: '3'
+version: '3.2'
 
 services:
   db:
     image: mysql
-    # container_name: mysql_db
     restart: always
     env_file:
       - .env
@@ -18,7 +17,6 @@ services:
 
   broker:
     image: redis
-    # container_name: redis_cache
     restart: always
     ports:
       - 6379:6379
@@ -78,7 +76,7 @@ services:
       - 'traefik.http.services.nginx.loadbalancer.server.port=8080'
     volumes:
       - type: bind
-        source: ./nginx.conf
+        source: ${pwd}/nginx.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - web
