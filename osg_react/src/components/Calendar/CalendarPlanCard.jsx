@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom';
 
 const CalendarPlanCard = ({ id, avatar, first_name, last_name }) => {
 	return (
-		<div className="flex flex-col px-4 py-4 space-y-4 text-xl text-center transition-transform border border-black max-sm:text-lg rounded-3xl card hover:scale-105">
+		<div className="flex flex-col px-4 py-4 space-y-4 text-xl text-center transition-transform border border-black max-sm:text-lg rounded-3xl card hover:scale-[102%]">
 			<p>07.02.2023</p>
-			<div className="flex space-x-2">
-				<div className="flex items-center space-x-1">
+			<div className="flex flex-col justify-center max-sm:space-y-2 sm:space-x-2 sm:flex-row">
+				<div className="flex items-center justify-center space-x-1">
 					<span className="">Початок:</span>
 					<p className="p-1 px-2 border border-black rounded-3xl">11:45</p>
 				</div>
-				<div className="flex items-center space-x-1">
+				<div className="flex items-center justify-center space-x-1">
 					<span className="">Кінець:</span>
 					<p className="p-1 px-2 border border-black rounded-3xl">12:45</p>
 				</div>

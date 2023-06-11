@@ -73,7 +73,7 @@ const Cabinet = () => {
 					<SideBar navigation={currentNav} avatar={user.user_profile.avatar} />
 					<main className="flex-1 p-4 text-5xl md:p-8 ">
 						<Routes>
-							<Route path="/" element={user.role === 1 ? <HomeUser /> : <HomeCoach />} />
+							<Route path="/" element={user.role === 0 ? <HomeUser /> : <HomeCoach />} />
 							<Route path="/profile" element={<Profile />} />
 							<Route path="/requests" element={<Requests />} />
 

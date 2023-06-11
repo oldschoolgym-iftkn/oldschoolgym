@@ -7,36 +7,36 @@ import Pagination from '../components/Pagination';
 import axios from '../api/axios';
 import Loading from '../components/Loading';
 
-const exampleSpecs = [
-	'Фітнес',
-	'Персональний',
-	'Бокс',
-	'Плавання ',
-	'Йога ',
-	'Стрільба з лука ',
-	'Кросфіт ',
-	'Атлетика ',
-];
-
-const exampleCoach = {
-	id: 1,
-	user_profile: {
-		avatar: 'https://flowbite.com/docs/images/people/profile-picture-2.jpg',
-		first_name: 'Андрій',
-		last_name: 'Кіко',
-	},
-	category: 'Кросфіт',
-	type_training: 'онлайн/офлайн',
-	experience: '10 років',
-};
+import { cities, specs, type_training } from '../components/FullCoach/utils.js';
 
 const Coaches = () => {
 	const [coachesList, setCoachesList] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
+	const [currentPage, setCurrentPage] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(12);
+	const [searchTerm, setSearchTerm] = useState({
+		category: '',
+		type_training: '',
+		experience: [1, 30],
+	});
+
+	const filteredData = coachesList?.filter(
+		(coach) =>
+			(searchTerm.category !== '' ? coach.category === Number(searchTerm.category) : true) &&
+			(searchTerm.type_training !== ''
+				? coach.type_training === Number(searchTerm.type_training)
+				: true) &&
+			coach.experience >= searchTerm.experience[0] &&
+			coach.experience <= searchTerm.experience[1],
+	);
+	const indexOfLastItem = currentPage * itemsPerPage;
+	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+	const currentCoaches = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
+
 	const getCoaches = () => {
 		axios
-			.get('/user/api/')
+			.get('/coach/api/get_confirmed_coaches')
 			.then((res) => {
 				setCoachesList(res.data);
 			})
@@ -49,12 +49,13 @@ const Coaches = () => {
 		window.scrollTo(0, 0);
 		getCoaches();
 	}, []);
+	console.log(filteredData);
 	return (
 		<div className="flex flex-col min-h-screen App">
 			<Header main full noFixed />
 			<div className="flex flex-grow min-h-full py-6 max-sm:flex-col">
 				<Filter
-					specs={exampleSpecs}
+					setFilterOptions={setSearchTerm}
 					className="max-sm:rounded-2xl rounded-r-2xl max-sm:mx-3 max-sm:mb-8"
 				/>
 				<div className="flex-1 px-3 space-y-8 sm:px-8">
@@ -62,17 +63,23 @@ const Coaches = () => {
 						<Loading />
 					) : (
 						<>
-							{/* <div className="flex flex-wrap gap-8 justify-evenly"> */}
-							<div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] justify-items-stretch gap-8">
-								{coachesList.map((obj, index) => (
-									<CoachCard
-										key={obj.id}
-										coach={{ ...exampleCoach, id: obj.id, user_profile: obj }}
-									/>
-								))}
-							</div>
+							{currentCoaches.length > 0 ? (
+								<div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] justify-items-stretch gap-8">
+									{currentCoaches.map((obj, index) => (
+										<CoachCard key={obj.id} coach={obj} />
+									))}
+								</div>
+							) : (
+								<div className="py-6">
+									<p className="text-lg text-center sm:text-2xl">Тренерів не знайдено.😥</p>
+								</div>
+							)}
 							<div className="mx-auto w-fit">
-								<Pagination currentPage={1} onChangePage={() => {}} />
+								<Pagination
+									currentPage={currentPage}
+									onChangePage={setCurrentPage}
+									pageCount={filteredData.length / itemsPerPage}
+								/>
 							</div>
 						</>
 					)}

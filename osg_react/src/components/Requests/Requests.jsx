@@ -20,24 +20,24 @@ const Requests = () => {
 	const user = {};
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
-			<div className="grid grid-flow-col text-lg border-b border-black divide-x-2 md:text-xl justify-stretch">
+			<div className="grid grid-flow-col text-sm border-b border-black divide-x md:text-xl justify-stretch">
 				{tabs.map((tab, index) => (
 					<button
 						key={index}
-						className="inline-block px-2 py-2 first:rounded-tl-3xl last:rounded-tr-3xl lg:px-4 lg:py-4 hover:font-bold transition-color hover:bg-neutral-300 group">
+						className="inline-block px-1 py-2 sm:px-2 first:rounded-tl-3xl last:rounded-tr-3xl lg:px-4 lg:py-4 hover:font-bold transition-color hover:bg-neutral-300 group">
 						<p className="transition-transform group-hover:-translate-y-1">{tab}</p>
 					</button>
 				))}
 			</div>
-			<div className="flex-1 p-8 overflow-y-auto text-xl max-md:p-4">
+			<div className="flex-1 p-8 overflow-y-auto text-lg sm:text-xl max-md:p-4">
 				<div className="flex flex-col h-full overflow-y-auto border-2 border-black rounded-3xl">
-					<div className="flex items-center justify-between px-3 py-1">
+					<div className="flex items-center justify-between px-2 py-1 sm:px-3">
 						<div className="flex items-center space-x-4">
 							<button>
-								<CheckCircleIcon className="w-8 h-8" />
+								<CheckCircleIcon className="w-6 h-6 sm:w-8 sm:h-8" />
 							</button>
 							<button>
-								<EllipsisVerticalIcon className="w-8 h-8" />
+								<EllipsisVerticalIcon className="w-6 h-6 sm:w-8 sm:h-8" />
 							</button>
 						</div>
 						<div className="flex items-center space-x-2">
@@ -45,18 +45,18 @@ const Requests = () => {
 								{1}/{1}
 							</span>
 							<button>
-								<ArrowLeftIcon className="w-8 h-8" />
+								<ArrowLeftIcon className="w-6 h-6 sm:w-8 sm:h-8" />
 							</button>
 							<button>
-								<ArrowRightIcon className="w-8 h-8" />
+								<ArrowRightIcon className="w-6 h-6 sm:w-8 sm:h-8" />
 							</button>
 						</div>
 					</div>
 					<div className="flex flex-1">
-						<div className="m-3 space-y-[25px]">
+						<div className="my-3 mx-2 sm:m-3 space-y-[25px]">
 							{people.map((obj, index) => (
 								<button key={index} className="block">
-									<StopIcon className="w-8 h-8" />
+									<StopIcon className="w-6 h-6 sm:w-8 sm:h-8" />
 								</button>
 							))}
 						</div>
@@ -75,10 +75,10 @@ const Requests = () => {
 													(p.gender ? '/media/default_M.png' : '/media/default_F.png')
 												}
 												alt="Img"
-												className="inline-block w-10 h-10 mx-3 border border-black rounded-full"
+												className="inline-block w-8 h-8 mx-2 border border-black rounded-full sm:w-10 sm:h-10 sm:mx-3"
 											/>
 											<div className="flex-1 inline-block truncate">{p.first_name}</div>
-											<p className="px-2 text-xl">{p.date} чер.</p>
+											<p className="px-2 text-base sm:text-lg">{p.date} чер.</p>
 										</button>
 									</div>
 								</div>

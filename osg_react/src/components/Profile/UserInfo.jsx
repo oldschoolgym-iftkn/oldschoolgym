@@ -79,7 +79,7 @@ const UserInfo = ({ className }) => {
 	return (
 		<form
 			className={
-				'w-full px-12 py-6 max-lg:px-8 max-lg:py-4 space-y-4 border border-black rounded-3xl' +
+				'w-full px-12 py-6 max-lg:px-4 max-lg:py-4 space-y-4 border border-black rounded-3xl' +
 				' ' +
 				className
 			}

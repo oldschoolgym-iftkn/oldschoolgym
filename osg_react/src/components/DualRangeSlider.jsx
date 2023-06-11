@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './RangeSlider/styles.module.css';
 
-const DualRangeSlider = ({ minValue, maxValue }) => {
+const DualRangeSlider = ({ minValue, maxValue, outFromValue, outToValue }) => {
 	const [sliderOneVal, setSliderOneVal] = useState(minValue);
 	const [sliderTwoVal, setSliderTwoVal] = useState(maxValue);
 
@@ -9,19 +9,20 @@ const DualRangeSlider = ({ minValue, maxValue }) => {
 	const _fnSliderOneHandler = (val1) => {
 		if (Number(val1) <= sliderTwoVal - minGap) {
 			setSliderOneVal(Number(val1));
+			outFromValue(Number(val1));
 		}
 	};
 	const _fnSliderTwoHandler = (val2) => {
-		console.log(val2 >= sliderOneVal + minGap);
 		if (Number(val2) >= sliderOneVal + minGap) {
 			setSliderTwoVal(Number(val2));
+			outToValue(Number(val2));
 		}
 	};
 	return (
 		<div className="h-full space-y-4">
 			<div className="flex justify-between">
 				<input
-					className="py-1 pr-2 pl-5 text-center rounded-full focus:ring-black focus:border-black"
+					className="py-1 pl-5 pr-2 text-center rounded-full focus:ring-black focus:border-black"
 					type="number"
 					id="fromInput"
 					value={sliderOneVal}
@@ -31,11 +32,11 @@ const DualRangeSlider = ({ minValue, maxValue }) => {
 						_fnSliderOneHandler(e.target.value);
 					}}
 				/>
-				<div className="flex-1 self-center px-2">
-					<div className="bg-black h-px"></div>
+				<div className="self-center flex-1 px-2">
+					<div className="h-px bg-black"></div>
 				</div>
 				<input
-					className="py-1 pr-2 pl-5 text-center rounded-full focus:ring-black focus:border-black"
+					className="py-1 pl-5 pr-2 text-center rounded-full focus:ring-black focus:border-black"
 					type="number"
 					id="toInput"
 					value={sliderTwoVal}
