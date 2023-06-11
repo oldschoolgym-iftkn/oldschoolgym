@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    container_name: mysql_db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+
+  broker:
+    image: redis
+    container_name: redis_cache
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+
+  web_migration:
+    build: .
+    command: 'python3 manage.py migrate'
+    ports:
+      - 8001:8000
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: .
+    command: 'python3 manage.py runserver 0.0.0.0:8000'
+    ports:
+      - 8080:8000
+    env_file:
+      - .env
+    depends_on:
+      - web_migration
+
+  celery:
+    build: .
+    command: 'celery -A oldschoolgym worker --loglevel=info -P eventlet'
+    env_file:
+      - .env
+    volumes:
+      - celery_data:/data
+    depends_on:
+      - web
+
+  flower:
+    build: .
+    command: 'celery -A oldschoolgym flower --loglevel=info --port=5050'
+    ports:
+      - 5050:5050
+    env_file:
+      - .env
+    volumes:
+      - flower_data:/data
+    depends_on:
+      - celery
+
+  nginx:
+    image: nginx:latest
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.nginx.rule=Host(`api.oldschoolgym.kansei-dorifto.pp.ua`)'
+      - 'traefik.http.services.nginx.loadbalancer.server.port=8080'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+volumes:
+  mysql_data:
+  redis_data:
+  celery_data:
+  flower_data:
+
+networks:
+  default:
+    name: oldschoolgym_proj
