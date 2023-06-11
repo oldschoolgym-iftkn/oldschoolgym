@@ -17,13 +17,14 @@ import Chat from '../components/Messages/Chat';
 import { ChatProvider } from '../context/ChatProvider';
 import MissingPage from '../components/MissingPage';
 import Profile from '../components/Profile/Profile';
-import Requests from '../components/Requests/Requests';
 import HomeCoach from '../components/Home/HomeCoach';
 import HomeUser from '../components/Home/HomeUser';
 import Coaches from '../components/UserList/Coaches';
 import Clients from '../components/UserList/Clients';
 import CalendarCoach from '../components/Calendar/CalendarCoach';
 import MobileCabinetNav from '../components/MobileCabinetNav';
+import RequestsUser from '../components/Requests/RequestsUser';
+import RequestsCoach from '../components/Requests/RequestsCoach';
 
 const navUser = [
 	{ name: 'Головна', icon: <HomeIcon />, href: '/cabinet' },
@@ -75,7 +76,10 @@ const Cabinet = () => {
 						<Routes>
 							<Route path="/" element={user.role === 0 ? <HomeUser /> : <HomeCoach />} />
 							<Route path="/profile" element={<Profile />} />
-							<Route path="/requests" element={<Requests />} />
+							<Route
+								path="/requests"
+								element={user.role === 0 ? <RequestsUser /> : <RequestsCoach />}
+							/>
 
 							<Route element={<ChatProvider />}>
 								<Route path="/messages" element={<Messages />} />

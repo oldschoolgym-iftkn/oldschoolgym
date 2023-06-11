@@ -19,7 +19,7 @@ const Messages = () => {
 					</p>
 				</button>
 			</div>
-			<div className="flex-1 p-4 overflow-y-auto text-2xl md:p-8 ">
+			<div className="flex-1 p-4 overflow-y-auto text-xl sm:text-2xl md:p-8 ">
 				<div className="h-full overflow-y-auto border-2 border-black rounded-3xl">
 					{userChats.map((chat, index) => (
 						<div key={index} className="border-b border-black">
@@ -31,7 +31,7 @@ const Messages = () => {
 											'/cabinet/messages/' + chat.users.find((obj) => obj.id !== user.user_id).id,
 										);
 									}}
-									className="flex flex-grow py-3 text-left justify-items-start">
+									className="flex items-center flex-grow py-1 text-left sm:py-3 justify-items-start">
 									<img
 										src={
 											process.env.REACT_APP_API_URL +
@@ -49,7 +49,7 @@ const Messages = () => {
 									onClick={() => {
 										alert('PopUp!');
 									}}>
-									<EllipsisVerticalIcon className="w-10 h-10 text-black" />
+									<EllipsisVerticalIcon className="w-6 h-6 text-black sm:w-8 sm:h-8" />
 								</button>
 							</div>
 						</div>

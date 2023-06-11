@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import Header from '../components/Header';
 import axios from '../api/axios';
@@ -9,6 +9,7 @@ import Plan from '../components/FullCoach/Plan';
 import useAuth from '../hooks/useAuth';
 import OrderModal from '../components/FullCoach/OrderModal';
 import { selectYearDeclension, specs, type_training } from '../components/FullCoach/utils.js';
+import useAxios from '../hooks/useAxios';
 
 const FullCoach = () => {
 	const [showModal, setShowModal] = useState({ show: false, activeSubType: 0 });
@@ -18,6 +19,7 @@ const FullCoach = () => {
 	const [notFound, setNotFound] = useState(false);
 	const { user } = useAuth();
 	const { id } = useParams();
+	const navigate = useNavigate();
 
 	const getCoach = () => {
 		axios
@@ -39,7 +41,17 @@ const FullCoach = () => {
 	}, []);
 
 	const openModal = (type) => {
-		setShowModal({ show: true, activeSubType: type, subs: rates.map((rate, index) => rate.name) });
+		if (user?.user_profile) {
+			setShowModal({
+				show: true,
+				activeSubType: type,
+				rates,
+				subs: rates.map((rate, index) => rate.name),
+				coach_id: Number(id),
+			});
+		} else {
+			navigate('/sign-in', { state: { from: { pathname: `/coaches/${id}` } } });
+		}
 	};
 
 	const closeModal = () => {
@@ -68,12 +80,16 @@ const FullCoach = () => {
 										{coach.user_profile.last_name + ' ' + coach.user_profile.first_name}
 									</p>
 									<Link
-										to={user?.user_id !== Number(id) ? '/cabinet/messages/' + id : '/cabinet'}
+										to={
+											user?.user_id !== coach.user_profile.id
+												? '/cabinet/messages/' + id
+												: '/cabinet'
+										}
 										className="inline-block select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
 										Написати тренеру
 									</Link>
 									<button
-										onClick={() => (user?.user_id === Number(id) ? {} : openModal)}
+										onClick={user?.user_id !== coach.user_profile.id ? () => openModal(0) : null}
 										className="inline-block select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
 										Відправити заявку
 									</button>
@@ -136,7 +152,9 @@ const FullCoach = () => {
 									<Plan
 										key={index}
 										{...rate}
-										onClick={() => (user?.user_id === Number(id) ? {} : openModal(index))}
+										onClick={() =>
+											user?.user_id === coach.user_profile.id ? {} : openModal(index)
+										}
 									/>
 								))}
 							</div>

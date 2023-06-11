@@ -49,7 +49,6 @@ const Coaches = () => {
 		window.scrollTo(0, 0);
 		getCoaches();
 	}, []);
-	console.log(filteredData);
 	return (
 		<div className="flex flex-col min-h-screen App">
 			<Header main full noFixed />
@@ -78,7 +77,7 @@ const Coaches = () => {
 								<Pagination
 									currentPage={currentPage}
 									onChangePage={setCurrentPage}
-									pageCount={filteredData.length / itemsPerPage}
+									pageCount={Math.ceil(filteredData.length / itemsPerPage)}
 								/>
 							</div>
 						</>

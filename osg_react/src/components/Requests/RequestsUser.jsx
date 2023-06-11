@@ -16,7 +16,7 @@ const people = [
 	{ first_name: 'Анна', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
 ];
 
-const Requests = () => {
+const RequestsUser = () => {
 	const user = {};
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
@@ -91,4 +91,4 @@ const Requests = () => {
 	);
 };
 
-export default Requests;
+export default RequestsUser;

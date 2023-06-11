@@ -1,9 +1,24 @@
 import Modal from 'react-modal';
 import { useForm, Controller } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
+import useAxios from '../../hooks/useAxios';
 
 Modal.setAppElement('#root');
 const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
+	const api = useAxios();
+	const navigate = useNavigate();
+
+	const sendApplicationAsUser = async (data) => {
+		try {
+			const res = await api.post('/coach/api/send_user_application', data);
+			navigate('/cabinet/requests');
+			return res;
+		} catch (err) {
+			throw err;
+		}
+	};
+
 	const {
 		register,
 		handleSubmit,
@@ -14,8 +29,8 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
-			topic: '',
-			desc: '',
+			subject: '',
+			message: '',
 		},
 		mode: 'onSubmit',
 		// shouldUseNativeValidation: true,
@@ -26,7 +41,11 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 	};
 
 	const onSubmit = async (values) => {
-		console.log(values);
+		await sendApplicationAsUser({
+			...values,
+			rate: modalIsOpen.rates[Number(values.rate)],
+			coach: modalIsOpen.coach_id,
+		});
 		closeOrderModal();
 	};
 
@@ -53,7 +72,7 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 						</span>
 						<input
 							type="text"
-							{...register('topic', { required: 'Вкажіть тему' })}
+							{...register('subject', { required: 'Вкажіть тему' })}
 							className="w-full px-4 py-2 text-2xl border-0 border-b border-black focus:rounded focus:border-black focus:ring-black"
 						/>
 					</div>
@@ -63,11 +82,12 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 						</span>
 						<Controller
 							control={control}
-							name="subType"
-							render={() => (
+							name="rate"
+							defaultValue={String(modalIsOpen.activeSubType)}
+							render={({ field }) => (
 								<select
-									className="block w-full px-4 py-2 text-xl border rounded focus:ring-black focus:border-black "
-									defaultValue={String(modalIsOpen.activeSubType)}>
+									{...field}
+									className="block w-full px-4 py-2 text-xl border rounded focus:ring-black focus:border-black ">
 									{modalIsOpen.subs?.map((obj, index) => (
 										<option key={index} value={String(index)} className="text-lg">
 											{obj}
@@ -82,7 +102,7 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 							Опис
 						</span>
 						<textarea
-							{...register('desc', { required: 'Вкажіть текст заявки' })}
+							{...register('message', { required: 'Вкажіть текст заявки' })}
 							className="w-full rounded resize-none min-h-[8rem] h-full text-xl focus:border-black focus:ring-black"></textarea>
 					</div>
 					<button

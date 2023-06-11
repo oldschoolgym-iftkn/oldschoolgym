@@ -157,23 +157,8 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	// useEffect(() => {
-	// 	// if (initLoading) {
-	// 	// 	updateToken();
-	// 	// }
-
-	// 	// const repeatTime = 25 * 1000;
-	// 	// const interval = setInterval(() => {
-	// 	// 	if (auth) {
-	// 	// 		updateToken();
-	// 	// 	}
-	// 	// }, repeatTime);
-
-	// 	// return () => clearInterval(interval);
 	// 	if (auth) {
-	// 		if (initLoading) loadUserProfile();
-	// 		// setUser(jwt_decode(auth.access));
-	// 		// if (!loadUserProfile()) console.log('logout?');
-	// 		// setInitLoading(false);
+	// 		if (initLoading) getUserApplications();
 	// 	} else {
 	// 		setInitLoading(false);
 	// 	}
@@ -183,7 +168,8 @@ export const AuthProvider = ({ children }) => {
 	return (
 		<AuthContext.Provider value={contextData}>
 			{
-				// initLoading ? <Loading /> :
+				// initLoading ?
+				// 	<Loading /> :
 				children
 			}
 		</AuthContext.Provider>
