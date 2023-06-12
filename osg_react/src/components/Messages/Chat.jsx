@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, PaperClipIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import validator from 'validator';
 
@@ -127,15 +127,15 @@ const Chat = () => {
 					className="px-6 py-3">
 					<ArrowLeftIcon className="w-6 h-6 sm:w-8 sm:h-8" />
 				</button>
-				<div className="my-auto ">
+				<Link to={'/cabinet/user/' + member.id} className="flex items-center my-auto space-x-2">
 					<img
 						src={process.env.REACT_APP_API_URL + member.avatar}
 						alt="Img"
 						draggable={false}
-						className="inline-block w-10 h-10 mr-2 border border-black rounded-full sm:mr-6"
+						className="inline-block w-10 h-10 border border-black rounded-full"
 					/>
 					<p className="inline-block">{member.first_name + ' ' + member.last_name}</p>
-				</div>
+				</Link>
 			</div>
 			<div className="flex flex-col flex-1 pb-5 space-y-px overflow-y-auto sm:px-6">
 				<div ref={containerRef} className="flex-1 px-4 overflow-y-auto text-base sm:px-12">

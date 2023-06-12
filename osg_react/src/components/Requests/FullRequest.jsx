@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Loading from '../Loading';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAxios from '../../hooks/useAxios';
 import MissingPage from '../MissingPage';
 
@@ -72,9 +72,21 @@ const FullRequest = () => {
 											alt="User avatar"
 											className="object-scale-down w-12 rounded-full sm:w-24"
 										/>
-										<p className="text-xl sm:text-2xl">
-											{request.user.last_name + ' ' + request.user.first_name}
-										</p>
+										<div className="flex flex-col">
+											<p className="text-xl sm:text-2xl">
+												{request.user.last_name + ' ' + request.user.first_name}
+											</p>
+											<Link
+												to={'/cabinet/user/' + request.user.id}
+												className="text-lg hover:underline text-neutral-500">
+												Переглянути профіль користувача
+											</Link>
+											<Link
+												to={'/cabinet/messages/' + request.user.id}
+												className="text-lg hover:underline text-neutral-500">
+												Перейти у чат
+											</Link>
+										</div>
 									</div>
 									<p className="font-medium">{request?.subject}</p>
 									<p>{request?.message}</p>

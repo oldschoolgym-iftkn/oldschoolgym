@@ -1,10 +1,11 @@
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useChat from '../../hooks/useChat';
 import useAuth from '../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import useAxios from '../../hooks/useAxios';
 import Loading from '../Loading';
+import Popup from 'reactjs-popup';
 
 const Messages = () => {
 	const [activeTab, setActiveTab] = useState(0);
@@ -37,6 +38,17 @@ const Messages = () => {
 			getMyApplications();
 		}
 	}, [activeTab]);
+
+	const handleDelete = async (chatId) => {
+		try {
+			if (window.confirm('Справді видалити чат?')) {
+				const res = await api.delete('/chat/api/chat/', { params: { chat_id: chatId } });
+				window.location.reload();
+			}
+		} catch (err) {
+			throw err;
+		}
+	};
 
 	return (
 		<div className="flex flex-col h-full border border-black rounded-3xl">
@@ -87,16 +99,34 @@ const Messages = () => {
 											className="inline-block w-10 h-10 mx-6 border border-black rounded-full"
 										/>
 										<div className="flex-1 inline-block">
-											{chat.users.find((obj) => obj.id !== user.user_id).first_name}
+											{chat.users.find((obj) => obj.id !== user.user_id).first_name +
+												' ' +
+												chat.users.find((obj) => obj.id !== user.user_id).last_name}
 										</div>
 									</button>
-									<button
-										className="mx-6"
-										onClick={() => {
-											alert('PopUp!');
-										}}>
-										<EllipsisVerticalIcon className="w-6 h-6 text-black sm:w-8 sm:h-8" />
-									</button>
+									<Popup
+										trigger={
+											<button className="mx-6">
+												<EllipsisVerticalIcon className="w-6 h-6 text-black sm:w-8 sm:h-8" />
+											</button>
+										}
+										closeOnDocumentClick
+										repositionOnResize
+										offsetY={-15}
+										offsetX={10}
+										arrow={false}
+										position="bottom right">
+										<div className="flex flex-col text-lg border border-black divide-y divide-black bg-neutral-100 rounded-xl hover:[&_>_*]:bg-neutral-200 hover:[&_>_*]:rounded-xl first:hover:[&_>_*]:rounded-b-none last:hover:[&_>_*]:rounded-t-none ">
+											<Link
+												to={'/cabinet/user/' + chat.users.find((obj) => obj.id !== user.user_id).id}
+												className="p-2">
+												Переглянути профіль
+											</Link>
+											<button onClick={() => handleDelete(chat.id)} className="p-2 text-red-700">
+												Видалити чат
+											</button>
+										</div>
+									</Popup>
 								</div>
 							</div>
 						))

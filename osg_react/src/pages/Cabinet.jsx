@@ -27,6 +27,7 @@ import RequestsUser from '../components/Requests/RequestsUser';
 import RequestsCoach from '../components/Requests/RequestsCoach';
 import FullRequest from '../components/Requests/FullRequest';
 import FullRequestUser from '../components/Requests/FullRequestUser';
+import UserProfile from '../components/UserProfile';
 
 const navUser = [
 	{ name: 'Головна', icon: <HomeIcon />, href: '/cabinet' },
@@ -98,6 +99,7 @@ const Cabinet = () => {
 								<Route path="/clients" element={<Clients />} />
 							)}
 							<Route path="/calendar" element={<CalendarCoach />} />
+							<Route path="/user/:id" element={<UserProfile />} />
 							<Route path="*" element={<MissingPage />} />
 						</Routes>
 					</main>

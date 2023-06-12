@@ -21,7 +21,7 @@ const ClientCard = ({ id, avatar, first_name, last_name }) => {
 				Чат
 			</Link>
 			<Link
-				to={'/users/' + id}
+				to={'/cabinet/users/' + id}
 				className="inline-block select-none text-center w-full min-w-[8rem] hover:bg-neutral-600 px-2 py-2 rounded-full text-lg leading-none font-normal bg-black text-white border border-black">
 				Перейти у профіль
 			</Link>

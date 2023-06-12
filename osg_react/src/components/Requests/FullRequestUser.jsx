@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Loading from '../Loading';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAxios from '../../hooks/useAxios';
 import MissingPage from '../MissingPage';
 
@@ -32,9 +32,14 @@ const FullRequest = () => {
 					params: { user_id: my_application.user },
 				})
 			)?.data;
-			setRequest({ ...my_application, user: user });
+			const coach = (
+				await api.get('/coach/api/get_coach_by_id', {
+					params: { coach_id: my_application.coach },
+				})
+			)?.data;
+			setRequest({ ...my_application, user: user, coach: coach });
 			setMyApplications({
-				data: [{ ...my_application, user: user }],
+				data: [{ ...my_application, user: user, coach: coach }],
 				loading: false,
 				error: false,
 			});
@@ -65,13 +70,22 @@ const FullRequest = () => {
 								<div className="flex flex-col flex-1 gap-2 lg:gap-6">
 									<div className="flex items-center gap-4">
 										<img
-											src={process.env.REACT_APP_API_URL + request.user.avatar}
-											alt="User avatar"
+											src={process.env.REACT_APP_API_URL + request.coach.user_profile.avatar}
+											alt="Coach avatar"
 											className="object-scale-down w-16 rounded-full lg:w-24"
 										/>
-										<p className="text-xl sm:text-2xl">
-											{request.user.last_name + ' ' + request.user.first_name}
-										</p>
+										<div className="flex flex-col">
+											<p className="text-xl sm:text-2xl">
+												{request.coach.user_profile.last_name +
+													' ' +
+													request.coach.user_profile.first_name}
+											</p>
+											<Link
+												to={'/coaches/' + request.coach.id}
+												className="text-lg hover:underline text-neutral-500">
+												Переглянути профіль тренера
+											</Link>
+										</div>
 									</div>
 									<p className="font-medium">{request?.subject}</p>
 									<p>{request?.message}</p>

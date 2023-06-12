@@ -95,7 +95,7 @@ const UserInfo = ({ className }) => {
 			onSubmit={handleSubmit(onSubmit)}>
 			<h2 className="text-2xl lg:text-4xl">Дані користувача</h2>
 			<div className="grid grid-cols-2 grid-rows-2 gap-8 max-lg:gap-6 max-lg:grid-cols-1 max-lg:grid-rows-4">
-				<div className="flex flex-col justify-center p-6 space-y-4 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
+				<div className="flex flex-col justify-center p-6 space-y-2 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
 					<div className="flex flex-col">
 						<input
 							type="file"
@@ -114,7 +114,7 @@ const UserInfo = ({ className }) => {
 							type="button"
 							onClick={() => fileRef.current?.click()}
 							className="mx-auto text-lg hover:underline">
-							Змінити
+							Змінити фото
 						</button>
 					</div>
 					<p className="text-2xl font-medium text-center">
@@ -158,7 +158,7 @@ const UserInfo = ({ className }) => {
 									className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
 								/>
 								<label htmlFor="genderMale" className="text-black align-middle">
-									Чоловік
+									Чоловіча
 								</label>
 							</li>
 							<li className="w-full p-2.5">
@@ -170,7 +170,7 @@ const UserInfo = ({ className }) => {
 									className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
 								/>
 								<label htmlFor="genderFemale" className="text-black align-middle">
-									Жінка
+									Жіноча
 								</label>
 							</li>
 						</ul>
@@ -185,7 +185,8 @@ const UserInfo = ({ className }) => {
 							max={300}
 							{...register('height', { required: 'Вкажіть свій ріст' })}
 							className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
-						/>
+						/>{' '}
+						см
 					</div>
 					<div className="text-xl">
 						<label className="inline-block px-4 text-lg text-gray-500 select-none font-extralight">
@@ -197,7 +198,8 @@ const UserInfo = ({ className }) => {
 							max={300}
 							{...register('weight', { required: 'Вкажіть свою вагу' })}
 							className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
-						/>
+						/>{' '}
+						кг
 					</div>
 				</div>
 				<div className="p-6 space-y-2 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
