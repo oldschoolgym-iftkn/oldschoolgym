@@ -22,8 +22,6 @@ export default function Header({ main, full, noFixed, openBurger }) {
 					: 'lg:fixed lg:[&+*]:mt-[74px] lg:[&+*]:max-2xl:mt-[52px] lg:[&+*]:max-xl:mt-[42px]')
 			}>
 			<div className={full ? headerContainer + ' container' : headerContainer}>
-				{/* <div className="container grid items-center grid-cols-4 p-2 mx-auto max-xl:flex max-xl:flex-col"> */}
-				{/* <div className="container flex flex-col flex-wrap items-center justify-between p-2 mx-auto md:flex-row "> */}
 				<Link to="/" className="flex items-center font-normal title-font md:mb-0">
 					<span
 						className="mr-1 -mb-1 text-3xl leading-none 2xl:text-6xl md:text-4xl "

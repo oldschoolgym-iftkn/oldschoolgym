@@ -3,13 +3,6 @@ import CoachCard from './CoachCard';
 import useAxios from '../../hooks/useAxios';
 import Loading from '../Loading';
 
-// const coaches = [
-// 	{ id: 1, avatar: '/media/default_M.png', first_name: 'Олег', last_name: 'Варкрафт' },
-// 	{ id: 2, avatar: '/media/default_F.png', first_name: 'Олена', last_name: 'Квітка' },
-// 	{ id: 3, avatar: '/media/default_M.png', first_name: 'Володимир', last_name: 'Молочний' },
-// 	{ id: 4, avatar: '/media/default_M.png', first_name: 'Billy', last_name: 'Herington' },
-// ];
-
 const Coaches = () => {
 	const [myApplications, setMyApplications] = useState({ data: null, loading: true, error: false });
 	const api = useAxios();

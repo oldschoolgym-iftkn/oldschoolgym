@@ -15,7 +15,6 @@ const Chat = () => {
 	const navigate = useNavigate();
 	const axios = useAxios();
 	const { id } = useParams();
-	const indexChat = Number(id) - 1;
 	const { user, auth } = useAuth();
 	const { userChats, createChat, createChatError } = useChat();
 	const [isLoading, setLoading] = useState(true);
@@ -30,7 +29,6 @@ const Chat = () => {
 		process.env.REACT_APP_API_WEBSOCKETS_URL + `/ws/chat/${chat?.id}/`,
 	);
 	const [messageHistory, setMessageHistory] = useState([]);
-	const lastMessageRef = useRef(null);
 
 	useEffect(() => {
 		containerRef.current?.scroll({ top: containerRef.current?.scrollHeight, behavior: 'smooth' });
@@ -68,19 +66,11 @@ const Chat = () => {
 			.catch((err) => {});
 	};
 
-	// const createNewChat = (memberId) => {
-	// 	axios.post('/chat/api/chat/', { users: [user.id, memberId] }).then(joinC);
-	// };
-
 	const createNewMessage = (message) => {
 		setMessageHistory((prev) => prev.concat(message));
 	};
 
 	const { sendJsonMessage } = useWebSocket(socketUrl, {
-		// onOpen: () => {
-		// 	console.log('WebSocket connection established.');
-		// },
-		// onClose: () => console.log('WebSocket close connection.'),
 		onMessage: (ev) => createNewMessage(JSON.parse(ev.data)),
 		queryParams: { authorization: auth.access },
 	});
@@ -142,10 +132,7 @@ const Chat = () => {
 					{messageHistory.map((message, index) => {
 						const sender = chat.users.find((obj) => obj.id === message.sender);
 						return (
-							<div
-								key={message.id}
-								// ref={index === messageHistory.length - 1 ? lastMessageRef : null}
-								className="flex p-2 rounded-3xl first:mt-2 last:mb-2">
+							<div key={message.id} className="flex p-2 rounded-3xl first:mt-2 last:mb-2">
 								<img
 									src={process.env.REACT_APP_API_URL + sender.avatar}
 									alt="Img"

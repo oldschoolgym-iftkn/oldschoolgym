@@ -84,7 +84,6 @@ const Messages = () => {
 								<div className="flex transition ease-out duration-200 bg-transparent rounded-3xl hover:bg-neutral-400/90 hover:scale-[102%] hover:rounded-3xl">
 									<button
 										onClick={() => {
-											// navigate('/cabinet/messages/' + (index + 1));
 											navigate(
 												'/cabinet/messages/' + chat.users.find((obj) => obj.id !== user.user_id).id,
 											);

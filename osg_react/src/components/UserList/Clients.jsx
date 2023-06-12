@@ -5,7 +5,6 @@ import Loading from '../Loading';
 
 const Clients = () => {
 	const [myApplications, setMyApplications] = useState({ data: null, loading: true, error: false });
-	const [selection, setSelection] = useState([]);
 	const api = useAxios();
 
 	const getMyApplications = async () => {

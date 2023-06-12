@@ -24,7 +24,6 @@ const Register = () => {
 			password: '',
 		},
 		mode: 'onChange',
-		// shouldUseNativeValidation: true,
 	});
 
 	const onSubmit = async (values) => {

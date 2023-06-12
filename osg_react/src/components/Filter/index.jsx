@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DualRangeSlider from '../DualRangeSlider';
 
-import { cities, specs, type_training } from '../FullCoach/utils.js';
+import { specs } from '../FullCoach/utils.js';
 
 const Filter = ({ setFilterOptions, className }) => {
 	const [specFilter, setSpecFilter] = useState('');

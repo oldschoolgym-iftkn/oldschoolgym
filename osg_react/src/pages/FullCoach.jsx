@@ -9,7 +9,6 @@ import Plan from '../components/FullCoach/Plan';
 import useAuth from '../hooks/useAuth';
 import OrderModal from '../components/FullCoach/OrderModal';
 import { selectYearDeclension, specs, type_training } from '../components/FullCoach/utils.js';
-import useAxios from '../hooks/useAxios';
 
 const FullCoach = () => {
 	const [showModal, setShowModal] = useState({ show: false, activeSubType: 0 });

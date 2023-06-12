@@ -52,7 +52,6 @@ const ProfileCoach = () => {
 			additional_block: '',
 		},
 		mode: 'onSubmit',
-		// shouldUseNativeValidation: true,
 	});
 
 	const getCoachInfo = async () => {
@@ -309,7 +308,6 @@ const CreateRateModal = ({ modalIsOpen, afterOpenModal, closeModal, createRate }
 		formState: { errors, isValid },
 	} = useForm({
 		mode: 'onChange',
-		// shouldUseNativeValidation: true,
 	});
 	const closeCreateRateModal = () => {
 		closeModal();
@@ -413,7 +411,6 @@ const EditRateModal = ({ modalIsOpen, afterOpenModal, closeModal, editRate, dele
 			description: modalIsOpen.rate?.description,
 		},
 		mode: 'onChange',
-		// shouldUseNativeValidation: true,
 	});
 	useEffect(() => {
 		reset();

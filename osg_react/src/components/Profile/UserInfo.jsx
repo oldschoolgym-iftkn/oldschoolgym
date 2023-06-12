@@ -33,15 +33,8 @@ const UserInfo = ({ className }) => {
 			gender: user.user_profile.gender,
 			height: user.user_profile.height,
 			weight: user.user_profile.weight,
-			// city: cities[0],
-			// category: '0',
-			// experience: 0,
-			// type_training: '0',
-			// info_block: '',
-			// additional_block: '',
 		},
 		mode: 'onSubmit',
-		// shouldUseNativeValidation: true,
 	});
 
 	const validation = {
@@ -53,9 +46,6 @@ const UserInfo = ({ className }) => {
 		setUpdating(true);
 		const parseValues = {
 			...values,
-			// category: Number(values.category),
-			// type_training: Number(values.category),
-			// experience: Number(values.experience),
 			height: Number(values.height),
 			weight: Number(values.weight),
 		};

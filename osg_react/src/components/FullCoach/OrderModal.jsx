@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useAxios from '../../hooks/useAxios';
 
 Modal.setAppElement('#root');
+
 const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 	const api = useAxios();
 	const navigate = useNavigate();
@@ -19,21 +20,12 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 		}
 	};
 
-	const {
-		register,
-		handleSubmit,
-		reset,
-		control,
-		// setError,
-		// eslint-disable-next-line
-		formState: { errors, isValid },
-	} = useForm({
+	const { register, handleSubmit, reset, control } = useForm({
 		defaultValues: {
 			subject: '',
 			message: '',
 		},
 		mode: 'onSubmit',
-		// shouldUseNativeValidation: true,
 	});
 	const closeOrderModal = () => {
 		closeModal();
@@ -56,7 +48,7 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 			onAfterOpen={() => (document.body.style.overflow = 'hidden')}
 			onAfterClose={() => (document.body.style.overflow = 'unset')}
 			onRequestClose={closeOrderModal}
-			className={'mx-auto my-auto w-fit'} //absolute inset-0
+			className={'mx-auto my-auto w-fit'}
 			contentLabel="Fill order">
 			<div className="p-6 bg-white border border-black w-fit rounded-3xl  &[ReactModal__Overlay--after-open:translate-y-0]">
 				<div className="text-right">

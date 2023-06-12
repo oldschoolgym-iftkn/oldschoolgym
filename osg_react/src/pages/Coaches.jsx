@@ -7,8 +7,6 @@ import Pagination from '../components/Pagination';
 import axios from '../api/axios';
 import Loading from '../components/Loading';
 
-import { cities, specs, type_training } from '../components/FullCoach/utils.js';
-
 const Coaches = () => {
 	const [coachesList, setCoachesList] = useState([]);
 	const [isLoading, setLoading] = useState(true);

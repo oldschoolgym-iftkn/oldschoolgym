@@ -18,11 +18,11 @@ const RequireAuth = () => {
 			loadUserProfile();
 		}
 	}, [auth]);
-	// console.log('loading', { user, auth });
+
 	if ((!user?.user_profile && auth) || loading) {
 		return <Loading />;
 	}
-	// console.log('outlet', { success, user });
+
 	if (success && user?.user_profile) {
 		return <Outlet />;
 	}

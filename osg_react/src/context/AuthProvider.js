@@ -156,24 +156,7 @@ export const AuthProvider = ({ children }) => {
 		updateUserProfile,
 	};
 
-	// useEffect(() => {
-	// 	if (auth) {
-	// 		if (initLoading) getUserApplications();
-	// 	} else {
-	// 		setInitLoading(false);
-	// 	}
-	// }, [auth, initLoading]);
-	// console.log({ user });
-
-	return (
-		<AuthContext.Provider value={contextData}>
-			{
-				// initLoading ?
-				// 	<Loading /> :
-				children
-			}
-		</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;
