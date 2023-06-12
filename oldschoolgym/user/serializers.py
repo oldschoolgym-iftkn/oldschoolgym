@@ -53,3 +53,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['role'] = user.role
         return token
+
+
+class AvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = ('avatar')

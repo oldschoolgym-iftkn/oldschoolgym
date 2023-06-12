@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import (MyUserSerializer, ConfirmMailSerializer,
                           MyUserSerializerToUpdate, MyUserSerializerToView,
-                          MyTokenObtainPairSerializer)
+                          MyTokenObtainPairSerializer,AvatarSerializer)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from chat.serializers import ChatSerializer
@@ -15,7 +15,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class UserAPI(APIView):
 
@@ -125,3 +125,22 @@ def get_user_by_id(request):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class AvatarUploadView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    @swagger_auto_schema(method='put', request_body=AvatarSerializer,
+                         operation_description='To update user avatar.')
+    @api_view(['PUT'])
+    @permission_classes([IsAuthenticated])
+    def put(self, request, *args, **kwargs):
+        serializer = AvatarSerializer(data=request.data)
+        if serializer.is_valid():
+            user_profile = request.user
+            user_profile.avatar = serializer.validated_data['avatar']
+            user_profile.save()
+            return Response(status=204)
+        else:
+            return Response(serializer.errors, status=400)
+        
