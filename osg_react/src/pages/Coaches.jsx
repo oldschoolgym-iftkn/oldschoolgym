@@ -17,16 +17,19 @@ const Coaches = () => {
 		category: '',
 		type_training: '',
 		experience: [1, 30],
+		city: '',
 	});
 
 	const filteredData = coachesList?.filter(
 		(coach) =>
+			coach.is_confirmed === true &&
 			(searchTerm.category !== '' ? coach.category === Number(searchTerm.category) : true) &&
 			(searchTerm.type_training !== ''
 				? coach.type_training === Number(searchTerm.type_training)
 				: true) &&
 			coach.experience >= searchTerm.experience[0] &&
-			coach.experience <= searchTerm.experience[1],
+			coach.experience <= searchTerm.experience[1] &&
+			(searchTerm.city !== '' ? coach.city === searchTerm.city : true),
 	);
 	const indexOfLastItem = currentPage * itemsPerPage;
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage;

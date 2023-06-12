@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import DualRangeSlider from '../DualRangeSlider';
 
-import { specs } from '../FullCoach/utils.js';
+import { cities, specs } from '../FullCoach/utils.js';
 
 const Filter = ({ setFilterOptions, className }) => {
 	const [specFilter, setSpecFilter] = useState('');
 	const [typeFilter, setTypeFilter] = useState('');
+	const [cityFilter, setCityFilter] = useState('');
 
 	const handleChangeType = (e) => {
 		setTypeFilter(e.target.value);
@@ -14,13 +15,13 @@ const Filter = ({ setFilterOptions, className }) => {
 	return (
 		<div
 			className={
-				'p-6 text-xl text-left text-black border-2 border-black select-none rounded-r-2xl space-y-14 max-sm:space-y-6' +
+				'p-6 text-xl text-left text-black border-2 border-black select-none rounded-r-2xl space-y-10 max-sm:space-y-6' +
 				' ' +
 				className
 			}>
 			<div className="border-2 border-black rounded">
 				<select
-					id="countries"
+					id="category"
 					value={specFilter}
 					onChange={(e) => {
 						setSpecFilter(e.target.value);
@@ -86,13 +87,36 @@ const Filter = ({ setFilterOptions, className }) => {
 					<button
 						onClick={() => {
 							setTypeFilter('');
-							setFilterOptions((prev) => ({ ...prev, type_training: '' }));
+							setCityFilter('');
+							setFilterOptions((prev) => ({ ...prev, type_training: '', city: '' }));
 						}}
 						className="mx-auto hover:underline text-neutral-500">
 						Скинути
 					</button>
 				</div>
 			</div>
+			{typeFilter !== '0' && typeFilter !== '' && (
+				<div className="border-2 border-black rounded">
+					<select
+						id="city"
+						value={cityFilter}
+						onChange={(e) => {
+							setCityFilter(e.target.value);
+							setFilterOptions((prev) => ({ ...prev, city: e.target.value }));
+							console.log(e.target.value);
+						}}
+						className="block w-full px-2 py-2 text-xl border border-white rounded-lg focus:ring-gray-500 focus:border-gray-500 ">
+						<option defaultChecked value={''} className="text-lg">
+							Місто
+						</option>
+						{cities.map((obj, index) => (
+							<option key={index} value={obj} className="text-lg">
+								{obj}
+							</option>
+						))}
+					</select>
+				</div>
+			)}
 			<div className="px-6 py-6 space-y-4 border-2 border-black rounded max-sm:py-2">
 				<div className="">Досвід роботи</div>
 				<DualRangeSlider
