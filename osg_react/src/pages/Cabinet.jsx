@@ -25,6 +25,8 @@ import CalendarCoach from '../components/Calendar/CalendarCoach';
 import MobileCabinetNav from '../components/MobileCabinetNav';
 import RequestsUser from '../components/Requests/RequestsUser';
 import RequestsCoach from '../components/Requests/RequestsCoach';
+import FullRequest from '../components/Requests/FullRequest';
+import FullRequestUser from '../components/Requests/FullRequestUser';
 
 const navUser = [
 	{ name: 'Головна', icon: <HomeIcon />, href: '/cabinet' },
@@ -79,6 +81,10 @@ const Cabinet = () => {
 							<Route
 								path="/requests"
 								element={user.role === 0 ? <RequestsUser /> : <RequestsCoach />}
+							/>
+							<Route
+								path="/requests/:id"
+								element={user.role === 0 ? <FullRequestUser /> : <FullRequest />}
 							/>
 
 							<Route element={<ChatProvider />}>

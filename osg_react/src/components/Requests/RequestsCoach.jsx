@@ -8,35 +8,30 @@ import {
 import useAxios from '../../hooks/useAxios';
 import { useEffect, useState } from 'react';
 import Loading from '../Loading';
+import { useNavigate } from 'react-router-dom';
 
 const tabs = ['Нові', 'В обробці', 'Відхилені', 'Прийняті'];
-const people = [
-	{ first_name: 'Олександр', gender: true, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Марія', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Іван', gender: true, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Олена', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Сергій', gender: true, date: Math.round(1 + Math.random() * (30 - 1)) },
-	{ first_name: 'Анна', gender: false, date: Math.round(1 + Math.random() * (30 - 1)) },
-];
 
 const RequestsCoach = () => {
 	const [myApplications, setMyApplications] = useState({ data: null, loading: true, error: false });
 	const [selection, setSelection] = useState([]);
 	const api = useAxios();
+	const navigate = useNavigate();
 
 	const getMyApplications = async () => {
 		try {
 			const res = await api.get('/coach/api/get_my_applications');
 			const tunedApplications = await Promise.all(
-				res.data.map(async (application) => {
+				res.data?.map(async (application) => {
 					const res = await api.get('/user/api/get_user_by_id/', {
 						params: { user_id: application.user },
 					});
 					return { ...application, user: res.data };
 				}),
 			);
-
-			setMyApplications({ data: tunedApplications, loading: false, error: false });
+			const newApplications = tunedApplications.filter((app) => app.is_accepted === false);
+			setMyApplications({ data: newApplications, loading: false, error: false });
+			// setMyApplications({ data: tunedApplications, loading: false, error: false });
 		} catch (err) {
 			setMyApplications({ data: null, loading: false, error: true });
 			throw err;
@@ -109,7 +104,7 @@ const RequestsCoach = () => {
 										<div className="flex items-center transition ease-out duration-200 bg-transparent rounded-3xl hover:bg-neutral-400/90 hover:scale-[101%] hover:rounded-3xl">
 											<button
 												onClick={() => {
-													// navigate('/cabinet/messages/' + (index + 1));
+													navigate('/cabinet/requests/' + application.id);
 												}}
 												className="flex items-center flex-1 flex-grow py-2 text-left justify-items-center">
 												<img

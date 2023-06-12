@@ -18,8 +18,8 @@ export default function Header({ main, full, noFixed, openBurger }) {
 				(noFixed
 					? ''
 					: full
-					? 'fixed [&+*]:mt-[74px] [&+*]:max-2xl:mt-[60px] [&+*]:max-md:mt-[116px] [&+*]:max-xl:mt-[144px]'
-					: 'fixed [&+*]:mt-[74px] [&+*]:max-2xl:mt-[52px] [&+*]:max-xl:mt-[42px]')
+					? 'lg:fixed lg:[&+*]:mt-[74px] lg:[&+*]:max-2xl:mt-[60px] lg:[&+*]:max-lg:mt-[116px] lg:[&+*]:max-xl:mt-[60px]'
+					: 'lg:fixed lg:[&+*]:mt-[74px] lg:[&+*]:max-2xl:mt-[52px] lg:[&+*]:max-xl:mt-[42px]')
 			}>
 			<div className={full ? headerContainer + ' container' : headerContainer}>
 				{/* <div className="container grid items-center grid-cols-4 p-2 mx-auto max-xl:flex max-xl:flex-col"> */}

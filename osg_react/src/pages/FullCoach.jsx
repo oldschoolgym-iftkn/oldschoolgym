@@ -85,12 +85,13 @@ const FullCoach = () => {
 												? '/cabinet/messages/' + id
 												: '/cabinet'
 										}
-										className="inline-block select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
+										className="inline-block disabled:bg-neutral-300 select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
 										Написати тренеру
 									</Link>
 									<button
+										disabled={user?.user_id === coach.user_profile.id}
 										onClick={user?.user_id !== coach.user_profile.id ? () => openModal(0) : null}
-										className="inline-block select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
+										className="inline-block disabled:bg-neutral-300 select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
 										Відправити заявку
 									</button>
 								</div>
