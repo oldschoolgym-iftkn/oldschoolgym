@@ -14,5 +14,5 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('api/confirm_mail/', confirm_email),
     path('api/get_chats/', get_all_chats),
-    path('api/upload_avatar/',  AvatarUploadView.as_view()),
+    path('api/upload_avatar/', AvatarUploadView.as_view()),
 ]

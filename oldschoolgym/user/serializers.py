@@ -58,4 +58,4 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class AvatarSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ('avatar')
+        fields = ('avatar',)
