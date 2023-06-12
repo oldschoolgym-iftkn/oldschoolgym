@@ -62,7 +62,7 @@ const ProfileCoach = () => {
 				params: { user_id: user.user_id },
 			});
 			if (response.status === 200) {
-				getCoaches();
+				window.location.reload();
 				return null;
 			}
 			// setInitLoading(false);
@@ -250,7 +250,7 @@ const ProfileCoach = () => {
 					Додати новий тариф
 				</button>
 				<div className="flex justify-end space-x-10">
-					<div className="flex flex-col space-y-2">
+					<div className="flex flex-col space-y-2 max-sm:flex-1">
 						<p className="text-lg text-red-700">
 							Профіль тренера можна верифікувати тільки один раз!
 						</p>
