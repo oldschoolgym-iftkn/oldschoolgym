@@ -72,7 +72,7 @@ const FullCoach = () => {
 								<img
 									src={process.env.REACT_APP_API_URL + coach.user_profile.avatar}
 									alt="Coach"
-									className="mx-auto rounded-t-[0.9rem] w-full"
+									className="mx-auto rounded-t-[0.9rem] w-full aspect-square"
 								/>
 								<div className="px-2 py-6 space-y-6 border-t-2 border-black sm:px-10">
 									<p className="text-2xl font-medium text-center sm:text-3xl">

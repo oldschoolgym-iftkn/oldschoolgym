@@ -54,7 +54,7 @@ const MobileCabinetNav = ({ modalIsOpen, afterOpenModal, closeModal, navigation,
 				</div>
 				<div className="w-full mx-auto my-1 space-y-1">
 					<img
-						className="w-24 mx-auto border-4 border-white rounded-full bg-white/75"
+						className="w-24 mx-auto border-4 border-white rounded-full bg-white/75 aspect-square"
 						src={process.env.REACT_APP_API_URL + avatar}
 						alt="avatar"
 					/>
