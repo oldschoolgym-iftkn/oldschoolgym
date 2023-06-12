@@ -88,8 +88,12 @@ const FullCoach = () => {
 										Написати тренеру
 									</Link>
 									<button
-										disabled={user?.user_id === coach.user_profile.id}
-										onClick={user?.user_id !== coach.user_profile.id ? () => openModal(0) : null}
+										disabled={user?.user_id === coach.user_profile.id || user.role === 1}
+										onClick={
+											user?.user_id !== coach.user_profile.id || user.role === 0
+												? () => openModal(0)
+												: null
+										}
 										className="inline-block disabled:bg-neutral-300 select-none text-center w-full min-w-[12rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-lg sm:text-xl leading-none font-normal bg-black text-white">
 										Відправити заявку
 									</button>
@@ -153,7 +157,9 @@ const FullCoach = () => {
 										key={index}
 										{...rate}
 										onClick={() =>
-											user?.user_id === coach.user_profile.id ? {} : openModal(index)
+											user?.user_id === coach.user_profile.id || user.role === 1
+												? {}
+												: openModal(index)
 										}
 									/>
 								))}

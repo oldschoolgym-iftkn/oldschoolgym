@@ -16,21 +16,6 @@ const ProfileCoach = () => {
 	const [coachInfo, setCoachInfo] = useState(null);
 	const { user } = useAuth();
 	const api = useAxios();
-	const sendCoachApplication = async (data) => {
-		try {
-			const response = await api.post('/coach/api/send_coach_application', data, {
-				params: { user_id: user.user_id },
-			});
-			if (response.status === 200) {
-				console.log('sendCoachApplication');
-				return null;
-			}
-			// setInitLoading(false);
-			return response;
-		} catch (err) {
-			return err;
-		}
-	};
 
 	const {
 		register,
@@ -38,7 +23,6 @@ const ProfileCoach = () => {
 		reset,
 		getValues,
 		setValue,
-		control,
 		// setError,
 		// eslint-disable-next-line
 		formState: { errors, isValid },
@@ -54,21 +38,31 @@ const ProfileCoach = () => {
 		mode: 'onSubmit',
 	});
 
-	const getCoachInfo = async () => {
+	const getCoaches = () => {
+		api.get('/coach/api/get_confirmed_coaches').then((res) => {
+			const list = res.data;
+			const coach = list.find((coach) => coach.user_profile.id === user.user_id);
+			console.log(coach, user.user_id);
+			if (coach) {
+				setCoachInfo(coach);
+				setValue('city', coach.city);
+				setValue('category', String(coach.category));
+				setValue('experience', coach.experience);
+				setValue('type_training', String(coach.type_training));
+				setValue('info_block', coach.info_block);
+				setValue('additional_block', coach.additional_block);
+				setRates(JSON.parse(coach.rates));
+			}
+		});
+	};
+
+	const sendCoachApplication = async (data) => {
 		try {
-			const response = await api.get('/coach/api/get_coach_by_id', {
-				params: { coach_id: user.user_id },
+			const response = await api.post('/coach/api/send_coach_application', data, {
+				params: { user_id: user.user_id },
 			});
 			if (response.status === 200) {
-				console.log('getCoachInfo');
-				setCoachInfo(response.data);
-				setValue('city', response.data.city);
-				setValue('category', String(response.data.category));
-				setValue('experience', response.data.experience);
-				setValue('type_training', String(response.data.type_training));
-				setValue('info_block', response.data.info_block);
-				setValue('additional_block', response.data.additional_block);
-				setRates(JSON.parse(response.data.rates));
+				getCoaches();
 				return null;
 			}
 			// setInitLoading(false);
@@ -79,7 +73,7 @@ const ProfileCoach = () => {
 	};
 
 	useEffect(() => {
-		getCoachInfo();
+		getCoaches();
 	}, []);
 
 	const validation = {
@@ -88,16 +82,18 @@ const ProfileCoach = () => {
 	};
 
 	const onSubmit = async (values) => {
-		const parseValues = {
-			...values,
-			category: Number(values.category),
-			type_training: Number(values.category),
-			experience: Number(values.experience),
-			additional_block: 'add_block',
-			rates: JSON.stringify(rates),
-		};
-		console.log('sendCoach', parseValues);
-		sendCoachApplication(parseValues);
+		if (window.confirm('Надіслати профіль на верифікацію?')) {
+			const parseValues = {
+				...values,
+				category: Number(values.category),
+				type_training: Number(values.type_training),
+				experience: Number(values.experience),
+				additional_block: 'add_block',
+				rates: JSON.stringify(rates),
+			};
+			console.log('sendCoach', parseValues);
+			sendCoachApplication(parseValues);
+		}
 	};
 	const openCreateRateModal = () => {
 		setShowModal({ show: true });
@@ -127,38 +123,30 @@ const ProfileCoach = () => {
 								<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
 									Місто
 								</span>
-								<Controller
-									control={control}
-									name="city"
-									render={() => (
-										<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
-											{cities.map((obj, index) => (
-												<option key={index} value={obj} className="text-lg">
-													{obj}
-												</option>
-											))}
-										</select>
-									)}
-								/>
+								<select
+									{...register('city')}
+									className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
+									{cities.map((obj, index) => (
+										<option key={index} value={obj} className="text-lg">
+											{obj}
+										</option>
+									))}
+								</select>
 							</div>
 
 							<div>
 								<span className="block px-4 text-lg text-gray-500 select-none font-extralight">
 									Спеціалізація
 								</span>
-								<Controller
-									control={control}
-									name="category"
-									render={() => (
-										<select className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
-											{specs.map((obj, index) => (
-												<option key={index} value={String(index)} className="text-lg">
-													{obj}
-												</option>
-											))}
-										</select>
-									)}
-								/>
+								<select
+									{...register('category')}
+									className="block w-full px-4 py-2 text-xl border rounded focus:ring-gray-500 focus:border-gray-500">
+									{specs.map((obj, index) => (
+										<option key={index} value={String(index)} className="text-lg">
+											{obj}
+										</option>
+									))}
+								</select>
 							</div>
 							<div className="text-xl">
 								<label className="inline-block px-4 text-lg text-gray-500 select-none font-extralight">
@@ -166,7 +154,6 @@ const ProfileCoach = () => {
 								</label>
 								<input
 									type="number"
-									defaultValue={1}
 									min={1}
 									max={30}
 									{...register('experience', { required: 'Вкажіть свій досвід' })}
@@ -286,12 +273,17 @@ const ProfileCoach = () => {
 				closeModal={closeEditRateModal}
 				editRate={(rate, index) =>
 					setRates((prev) => {
-						prev[index] = rate;
-						return prev;
+						const ratesCopy = Array.from(prev);
+						ratesCopy.splice(index, 1, rate);
+						return ratesCopy;
 					})
 				}
 				deleteRate={(index) => {
-					setRates((prev) => prev.filter((rate, i) => i !== index));
+					setRates((prev) => {
+						const ratesCopy = Array.from(prev);
+						ratesCopy.splice(index, 1);
+						return ratesCopy;
+					});
 				}}
 			/>
 		</>
