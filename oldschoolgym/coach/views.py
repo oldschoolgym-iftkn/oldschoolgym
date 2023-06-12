@@ -12,7 +12,7 @@ from django.views.decorators.vary import vary_on_headers
 
 @swagger_auto_schema(method='get', responses={200: CoachSerializerToView(many=True)},
                      operation_description='To get all verified coaches. Returns list of coaches.')
-@cache_page(60*60)
+# @cache_page(60*60)
 @api_view(['GET'])
 def get_confirmed_coaches(request):
     coaches = Coach.objects.filter(
@@ -24,7 +24,7 @@ def get_confirmed_coaches(request):
 @swagger_auto_schema(method='get', responses={200: CoachSerializerToView(many=True)},
                      operation_description='To get coach by id.',
                      manual_parameters=[get_query_params('coach_id', 'Coach id')])
-@cache_page(60*60)
+# @cache_page(60*60)
 @api_view(['GET'])
 def get_coach_by_id(request):
     try:
@@ -69,7 +69,7 @@ def send_user_application(request):
 @swagger_auto_schema(method='get', responses={200: UserApplicationSerializer(many=True)},
                      operation_description='To get all application from users.',
                      manual_parameters=[get_header_params()])
-@cache_page(60*15)
+# @cache_page(60*15)
 @vary_on_headers("Authorization")
 @api_view(['GET'])
 @permission_classes([VerifiedCoachOnly])
