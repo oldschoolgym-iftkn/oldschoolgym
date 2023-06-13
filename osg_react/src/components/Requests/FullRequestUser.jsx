@@ -97,14 +97,14 @@ const FullRequest = () => {
 										</button>
 									</div>
 								</div>
-								<div className="max-lg:flex-1">
+								{/* <div className="max-lg:flex-1">
 									<Plan
 										name={'Одне заняття'}
 										cost={250}
 										lessons_count={1}
 										description={'Спробуй себе на один раз з моїми вміннями та порадами'}
 									/>
-								</div>
+								</div> */}
 							</div>
 						</div>
 					</div>

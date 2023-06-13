@@ -9,6 +9,7 @@ import Plan from '../components/FullCoach/Plan';
 import useAuth from '../hooks/useAuth';
 import OrderModal from '../components/FullCoach/OrderModal';
 import { selectYearDeclension, specs, type_training } from '../components/FullCoach/utils.js';
+import useAxios from '../hooks/useAxios';
 
 const FullCoach = () => {
 	const [showModal, setShowModal] = useState({ show: false, activeSubType: 0 });
@@ -19,7 +20,21 @@ const FullCoach = () => {
 	const { user } = useAuth();
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const [myApplication, setMyApplication] = useState(null);
+	const [disabled, setDisabled] = useState(false);
+	const api = useAxios();
 
+	const getMyApplication = async () => {
+		try {
+			const res = await api.get('/coach/api/get_application_as_user');
+			const my_application = res.data;
+			setMyApplication({ data: my_application, loading: false, error: false });
+			setDisabled(true);
+			// setMyApplications({ data: tunedApplications, loading: false, error: false });
+		} catch (err) {
+			console.error(err);
+		}
+	};
 	const getCoach = () => {
 		axios
 			.get('/coach/api/get_coach_by_id', { params: { coach_id: id } })
@@ -37,6 +52,10 @@ const FullCoach = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		getCoach();
+		console.log(user);
+		if (user) {
+			getMyApplication();
+		}
 	}, []);
 
 	const openModal = (type) => {
@@ -59,6 +78,7 @@ const FullCoach = () => {
 	if (notFound) {
 		return <MissingPage header />;
 	}
+	console.log({ disabled });
 	return (
 		<div className="flex flex-col min-h-screen App">
 			<Header main />
@@ -88,9 +108,11 @@ const FullCoach = () => {
 										Написати тренеру
 									</Link>
 									<button
-										disabled={user?.user_id === coach.user_profile.id || user.role === 1}
+										disabled={
+											user?.user_id === coach.user_profile.id || user.role === 1 || disabled
+										}
 										onClick={
-											user?.user_id !== coach.user_profile.id || user.role === 0
+											user?.user_id !== coach.user_profile.id || user.role === 0 || disabled
 												? () => openModal(0)
 												: null
 										}
@@ -157,8 +179,8 @@ const FullCoach = () => {
 										key={index}
 										{...rate}
 										onClick={() =>
-											user?.user_id === coach.user_profile.id || user.role === 1
-												? {}
+											user?.user_id === coach.user_profile.id || user.role === 1 || disabled
+												? null
 												: openModal(index)
 										}
 									/>

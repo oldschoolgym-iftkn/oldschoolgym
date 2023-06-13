@@ -36,7 +36,7 @@ const Coaches = () => {
 			) : (
 				<div className="flex flex-col h-full border border-black rounded-3xl">
 					<div className="flex-1 p-4 overflow-y-auto text-2xl">
-						{myApplications.data.length > 0 ? (
+						{myApplications.data?.length > 0 ? (
 							<div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] justify-items-stretch gap-8">
 								{myApplications.data?.map((app, index) => (
 									<CoachCard key={app.id} {...app.coach} />

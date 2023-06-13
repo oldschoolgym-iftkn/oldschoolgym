@@ -10,7 +10,8 @@ const Plan = ({ name, cost, lessons_count, imageUrl, description, onClick, butto
 			<p className="flex-1 text-lg text-white sm:text-xl">{description}</p>
 			<button
 				type="button"
-				className="p-2 text-lg sm:text-xl bg-white rounded-full min-w-[10rem]"
+				disabled={onClick ? true : false}
+				className="p-2 disabled:bg-neutral-500 hover:bg-neutral-300 text-lg sm:text-xl bg-white rounded-full min-w-[10rem]"
 				onClick={onClick}>
 				{buttonLabel ? buttonLabel : 'Замовити'}
 			</button>
