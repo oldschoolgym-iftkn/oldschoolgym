@@ -109,10 +109,10 @@ const FullCoach = () => {
 									</Link>
 									<button
 										disabled={
-											user?.user_id === coach.user_profile.id || user.role === 1 || disabled
+											user?.user_id === coach.user_profile.id || user?.role === 1 || disabled
 										}
 										onClick={
-											user?.user_id !== coach.user_profile.id || user.role === 0 || disabled
+											user?.user_id !== coach.user_profile.id || user?.role === 0 || disabled
 												? () => openModal(0)
 												: null
 										}
@@ -179,7 +179,7 @@ const FullCoach = () => {
 										key={index}
 										{...rate}
 										onClick={
-											user?.user_id === coach.user_profile.id || user.role === 1 || disabled
+											user?.user_id === coach.user_profile.id || user?.role === 1 || disabled
 												? null
 												: () => openModal(index)
 										}
