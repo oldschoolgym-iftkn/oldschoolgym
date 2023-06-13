@@ -178,10 +178,10 @@ const FullCoach = () => {
 									<Plan
 										key={index}
 										{...rate}
-										onClick={() =>
+										onClick={
 											user?.user_id === coach.user_profile.id || user.role === 1 || disabled
 												? null
-												: openModal(index)
+												: () => openModal(index)
 										}
 									/>
 								))}

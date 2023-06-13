@@ -3,12 +3,14 @@ import { useForm, Controller } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import useAxios from '../../hooks/useAxios';
+import { useState } from 'react';
 
 Modal.setAppElement('#root');
 
 const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 	const api = useAxios();
 	const navigate = useNavigate();
+	const [sending, setSending] = useState(false);
 
 	const sendApplicationAsUser = async (data) => {
 		try {
@@ -16,7 +18,7 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 			navigate('/cabinet/requests');
 			return res;
 		} catch (err) {
-			throw err;
+			console.error(err);
 		}
 	};
 
@@ -33,6 +35,7 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 	};
 
 	const onSubmit = async (values) => {
+		setSending(true);
 		await sendApplicationAsUser({
 			...values,
 			rate: modalIsOpen.rates[Number(values.rate)],
@@ -100,7 +103,7 @@ const OrderModal = ({ modalIsOpen, afterOpenModal, closeModal }) => {
 					<button
 						type="submit"
 						className="inline-block select-none text-center w-full min-w-[8rem] hover:bg-neutral-700 px-8 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
-						Відправити
+						{sending ? 'Опрацювання...' : 'Відправити'}
 					</button>
 				</form>
 			</div>

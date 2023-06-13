@@ -14,7 +14,7 @@ const CalendarCoach = () => {
 						//     <Loading />
 						// ) : (
 						plansList.map((p, index) => (
-							<CalendarPlanCard key={p.index} {...p} />
+							<CalendarPlanCard key={index} {...p} />
 						))
 						// )
 					}
