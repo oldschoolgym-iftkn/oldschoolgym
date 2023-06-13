@@ -81,7 +81,7 @@ const RequestsUser = () => {
 						</div>
 						<div className="flex flex-1">
 							<div className="my-4 mx-2 sm:m-3 space-y-[25px] max-sm:space-y-[33px]">
-								{myApplications?.data.map((obj, index) => (
+								{myApplications?.data?.map((obj, index) => (
 									<button
 										onClick={() =>
 											selection.find((id) => id === obj.id)
@@ -99,7 +99,7 @@ const RequestsUser = () => {
 								))}
 							</div>
 							<div className="flex-1 border-t border-l border-black">
-								{myApplications?.data.map((application, index) => (
+								{myApplications?.data?.map((application, index) => (
 									<div key={index} className="border-b border-black">
 										<div className="flex items-center transition ease-out duration-200 bg-transparent rounded-3xl hover:bg-neutral-400/90 hover:scale-[101%] hover:rounded-3xl">
 											<button

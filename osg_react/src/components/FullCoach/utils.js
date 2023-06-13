@@ -36,7 +36,7 @@ export const specs = [
 	'Фітнес',
 ];
 
-export const type_training = ['онлайн', 'офлайн', 'змішаний'];
+export const type_training = ['онлайн', 'офлайн', '', 'змішаний'];
 
 export function selectYearDeclension(year) {
 	const lastDigit = year % 10;
