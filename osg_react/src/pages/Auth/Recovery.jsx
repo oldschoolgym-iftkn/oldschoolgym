@@ -14,29 +14,11 @@ const Recovery = () => {
 			email: '',
 		},
 		mode: 'onChange',
-		// shouldUseNativeValidation: true,
 	});
 
 	const onSubmit = async (values) => {
 		console.log(values);
-		// const data = await fetchRegister(values);
-
-		// if (!data.payload) {
-		// 	return alert('Registration failed');
-		// }
-
-		// if ('token' in data.payload) {
-		// 	localStorage.setItem('token', data.payload.token);
-		// }
 	};
-
-	// const handleSubmit = (event) => {
-	// 	console.log(event);
-	// 	event.preventDefault();
-	// };
-	// if (isAuth) {
-	// 	return <Navigate to={'/'} />;
-	// }
 	return (
 		<div className="min-h-screen">
 			<HeaderAuth />

@@ -11,10 +11,6 @@ const CoachCard = ({ id, avatar, first_name, last_name }) => {
 				/>
 				<p className="text-lg">{last_name + ' ' + first_name}</p>
 			</div>
-			{/* <button className="inline-block select-none text-center w-full min-w-[8rem] hover:bg-neutral-600 px-8 py-2 rounded-full text-lg leading-none font-normal bg-black text-white border border-black">
-				Додати заняття
-			</button> */}
-			{/* fix */}
 			<Link
 				to={'/cabinet/messages/' + id}
 				className="inline-block select-none text-center w-full min-w-[8rem] hover:bg-neutral-600 px-2 py-2 rounded-full text-lg leading-none font-normal bg-black text-white border border-black">

@@ -9,7 +9,6 @@ import useAxios from '../hooks/useAxios';
 const CONFIRM_EMAIL_URL = '/user/api/confirm_mail/';
 
 const ConfirmEmail = () => {
-	const navigate = useNavigate();
 	const api = useAxios();
 	const { user, loadUserProfile } = useAuth();
 	const [confirmError, setConfirmError] = useState(false);

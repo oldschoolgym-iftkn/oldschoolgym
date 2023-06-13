@@ -7,8 +7,8 @@ import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
 	const location = useLocation();
-	// const from = location.state?.from?.pathname || '/cabinet';
-	const from = '/cabinet';
+	const from = location.state?.from?.pathname || '/cabinet';
+	// const from = '/cabinet';
 
 	const { auth, logInUser } = useAuth();
 	const [authError, setAuthError] = useState(null);
@@ -44,7 +44,7 @@ const Login = () => {
 	};
 
 	if (auth) {
-		return <Navigate to={'/cabinet'} replace />;
+		return <Navigate to={from} replace />;
 	}
 
 	return (

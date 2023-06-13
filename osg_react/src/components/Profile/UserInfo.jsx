@@ -1,37 +1,22 @@
 import { useForm, Controller } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
+import { useRef, useState } from 'react';
+import { dataUrlToFile } from '../FullCoach/utils';
+import useAxios from '../../hooks/useAxios';
 
-const cities = [
-	'Вінниця',
-	'Дніпро',
-	'Донецьк',
-	'Житомир',
-	'Запоріжжя',
-	'Івано-Франківськ',
-	'Київ',
-	'Кропивницький',
-	'Луганськ',
-	'Луцьк',
-	'Львів',
-	'Миколаїв',
-	'Одеса',
-	'Полтава',
-	'Рівне',
-	'Севастополь',
-	'Сімферополь',
-	'Суми',
-	'Тернопіль',
-	'Ужгород',
-	'Харків',
-	'Херсон',
-	'Хмельницький',
-	'Черкаси',
-	'Чернівці',
-	'Чернігів',
-];
+const file2Base64 = (file) => {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => resolve(reader.result?.toString() || '');
+		reader.onerror = (error) => reject(error);
+	});
+};
 
 const UserInfo = ({ className }) => {
 	const { user, updateUserProfile } = useAuth();
+	const [updating, setUpdating] = useState(false);
+	const api = useAxios();
 	const {
 		register,
 		handleSubmit,
@@ -48,15 +33,8 @@ const UserInfo = ({ className }) => {
 			gender: user.user_profile.gender,
 			height: user.user_profile.height,
 			weight: user.user_profile.weight,
-			// city: cities[0],
-			// category: '0',
-			// experience: 0,
-			// type_training: '0',
-			// info_block: '',
-			// additional_block: '',
 		},
 		mode: 'onSubmit',
-		// shouldUseNativeValidation: true,
 	});
 
 	const validation = {
@@ -65,33 +43,70 @@ const UserInfo = ({ className }) => {
 	};
 
 	const onSubmit = async (values) => {
+		setUpdating(true);
 		const parseValues = {
 			...values,
-			// category: Number(values.category),
-			// type_training: Number(values.category),
-			// experience: Number(values.experience),
 			height: Number(values.height),
 			weight: Number(values.weight),
 		};
+		const formData = new FormData();
+		uploaded &&
+			formData.append(
+				'avatar',
+				await dataUrlToFile(uploaded, `avatar-${Math.random(10000000)}.png`, 'image/png'),
+			);
+
+		uploaded && (await api.put('/user/api/upload_avatar/', formData));
 		console.log('Profile patch', parseValues);
-		updateUserProfile(parseValues);
+		await updateUserProfile(parseValues);
+		setUpdating(false);
+		window.location.reload();
 	};
+
+	const fileRef = useRef();
+	const [uploaded, setUploaded] = useState(null);
+
+	const onFileInputChange = (e) => {
+		const file = e.target?.files?.[0];
+		if (file) {
+			file2Base64(file).then((base64) => {
+				setUploaded(base64);
+			});
+		}
+	};
+
 	return (
 		<form
 			className={
-				'w-full px-12 py-6 max-lg:px-8 max-lg:py-4 space-y-4 border border-black rounded-3xl' +
+				'w-full px-12 py-6 max-lg:px-4 max-lg:py-4 space-y-4 border border-black rounded-3xl' +
 				' ' +
 				className
 			}
 			onSubmit={handleSubmit(onSubmit)}>
 			<h2 className="text-2xl lg:text-4xl">Дані користувача</h2>
 			<div className="grid grid-cols-2 grid-rows-2 gap-8 max-lg:gap-6 max-lg:grid-cols-1 max-lg:grid-rows-4">
-				<div className="flex flex-col justify-center p-6 space-y-4 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
-					<img
-						src={process.env.REACT_APP_API_URL + user.user_profile.avatar}
-						alt="Avatar"
-						className="object-scale-down mx-auto rounded-full select-none w-36 bg-black/20"
-					/>
+				<div className="flex flex-col justify-center p-6 space-y-2 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
+					<div className="flex flex-col">
+						<input
+							type="file"
+							style={{ display: 'none' }}
+							className="hidden"
+							ref={fileRef}
+							onChange={onFileInputChange}
+							accept="image/png,image/jpeg,image/gif"
+						/>
+						<img
+							src={uploaded ? uploaded : process.env.REACT_APP_API_URL + user.user_profile.avatar}
+							alt="Avatar"
+							className="object-scale-down mx-auto rounded-full select-none aspect-square w-36 bg-black/20"
+						/>
+						<button
+							type="button"
+							onClick={() => fileRef.current?.click()}
+							className="mx-auto text-lg hover:underline">
+							Змінити фото
+						</button>
+					</div>
 					<p className="text-2xl font-medium text-center">
 						{user.user_profile.first_name + ' ' + user.user_profile.last_name}
 					</p>
@@ -133,7 +148,7 @@ const UserInfo = ({ className }) => {
 									className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
 								/>
 								<label htmlFor="genderMale" className="text-black align-middle">
-									Чоловік
+									Чоловіча
 								</label>
 							</li>
 							<li className="w-full p-2.5">
@@ -145,7 +160,7 @@ const UserInfo = ({ className }) => {
 									className="m-2 text-black border-white ring-offset-2 checked:bg-none ring-black ring-1 focus:ring-1 focus:ring-offset-4"
 								/>
 								<label htmlFor="genderFemale" className="text-black align-middle">
-									Жінка
+									Жіноча
 								</label>
 							</li>
 						</ul>
@@ -160,7 +175,8 @@ const UserInfo = ({ className }) => {
 							max={300}
 							{...register('height', { required: 'Вкажіть свій ріст' })}
 							className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
-						/>
+						/>{' '}
+						см
 					</div>
 					<div className="text-xl">
 						<label className="inline-block px-4 text-lg text-gray-500 select-none font-extralight">
@@ -172,7 +188,8 @@ const UserInfo = ({ className }) => {
 							max={300}
 							{...register('weight', { required: 'Вкажіть свою вагу' })}
 							className="px-2 py-1 text-xl border-black rounded focus:border-black focus:ring-black"
-						/>
+						/>{' '}
+						кг
 					</div>
 				</div>
 				<div className="p-6 space-y-2 text-left border-2 border-black max-lg:p-4 max-lg:order-2 rounded-2xl">
@@ -190,7 +207,7 @@ const UserInfo = ({ className }) => {
 				<button
 					type="submit"
 					className="inline-block select-none text-center min-w-[10rem] hover:bg-neutral-700 px-6 py-3 rounded-full text-xl leading-none font-normal bg-black text-white">
-					Зберегти зміни
+					{updating ? 'Збереження...' : 'Зберегти зміни'}
 				</button>
 			</div>
 		</form>

@@ -38,7 +38,7 @@ const SideBar = ({ navigation, avatar }) => {
 		<aside className="flex flex-col p-2 px-12 text-white bg-black max-sm:px-6 max-sm:hidden">
 			<div className="mx-auto my-4 space-y-4 max-xl:space-y-2 max-xl:my-2 w-fit">
 				<img
-					className="h-40 border-4 border-white rounded-full max-xl:h-32 bg-white/75"
+					className="h-40 border-4 border-white rounded-full max-xl:h-32 bg-white/75 aspect-square"
 					src={process.env.REACT_APP_API_URL + avatar}
 					alt="avatar"
 				/>

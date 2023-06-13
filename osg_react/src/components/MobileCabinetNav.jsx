@@ -46,15 +46,15 @@ const MobileCabinetNav = ({ modalIsOpen, afterOpenModal, closeModal, navigation,
 			onRequestClose={closeNavModal}
 			className={'absolute inset-0 overflow-auto'}
 			contentLabel="Mobile cabinet navigation">
-			<div className="flex flex-col bg-black p-6 border text-2xl text-white border-black w-full min-h-full &[ReactModal__Overlay--after-open:translate-y-0]">
+			<div className="flex flex-col bg-black p-6 border text-xl text-white border-black w-full min-h-full &[ReactModal__Overlay--after-open:translate-y-0]">
 				<div className="text-right">
 					<button onClick={closeNavModal}>
 						<XMarkIcon className="w-10 h-10 text-white" />
 					</button>
 				</div>
-				<div className="w-full mx-auto my-2 space-y-2">
+				<div className="w-full mx-auto my-1 space-y-1">
 					<img
-						className="h-32 mx-auto border-4 border-white rounded-full bg-white/75"
+						className="w-24 mx-auto border-4 border-white rounded-full bg-white/75 aspect-square"
 						src={process.env.REACT_APP_API_URL + avatar}
 						alt="avatar"
 					/>
@@ -70,14 +70,14 @@ const MobileCabinetNav = ({ modalIsOpen, afterOpenModal, closeModal, navigation,
 									: ' transition ease-out delay-75 border-b-2 border-transparent hover:border-white')
 							);
 						}}>
-						<div className="flex-1 inline-block align-middle">
+						<div className="flex-1 align-middle">
 							<UserCircleIcon className="w-6 h-6 ml-auto mr-2" />
 						</div>
-						<div className="inline-block ">Профіль</div>
-						<div className="flex-1"></div>
+						<div className="">Профіль</div>
+						<div className="w-8"></div>
 					</NavLink>
 				</div>
-				<nav className="flex-grow w-full space-y-4 text-left max-xl:space-y-2">
+				<nav className="flex-grow w-full space-y-1 text-left">
 					{navigation.map((obj, index) => (
 						<Button key={index} onClick={closeNavModal} linkTo={obj.href} renderIcon={obj.icon}>
 							{obj.name}

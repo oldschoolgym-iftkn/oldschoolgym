@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import Loading from '../components/Loading';
 import useAuth from '../hooks/useAuth';
-// import useAuth from '../hooks/useAuth';
 
 const ChatContext = createContext({});
 
