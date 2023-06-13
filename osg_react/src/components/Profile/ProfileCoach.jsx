@@ -238,6 +238,7 @@ const ProfileCoach = () => {
 								key={index}
 								onClick={() => (coachInfo ? {} : openEditRateModal(index))}
 								buttonLabel={'Змінити'}
+								edit
 							/>
 						))}
 					</div>
