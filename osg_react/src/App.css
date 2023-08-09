@@ -1,0 +1,10 @@
+#root {
+	height: 100%;
+}
+
+section {
+	box-shadow: inset 0px -5px 0px #000000;
+}
+body {
+	font-family: 'Montserrat', sans-serif;
+}

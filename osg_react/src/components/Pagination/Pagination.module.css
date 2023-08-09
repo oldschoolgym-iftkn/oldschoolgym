@@ -1,0 +1,58 @@
+.root li {
+	display: inline-block;
+}
+
+.root {
+	display: block;
+	user-select: none;
+}
+.root li:first-child {
+	margin-right: 10px;
+}
+.root li:last-child {
+	margin-left: 10px;
+}
+.root a {
+	text-align: center;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 10px;
+	width: 3.5rem;
+	height: 3.5rem;
+	margin-right: 10px;
+	cursor: pointer;
+	display: inline-block;
+	color: black;
+	padding: 20%;
+}
+.root a:hover {
+	background-color: rgba(64, 64, 64, 0.5);
+	color: #fff;
+}
+.root :global .selected a {
+	background-color: black;
+	color: #fff;
+}
+
+@media not all and (min-width: 768px) {
+	.root a {
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 5%;
+		margin-right: 5px;
+	}
+	.root li:first-child {
+		margin-right: 5px;
+	}
+	.root li:last-child {
+		margin-left: 5px;
+	}
+}
+
+@media not all and (min-width: 1024px) {
+	.root a {
+		width: 3rem;
+		height: 3rem;
+		padding: 10%;
+	}
+}
