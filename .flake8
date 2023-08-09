@@ -1,0 +1,16 @@
+[flake8]
+extend-ignore = E231, A002
+exclude =
+    oldschoolgym/*/migrations/
+    oldschoolgym/*/__pycache__
+    oldschoolgym/*/tests.py
+    oldschoolgym/manage.py
+    oldschoolgym/oldschoolgym/settings.py
+    oldschoolgym/user/apps.py
+    .venv
+    .env
+    Dockerfile
+    docker-compose.yml
+    .dockerignore
+max-complexity = 8
+max-line-length = 120
