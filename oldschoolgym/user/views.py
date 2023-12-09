@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import (MyUserSerializer, ConfirmMailSerializer,
                           MyUserSerializerToUpdate, MyUserSerializerToView,
-                          MyTokenObtainPairSerializer,AvatarSerializer)
+                          MyTokenObtainPairSerializer,AvatarSerializer, CaloriesPredictionSerializer)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from chat.serializers import ChatSerializer
@@ -16,6 +16,10 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.conf import settings
+from drf_yasg import openapi
+import pandas as pd
+
 
 class UserAPI(APIView):
 
@@ -142,4 +146,33 @@ class AvatarUploadView(APIView):
             return Response(status=204)
         else:
             return Response(serializer.errors, status=400)
-        
+
+
+@swagger_auto_schema(
+    operation_description='To predict calories',
+    method='get',
+    manual_parameters=[
+        get_query_params("is_male", "Is male", openapi.TYPE_BOOLEAN),
+        get_query_params("age", "Age", openapi.TYPE_INTEGER),
+        get_query_params("height", "Height", openapi.TYPE_INTEGER),
+        get_query_params("weight", "weight", openapi.TYPE_NUMBER),
+        get_query_params("duration", "Duration", openapi.TYPE_INTEGER),
+        get_query_params("heart_rate", "Heart Rate", openapi.TYPE_INTEGER),
+        get_query_params("body_temp", "Body Temperature", openapi.TYPE_NUMBER),
+    ],
+)
+@api_view(['GET'])
+def predict_calories(request, *args, **kwargs):
+    serializer = CaloriesPredictionSerializer(data=request.query_params)
+    if serializer.is_valid():
+            data = serializer.validated_data
+            df = pd.DataFrame([data.values()], columns=data.keys())
+            y_pred = settings.PICKLE_MODEL.predict(df)
+            return Response(
+                {
+                    'y_pred': y_pred[0],
+                },
+                status=status.HTTP_200_OK
+            )
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

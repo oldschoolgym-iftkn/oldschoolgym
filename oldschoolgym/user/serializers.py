@@ -59,3 +59,13 @@ class AvatarSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
         fields = ('avatar',)
+
+
+class CaloriesPredictionSerializer(serializers.Serializer):
+    is_male = serializers.BooleanField()
+    age = serializers.IntegerField()
+    height = serializers.IntegerField()
+    weight = serializers.FloatField()
+    duration = serializers.IntegerField()
+    heart_rate = serializers.IntegerField()
+    body_temp = serializers.FloatField()

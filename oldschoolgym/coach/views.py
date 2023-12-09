@@ -85,7 +85,7 @@ def get_my_application(request):
 @api_view(['GET'])
 @permission_classes([VerifiedUserOnly])
 def get_application_as_user(request):
-    print(type(request.user))
+    # breakpoint()
     my_applications = UserApplicationSerializer(
         request.user.my_application)
     return Response(my_applications.data, status=status.HTTP_200_OK)

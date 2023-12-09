@@ -13,6 +13,7 @@ import FullCoach from './pages/FullCoach';
 import MissingPage from './components/MissingPage';
 import ConfirmEmail from './components/ConfirmEmail';
 import RequireEmailConfirm from './components/RequireEmailConfirm';
+import Calories from './pages/Calories';
 
 function App() {
 	return (
@@ -23,6 +24,7 @@ function App() {
 			<Route path="/register" element={<Register />} />
 			<Route path="/sign-in" element={<Login />} />
 			<Route path="/password-recovery" element={<Recovery />} />
+			<Route path="/calories-pred" element={<Calories />} />
 
 			<Route element={<RequireAuth />}>
 				<Route element={<RequireEmailConfirm />}>

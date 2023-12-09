@@ -18,6 +18,7 @@ code {
 html {
 	min-height: 100vh;
 }
+
 body {
 	/* height: 100%; */
 	min-height: 100%;
@@ -41,4 +42,13 @@ body {
 .ReactModal__Overlay--before-close {
 	opacity: 0;
 	transform: translateY(-100px);
+}
+
+@layer base {
+
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
 }

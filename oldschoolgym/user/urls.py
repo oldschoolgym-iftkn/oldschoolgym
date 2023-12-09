@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (UserAPI, confirm_email,
                     get_all_chats, get_user_by_id,
-                    MyTokenObtainPairView, AvatarUploadView)
+                    MyTokenObtainPairView, AvatarUploadView, predict_calories)
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView)
@@ -15,4 +15,5 @@ urlpatterns = [
     path('api/confirm_mail/', confirm_email),
     path('api/get_chats/', get_all_chats),
     path('api/upload_avatar/', AvatarUploadView.as_view()),
+    path('api/predict_calories/', predict_calories),
 ]
